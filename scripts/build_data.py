@@ -292,40 +292,81 @@ def main():
     donor_totals["rank"] = donor_totals.index + 1
     donor_totals["donor_id"] = donor_totals["organization_name"].apply(make_slug)
 
-    # Top sector per donor (from time-series)
-    donor_sector = (
+    # Top 5 sectors per donor (from time-series)
+    donor_sector_grp = (
         df_ts[df_ts["organization_name"].notna()]
         .groupby(["organization_name", "sector_group"])["usd"]
         .sum()
         .reset_index()
     )
-    donor_top_sector = {}
-    for org, grp in donor_sector.groupby("organization_name"):
-        if grp["usd"].sum() > 0:
-            donor_top_sector[org] = grp.loc[grp["usd"].idxmax(), "sector_group"]
-        else:
-            donor_top_sector[org] = "Other"
+    donor_top_sectors: dict[str, list] = {}
+    for org, grp in donor_sector_grp.groupby("organization_name"):
+        top5 = grp.sort_values("usd", ascending=False).head(5)
+        donor_top_sectors[org] = [
+            {"name": r["sector_group"], "usd_m": round(float(r["usd"]), 4)}
+            for _, r in top5.iterrows()
+        ]
 
-    # Country count per donor
-    donor_country_count = (
+    # Top 5 recipient countries per donor (from time-series)
+    donor_recip_grp = (
+        df_ts[df_ts["recipient_iso3"].notna() & df_ts["organization_name"].notna()]
+        .groupby(["organization_name", "recipient_iso3", "country"])["usd"]
+        .sum()
+        .reset_index()
+    )
+    donor_top_recipients: dict[str, list] = {}
+    for org, grp in donor_recip_grp.groupby("organization_name"):
+        top5 = grp.sort_values("usd", ascending=False).head(5)
+        donor_top_recipients[org] = [
+            {
+                "iso3": r["recipient_iso3"],
+                "name": centroid_lookup.get(r["recipient_iso3"], {}).get("name", r["country"]),
+                "usd_m": round(float(r["usd"]), 4),
+            }
+            for _, r in top5.iterrows()
+        ]
+
+    # n_projects (row count) per donor in df_ts
+    donor_n_projects = (
+        df_ts[df_ts["organization_name"].notna()]
+        .groupby("organization_name")
+        .size()
+        .to_dict()
+    )
+
+    # n_countries (unique recipient ISO3s) per donor in df_ts
+    donor_n_countries = (
         df_ts[df_ts["recipient_iso3"].notna()]
         .groupby("organization_name")["recipient_iso3"]
         .nunique()
         .to_dict()
     )
 
+    # year_range per donor in df_ts
+    donor_year_range = (
+        df_ts[df_ts["organization_name"].notna() & df_ts["year_int"].notna()]
+        .groupby("organization_name")["year_int"]
+        .agg(["min", "max"])
+        .to_dict(orient="index")
+    )
+
     donor_summary = []
     for _, row in donor_totals.iterrows():
         org = row["organization_name"]
+        yr = donor_year_range.get(org)
+        year_range_val = [int(yr["min"]), int(yr["max"])] if yr else [0, 0]
         donor_summary.append({
-            "rank": int(row["rank"]),
             "donor_id": row["donor_id"],
             "donor_name": org,
             "donor_country": row["Donor_country"],
             "donor_iso3": row["donor_iso3_col"],
             "total_usd_m": round(float(row["total_usd_m"]), 4),
-            "top_sector": donor_top_sector.get(org, "Other"),
-            "countries_count": int(donor_country_count.get(org, 0)),
+            "n_projects": int(donor_n_projects.get(org, 0)),
+            "n_countries": int(donor_n_countries.get(org, 0)),
+            "rank": int(row["rank"]),
+            "top_sectors": donor_top_sectors.get(org, []),
+            "top_recipients": donor_top_recipients.get(org, []),
+            "year_range": year_range_val,
         })
 
     with open(os.path.join(OUT_DIR, "donor_summary.json"), "w", encoding="utf-8") as f:
@@ -339,25 +380,53 @@ def main():
         df_ts[df_ts["recipient_iso3"].notna()]
         .groupby(["recipient_iso3", "country"])
         .agg(
-            total_usd_m=("usd", "sum"),
-            donor_count=("organization_name", "nunique"),
+            total_received_usd_m=("usd", "sum"),
+            n_donors=("organization_name", "nunique"),
         )
         .reset_index()
     )
 
-    # Top sector per recipient
-    recip_sector = (
+    # n_projects per recipient (row count)
+    recip_n_projects = (
+        df_ts[df_ts["recipient_iso3"].notna()]
+        .groupby("recipient_iso3")
+        .size()
+        .to_dict()
+    )
+
+    # Top 5 donors per recipient country
+    recip_donor_grp = (
+        df_ts[df_ts["recipient_iso3"].notna() & df_ts["organization_name"].notna()]
+        .groupby(["recipient_iso3", "organization_name"])["usd"]
+        .sum()
+        .reset_index()
+    )
+    recip_top_donors: dict[str, list] = {}
+    for iso3, grp in recip_donor_grp.groupby("recipient_iso3"):
+        top5 = grp.sort_values("usd", ascending=False).head(5)
+        recip_top_donors[iso3] = [
+            {
+                "donor_id": make_slug(r["organization_name"]),
+                "donor_name": r["organization_name"],
+                "usd_m": round(float(r["usd"]), 4),
+            }
+            for _, r in top5.iterrows()
+        ]
+
+    # Top 5 sectors per recipient country
+    recip_sector_grp = (
         df_ts[df_ts["recipient_iso3"].notna()]
         .groupby(["recipient_iso3", "sector_group"])["usd"]
         .sum()
         .reset_index()
     )
-    recip_top_sector = {}
-    for iso3, grp in recip_sector.groupby("recipient_iso3"):
-        if grp["usd"].sum() > 0:
-            recip_top_sector[iso3] = grp.loc[grp["usd"].idxmax(), "sector_group"]
-        else:
-            recip_top_sector[iso3] = "Other"
+    recip_top_sectors: dict[str, list] = {}
+    for iso3, grp in recip_sector_grp.groupby("recipient_iso3"):
+        top5 = grp.sort_values("usd", ascending=False).head(5)
+        recip_top_sectors[iso3] = [
+            {"name": r["sector_group"], "usd_m": round(float(r["usd"]), 4)}
+            for _, r in top5.iterrows()
+        ]
 
     # By-year totals per recipient
     by_year_by_country = (
@@ -371,7 +440,6 @@ def main():
     for _, row in recip_totals.iterrows():
         iso3 = row["recipient_iso3"]
         info = centroid_lookup.get(iso3, {})
-        gr = growth_by_iso3.get(iso3)
         # Build by_year dict
         byyear = by_year_by_country[by_year_by_country["recipient_iso3"] == iso3]
         by_year_dict = {
@@ -381,13 +449,11 @@ def main():
         country_summary.append({
             "iso3": iso3,
             "name": info.get("name", row["country"]),
-            "lat": info.get("lat"),
-            "lon": info.get("lon"),
-            "continent": info.get("continent"),
-            "total_usd_m": round(float(row["total_usd_m"]), 4),
-            "donor_count": int(row["donor_count"]),
-            "top_sector": recip_top_sector.get(iso3, "Other"),
-            "growth_rate": float(gr) if gr is not None and not (isinstance(gr, float) and np.isnan(gr)) else None,
+            "total_received_usd_m": round(float(row["total_received_usd_m"]), 4),
+            "n_donors": int(row["n_donors"]),
+            "n_projects": int(recip_n_projects.get(iso3, 0)),
+            "top_donors": recip_top_donors.get(iso3, []),
+            "top_sectors": recip_top_sectors.get(iso3, []),
             "by_year": by_year_dict,
         })
 
