@@ -1,18 +1,28 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { Viewer } from 'resium'
-import { Ion } from 'cesium'
+import { TileMapServiceImageryProvider, ImageryLayer, buildModuleUrl } from 'cesium'
 import type { AppData } from '../../types'
 import { ArcLayer } from './ArcLayer'
 import { CrisisAnnotations } from './CrisisAnnotations'
 import { useStore } from '../../state/store'
-
-Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_ION_TOKEN ?? ''
 
 interface Props { data: AppData }
 
 export function CesiumGlobe({ data }: Props) {
   const viewerRef = useRef<any>(null)
   const { setSelectedDonorId, setSelectedCountryIso3 } = useStore()
+
+  useEffect(() => {
+    const viewer = viewerRef.current?.cesiumElement
+    if (!viewer) return
+    // Replace default Ion imagery with bundled Natural Earth II (no Ion token needed)
+    TileMapServiceImageryProvider.fromUrl(
+      buildModuleUrl('Assets/Textures/NaturalEarthII')
+    ).then((provider) => {
+      viewer.imageryLayers.removeAll()
+      viewer.imageryLayers.add(new ImageryLayer(provider))
+    })
+  }, [])
 
   return (
     <Viewer

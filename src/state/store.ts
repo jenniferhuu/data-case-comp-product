@@ -44,7 +44,7 @@ export const useStore = create<AppState>((set) => ({
   setDonorCountry: (donorCountry) => set({ donorCountry }),
   sector: null,
   setSector: (sector) => set({ sector }),
-  flowSizeMin: 0.01,
+  flowSizeMin: 1,
   setFlowSizeMin: (flowSizeMin) => set({ flowSizeMin }),
 
   selectedMarker: 'gender',
