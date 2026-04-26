@@ -1,12 +1,27 @@
-import { ColorMaterialProperty, ArcType } from 'cesium'
+import { ColorMaterialProperty, ArcType, Color as CesiumColor } from 'cesium'
 import { Entity, PolylineGraphics } from 'resium'
 import { useStore } from '../../state/store'
-import type { AppData } from '../../types'
+import type { AppData, Flow } from '../../types'
 import { applyFilters } from '../../lib/filters'
 import { generateArcPoints } from '../../lib/arcGeometry'
 import { sectorColor, growthRateColor, credibilityColor, arcWidth } from '../../lib/colorScales'
 
 interface Props { data: AppData }
+
+function getCompareColor(
+  flow: Flow,
+  allFlows: Flow[],
+  compareYears: [number, number]
+): CesiumColor {
+  const [y1, y2] = compareYears
+  const key = `${flow.donor_id}|${flow.recipient_iso3}`
+  const inY1 = allFlows.some(f => f.year === y1 && `${f.donor_id}|${f.recipient_iso3}` === key)
+  const inY2 = allFlows.some(f => f.year === y2 && `${f.donor_id}|${f.recipient_iso3}` === key)
+
+  if (flow.year === y2 && !inY1) return CesiumColor.fromCssColorString('#22c55e').withAlpha(0.8)
+  if (flow.year === y1 && !inY2) return CesiumColor.fromCssColorString('#ef4444').withAlpha(0.8)
+  return CesiumColor.fromCssColorString('#9ca3af').withAlpha(0.5)
+}
 
 export function ArcLayer({ data }: Props) {
   const { mode, yearSelection, compareYears, donorCountry, sector, flowSizeMin, selectedMarker, setSelectedDonorId } = useStore()
@@ -29,11 +44,13 @@ export function ArcLayer({ data }: Props) {
         const points = generateArcPoints(fromGeo.lat, fromGeo.lon, toGeo.lat, toGeo.lon)
         const width = arcWidth(flow.usd_disbursed_m)
 
-        let color
+        let color: CesiumColor
         if (mode === 'credibility') {
           const markerData = markerMap.get(flow.donor_id)
           const score = markerData?.markers[selectedMarker]?.credibility_score ?? 0
           color = credibilityColor(score)
+        } else if (yearSelection === 'compare') {
+          color = getCompareColor(flow, data.flows.flows, compareYears)
         } else if (yearSelection === 'all') {
           color = growthRateColor(flow.growth_rate)
         } else {
