@@ -85,6 +85,7 @@ CENTROIDS = {
     "HKG": (22.40, 114.11, "Asia"), "ISR": (31.05, 34.85, "Asia"),
     "ARE": (23.42, 53.85, "Asia"), "KWT": (29.31, 47.48, "Asia"),
     "QAT": (25.35, 51.18, "Asia"), "SAU": (23.89, 45.08, "Asia"),
+    "TUR": (38.96, 35.24, "Europe"),  # Turkey/Türkiye
     "ZZZ": (0.0, 0.0, "Other"),  # fallback
 }
 
@@ -119,6 +120,11 @@ NAME_OVERRIDES = {
     "Portugal": "PRT", "Singapore": "SGP", "Hong Kong": "HKG",
     "Israel": "ISR", "United Arab Emirates": "ARE", "Kuwait": "KWT",
     "Qatar": "QAT", "Saudi Arabia": "SAU",
+    "Turkey": "TUR", "Türkiye": "TUR",
+    "China (People's Republic of)": "CHN", "China": "CHN",
+    "South Africa": "ZAF", "Togo": "TGO",
+    "Nigeria": "NGA", "India": "IND", "Brazil": "BRA",
+    "Colombia": "COL", "Mexico": "MEX", "Egypt": "EGY",
 }
 
 

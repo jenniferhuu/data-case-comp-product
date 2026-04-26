@@ -1,4 +1,4 @@
-pandas==2.2.2
-numpy==1.26.4
-pycountry==23.12.11
-pytest==8.2.0
+pandas>=2.2
+numpy>=1.26
+pycountry>=23.0
+pytest>=8.0
