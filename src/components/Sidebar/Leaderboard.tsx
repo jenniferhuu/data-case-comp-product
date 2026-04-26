@@ -9,6 +9,7 @@ interface Props {
 
 export function Leaderboard({ data }: Props) {
   const [tab, setTab] = useState<'donors' | 'countries'>('donors')
+  const [query, setQuery] = useState<string>('')
   const {
     yearSelection,
     compareYears,
@@ -39,9 +40,19 @@ export function Leaderboard({ data }: Props) {
     }
   }, [selectedCountryIso3, selectedDonorId])
 
-  const entries = tab === 'donors'
-    ? getLeaderboardDonors(filtered, 10)
-    : getLeaderboardCountries(filtered, 10)
+  useEffect(() => {
+    setQuery('')
+  }, [tab])
+
+  const allEntries = tab === 'donors'
+    ? getLeaderboardDonors(filtered, 1000)
+    : getLeaderboardCountries(filtered, 1000)
+
+  const filteredEntries = query
+    ? allEntries.filter((e) => e.name.toLowerCase().includes(query.toLowerCase()))
+    : allEntries
+
+  const entries = filteredEntries.slice(0, 10)
 
   function selectEntry(id: string) {
     if (tab === 'donors') {
@@ -78,6 +89,14 @@ export function Leaderboard({ data }: Props) {
       <div className="text-xs text-gray-500 uppercase tracking-wide">
         Top 10 {tab}
       </div>
+
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search…"
+        className="w-full bg-gray-800 border border-gray-600 text-white text-xs rounded px-2 py-1 placeholder-gray-500 mb-2"
+      />
 
       <ol aria-label={`Top 10 ${tab}`} className="space-y-1">
         {entries.length === 0 ? (

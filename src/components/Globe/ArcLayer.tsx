@@ -1,4 +1,4 @@
-import { ColorMaterialProperty, ArcType, Color as CesiumColor } from 'cesium'
+import { PolylineGlowMaterialProperty, ArcType, Color as CesiumColor } from 'cesium'
 import { Entity, PolylineGraphics } from 'resium'
 import { useStore } from '../../state/store'
 import type { AppData, Flow } from '../../types'
@@ -57,15 +57,18 @@ export function ArcLayer({ data }: Props) {
           color = sectorColor(flow.top_sector)
         }
 
+        const displayColor = color.withAlpha(Math.min(color.alpha, 0.65))
+
         return (
           <Entity
             key={`${flow.donor_id}-${flow.recipient_iso3}-${flow.year}-${i}`}
+            name={`FLOW~${flow.donor_name}~${flow.recipient_name}~${flow.usd_disbursed_m.toFixed(1)}~${flow.top_sector}~${flow.year}`}
             onClick={() => setSelectedDonorId(flow.donor_id)}
           >
             <PolylineGraphics
               positions={points}
               width={width}
-              material={new ColorMaterialProperty(color)}
+              material={new PolylineGlowMaterialProperty({ color: displayColor, glowPower: 0.25, taperPower: 0.7 })}
               arcType={ArcType.NONE}
             />
           </Entity>

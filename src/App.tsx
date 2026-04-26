@@ -3,6 +3,7 @@ import { loadAppData } from './lib/dataLoader'
 import type { AppData } from './types'
 import { Header } from './components/Layout/Header'
 import { MethodologyFooter } from './components/Layout/MethodologyFooter'
+import { StatsStrip } from './components/Layout/StatsStrip'
 import { LeftSidebar } from './components/Sidebar/LeftSidebar'
 import { CesiumGlobe } from './components/Globe/CesiumGlobe'
 import { Panel } from './components/Panel/Panel'
@@ -57,6 +58,9 @@ export default function App() {
       <div className="flex items-center gap-3 px-4 py-2 bg-gray-900 border-t border-gray-700 overflow-x-auto">
         <YearControls />
         {mode === 'credibility' && <MarkerSelector />}
+        <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-700">
+          <StatsStrip data={data} />
+        </div>
         <ArcLegend />
       </div>
       <MethodologyFooter />
