@@ -78,4 +78,49 @@ describe('server services', () => {
       name: 'ZodError',
     })
   })
+
+  it('getGlobeData returns aggregated scene payload rather than raw flows', async () => {
+    vi.doMock('../../src/server/repositories/artifactRepository', () => ({
+      readArtifactJson: vi.fn(async () => ({
+        flows: [
+          {
+            donorId: 'gates-foundation',
+            donorName: 'Gates Foundation',
+            donorCountry: 'United States',
+            recipientIso3: 'UKR',
+            recipientName: 'Ukraine',
+            year: 2023,
+            amountUsdM: 120.2,
+            sector: '720',
+          },
+        ],
+      })),
+    }))
+    vi.doMock('../../src/server/repositories/geoRepository', () => ({
+      readCountriesGeoJson: vi.fn(async () => [
+        { iso3: 'USA', name: 'United States', lat: 37.09, lon: -95.71, continent: 'Americas' },
+        { iso3: 'UKR', name: 'Ukraine', lat: 49.0, lon: 32.0, continent: 'Europe' },
+      ]),
+    }))
+    const { getGlobeData } = await import('../../src/server/services/globeService')
+
+    const response = await getGlobeData()
+
+    expect(response).toEqual({
+      arcs: [
+        expect.objectContaining({
+          donorId: 'gates-foundation',
+          recipientIso3: 'UKR',
+          amountUsdM: 120.2,
+        }),
+      ],
+      points: [
+        expect.objectContaining({
+          iso3: 'UKR',
+          totalUsdM: 120.2,
+        }),
+      ],
+      visibleFundingUsdM: 120.2,
+    })
+  })
 })

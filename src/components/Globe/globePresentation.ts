@@ -1,6 +1,6 @@
-import type { GlobeResponse } from '../../contracts/globe'
+import type { GlobeArtifact } from '../../contracts/globe'
 
-interface GeoCountry {
+export interface GeoCountry {
   iso3: string
   name: string
   lat: number
@@ -120,7 +120,7 @@ function resolveCountryGeo(value: string, index: ReturnType<typeof buildGeoIndex
   return index.byName.get(normalized) ?? index.byIso3.get(value.toUpperCase())
 }
 
-export function buildGlobePresentation(flows: GlobeResponse['flows'], geo: GeoCountry[]): GlobePresentation {
+export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCountry[]): GlobePresentation {
   const geoIndex = buildGeoIndex(geo)
   const arcsByCorridor = new Map<string, GlobeArcDatum>()
   const pointsByIso3 = new Map<string, GlobePointDatum & { donorIds: Set<string> }>()

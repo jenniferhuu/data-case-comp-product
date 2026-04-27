@@ -1,7 +1,7 @@
-import type { GlobeResponse } from '../../contracts/globe'
+import type { GlobeArtifact } from '../../contracts/globe'
 import type { CanonicalFundingRow } from '../normalize/normalizeRows'
 
-export function buildGlobeArtifact(rows: CanonicalFundingRow[]): GlobeResponse {
+export function buildGlobeArtifact(rows: CanonicalFundingRow[]): GlobeArtifact {
   return {
     flows: rows.map((row) => ({
       donorId: row.donor.id,

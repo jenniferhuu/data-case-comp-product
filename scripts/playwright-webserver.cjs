@@ -1,4 +1,7 @@
 const { spawn } = require('node:child_process')
+const { rmSync } = require('node:fs')
+
+rmSync('.next', { recursive: true, force: true })
 
 const server = spawn('npm', ['run', 'dev', '--', '--hostname', '127.0.0.1', '--port', '3000'], {
   stdio: 'inherit',

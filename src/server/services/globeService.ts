@@ -1,6 +1,8 @@
 import { dashboardQuerySchema } from '../../contracts/filters'
-import { globeResponseSchema, type GlobeResponse } from '../../contracts/globe'
+import { globeArtifactSchema, globeResponseSchema, type GlobeResponse } from '../../contracts/globe'
 import { readArtifactJson } from '../repositories/artifactRepository'
+import { readCountriesGeoJson } from '../repositories/geoRepository'
+import { buildGlobePresentation } from '../../components/Globe/globePresentation'
 
 function parseDashboardQuery(searchParams?: URLSearchParams) {
   if (searchParams === undefined) {
@@ -12,7 +14,7 @@ function parseDashboardQuery(searchParams?: URLSearchParams) {
 
 export async function getGlobeData(searchParams?: URLSearchParams): Promise<GlobeResponse> {
   const query = parseDashboardQuery(searchParams)
-  const artifact = globeResponseSchema.parse(await readArtifactJson('globe'))
+  const artifact = globeArtifactSchema.parse(await readArtifactJson('globe'))
 
   const flows = artifact.flows.filter((flow) => {
     if (query.yearMode === 'single' && query.year !== undefined && flow.year !== query.year) {
@@ -40,7 +42,6 @@ export async function getGlobeData(searchParams?: URLSearchParams): Promise<Glob
     return true
   })
 
-  return {
-    flows,
-  }
+  const geo = await readCountriesGeoJson()
+  return globeResponseSchema.parse(buildGlobePresentation(flows, geo))
 }

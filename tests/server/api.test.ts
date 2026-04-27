@@ -63,7 +63,7 @@ describe('GET /api/globe', () => {
       expect(receivedSearchParams?.get('year')).toBe('2022')
       expect(receivedSearchParams?.get('sector')).toBe('Health')
 
-      return { flows: [] }
+      return { arcs: [], points: [], visibleFundingUsdM: 0 }
     })
 
     vi.doMock('../../src/server/services/globeService', () => ({
@@ -76,7 +76,7 @@ describe('GET /api/globe', () => {
     } as Parameters<typeof GET>[0])
 
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toEqual({ flows: [] })
+    await expect(response.json()).resolves.toEqual({ arcs: [], points: [], visibleFundingUsdM: 0 })
     expect(getGlobeData).toHaveBeenCalledTimes(1)
   })
 })

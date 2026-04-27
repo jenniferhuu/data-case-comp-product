@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import { createDashboardSearchParams } from '../../features/dashboard/queryState'
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
 import type { GlobeResponse } from '../../contracts/globe'
-import { buildGlobePresentation, type GlobeArcDatum, type GlobePointDatum } from './globePresentation'
+import type { GlobeArcDatum, GlobePointDatum } from './globePresentation'
 
 function GlobeLoadingState() {
   return (
@@ -26,14 +26,6 @@ const Globe = dynamic(() => import('react-globe.gl'), {
   ssr: false,
   loading: GlobeLoadingState,
 }) as any
-
-interface GeoCountry {
-  iso3: string
-  name: string
-  lat: number
-  lon: number
-  continent: string
-}
 
 const EARTH_TEXTURE = 'https://unpkg.com/three-globe/example/img/earth-night.jpg'
 const STARFIELD_TEXTURE = 'https://unpkg.com/three-globe/example/img/night-sky.png'
@@ -80,7 +72,6 @@ export function GlobeScene() {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [size, setSize] = useState({ width: 1000, height: 820 })
-  const [geo, setGeo] = useState<GeoCountry[]>([])
   const [globeResponse, setGlobeResponse] = useState<GlobeResponse | null>(null)
   const [hoveredArc, setHoveredArc] = useState<GlobeArcDatum | null>(null)
   const [hoveredPoint, setHoveredPoint] = useState<GlobePointDatum | null>(null)
@@ -142,33 +133,6 @@ export function GlobeScene() {
 
   useEffect(() => {
     let cancelled = false
-
-    void fetch('/data/countries_geo.json')
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error('Geo data request failed')
-        }
-
-        return response.json() as Promise<GeoCountry[]>
-      })
-      .then((data) => {
-        if (!cancelled) {
-          setGeo(data)
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setGeo([])
-        }
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
     const href = globeQueryString.length === 0 ? '/api/globe' : `/api/globe?${globeQueryString}`
 
     void fetch(href)
@@ -186,7 +150,7 @@ export function GlobeScene() {
       })
       .catch(() => {
         if (!cancelled) {
-          setGlobeResponse({ flows: [] })
+          setGlobeResponse({ arcs: [], points: [], visibleFundingUsdM: 0 })
         }
       })
 
@@ -209,16 +173,8 @@ export function GlobeScene() {
     controls.maxDistance = 420
   }, [idleMode, globeResponse])
 
-  const presentation = useMemo(() => {
-    if (globeResponse === null || geo.length === 0) {
-      return null
-    }
-
-    return buildGlobePresentation(globeResponse.flows, geo)
-  }, [geo, globeResponse])
-
-  const selectedArc = presentation?.arcs.find((arc) => arc.donorId === selectedDonorId) ?? null
-  const selectedPoint = presentation?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
+  const selectedArc = globeResponse?.arcs.find((arc) => arc.donorId === selectedDonorId) ?? null
+  const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
   const compareMode = yearMode === 'compare'
   const overlayArc = hoveredArc ?? selectedArc
   const overlayPoint = hoveredPoint ?? selectedPoint
@@ -230,19 +186,19 @@ export function GlobeScene() {
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Visible funding</p>
             <p className="mt-1 text-xl font-semibold">
-              {presentation === null ? 'Loading...' : formatUsdMillions(presentation.visibleFundingUsdM)}
+              {globeResponse === null ? 'Loading...' : formatUsdMillions(globeResponse.visibleFundingUsdM)}
             </p>
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Live corridors</p>
             <p className="mt-1 text-xl font-semibold">
-              {presentation?.arcs.length.toLocaleString('en-US') ?? '--'}
+              {globeResponse?.arcs.length.toLocaleString('en-US') ?? '--'}
             </p>
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Recipient nodes</p>
             <p className="mt-1 text-xl font-semibold">
-              {presentation?.points.length.toLocaleString('en-US') ?? '--'}
+              {globeResponse?.points.length.toLocaleString('en-US') ?? '--'}
             </p>
           </div>
         </div>
@@ -293,7 +249,7 @@ export function GlobeScene() {
         atmosphereColor="#7dd3fc"
         atmosphereAltitude={0.16}
         animateIn
-        arcsData={presentation?.arcs ?? []}
+        arcsData={globeResponse?.arcs ?? []}
         arcStartLat={(arc: GlobeArcDatum) => arc.donorLat}
         arcStartLng={(arc: GlobeArcDatum) => arc.donorLon}
         arcEndLat={(arc: GlobeArcDatum) => arc.recipientLat}
@@ -310,7 +266,7 @@ export function GlobeScene() {
           setIdleMode(false)
           selectDonor((arc as GlobeArcDatum).donorId)
         }}
-        pointsData={presentation?.points ?? []}
+        pointsData={globeResponse?.points ?? []}
         pointLat={(point: GlobePointDatum) => point.lat}
         pointLng={(point: GlobePointDatum) => point.lon}
         pointAltitude={(point: GlobePointDatum) => Math.min(0.28, 0.03 + point.totalUsdM / 2500)}
