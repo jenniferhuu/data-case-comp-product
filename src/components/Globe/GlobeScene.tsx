@@ -75,7 +75,7 @@ function getArcAltitude(arc: GlobeArcDatum) {
   // Minimum altitude needed to keep the arc above the globe surface is
   // 1/cos(θ/2) - 1. Add a small buffer and cap for readability.
   const minAlt = 1 / Math.cos(centralAngle / 2) - 1
-  return Math.min(0.8, Math.max(0.1, minAlt + 0.05))
+  return Math.min(0.55, Math.max(0.1, minAlt + 0.05))
 }
 
 function getPointColor(point: GlobePointDatum) {

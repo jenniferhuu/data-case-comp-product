@@ -56,6 +56,7 @@ export function buildDrilldownArtifact(rows: CanonicalFundingRow[]): DrilldownsA
     defaultSelection: {
       donor: null,
       country: null,
+      donorCountry: null,
     },
   }
 }

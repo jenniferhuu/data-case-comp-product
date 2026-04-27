@@ -1,0 +1,55 @@
+ ⨯ [Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+[Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+[Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+ ⨯ [Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+[Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+[Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+ ⨯ [Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+[Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+[Error: EBUSY: resource busy or locked, open 'C:\Users\Ryan\OneDrive\Ryan\Projects\SP26 Data Case Comp\.next\server\app\api\globe\route_client-reference-manifest.js'] {
+  errno: -4082,
+  code: 'EBUSY',
+  syscall: 'open',
+  path: 'C:\\Users\\Ryan\\OneDrive\\Ryan\\Projects\\SP26 Data Case Comp\\.next\\server\\app\\api\\globe\\route_client-reference-manifest.js'
+}
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...

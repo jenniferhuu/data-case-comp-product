@@ -298,8 +298,16 @@ export function ControlRail() {
                 options={filters.donorCountries}
                 onChange={(value) => {
                   activateManualMode()
-                  patchQuery({ donorCountry: value })
-                  resetSelection()
+                  if (value !== undefined) {
+                    patchQuery({
+                      donorCountry: value,
+                      selectionType: 'donorCountry',
+                      selectionId: value,
+                    })
+                  } else {
+                    patchQuery({ donorCountry: undefined })
+                    resetSelection()
+                  }
                 }}
               />
 

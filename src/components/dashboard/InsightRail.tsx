@@ -5,6 +5,7 @@ import type { DrilldownResponse } from '../../contracts/drilldown'
 import type { OverviewResponse } from '../../contracts/overview'
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
 import { CountryDrilldown } from '../panels/CountryDrilldown'
+import { DonorCountryDrilldown } from '../panels/DonorCountryDrilldown'
 import { DonorDrilldown } from '../panels/DonorDrilldown'
 import { InsightBarChart } from './InsightBarChart'
 import { InsightHeader } from './InsightHeader'
@@ -75,6 +76,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
 
   const activeDonor = liveDrilldown?.donor ?? null
   const activeCountry = liveDrilldown?.country ?? null
+  const activeDonorCountry = liveDrilldown?.donorCountry ?? null
   const leadHighlight = overview?.highlights[0] ?? null
   const topSectors = overview?.topSectors ?? []
   const topRecipients = overview?.topRecipients ?? []
@@ -102,8 +104,15 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
 
         {activeDonor !== null ? <DonorDrilldown donor={activeDonor} onSelectCountry={selectCountry} /> : null}
         {activeCountry !== null ? <CountryDrilldown country={activeCountry} onSelectDonor={selectDonor} /> : null}
+        {activeDonorCountry !== null ? (
+          <DonorCountryDrilldown
+            donorCountry={activeDonorCountry}
+            onSelectDonor={selectDonor}
+            onSelectCountry={selectCountry}
+          />
+        ) : null}
 
-        {activeDonor === null && activeCountry === null ? (
+        {activeDonor === null && activeCountry === null && activeDonorCountry === null ? (
           <div className="space-y-4">
             <InsightHeader
               eyebrow="Portfolio"
@@ -133,7 +142,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
           </div>
         ) : null}
 
-        {activeDonor === null && activeCountry === null && overview !== null ? (
+        {activeDonor === null && activeCountry === null && activeDonorCountry === null && overview !== null ? (
           <>
             <InsightBarChart title="Top sectors" items={topSectors} />
             <InsightRankList

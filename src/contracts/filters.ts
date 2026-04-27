@@ -34,7 +34,7 @@ export const dashboardQuerySchema = z.object({
   recipientCountry: z.string().optional(),
   sector: z.string().optional(),
   marker: z.enum(markerValues).optional(),
-  selectionType: z.enum(['country', 'donor']).optional(),
+  selectionType: z.enum(['country', 'donor', 'donorCountry']).optional(),
   selectionId: z.string().optional(),
 }).superRefine((query, ctx) => {
   if (query.yearMode === 'single' && query.year === undefined) {

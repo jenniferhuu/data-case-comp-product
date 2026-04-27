@@ -1,8 +1,11 @@
 {
   "mcpServers": {
     "codesight": {
-      "command": "npx",
-      "args": ["codesight", "--mcp"]
+      "command": "C:\\Program Files\\nodejs\\npx.cmd",
+      "args": ["codesight", "--mcp"],
+      "env": {
+        "PATH": "C:\\Program Files\\nodejs;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\"
+      }
     }
   }
 }

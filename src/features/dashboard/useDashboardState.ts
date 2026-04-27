@@ -40,23 +40,20 @@ const clearedQueryState: Partial<DashboardQuery> = {
 
 function deriveSelectionState(query: Partial<DashboardQuery>) {
   if (query.selectionType === 'country') {
-    return {
-      selectedCountryIso3: query.selectionId ?? null,
-      selectedDonorId: null,
-    }
+    return { selectedCountryIso3: query.selectionId ?? null, selectedDonorId: null }
   }
 
   if (query.selectionType === 'donor') {
-    return {
-      selectedCountryIso3: null,
-      selectedDonorId: query.selectionId ?? null,
-    }
+    return { selectedCountryIso3: null, selectedDonorId: query.selectionId ?? null }
   }
 
-  return {
-    selectedCountryIso3: null,
-    selectedDonorId: null,
+  // donorCountry selection drives the drilldown via selectionType/selectionId only;
+  // it doesn't set selectedCountryIso3 or selectedDonorId (those are for globe highlights)
+  if (query.selectionType === 'donorCountry') {
+    return { selectedCountryIso3: null, selectedDonorId: null }
   }
+
+  return { selectedCountryIso3: null, selectedDonorId: null }
 }
 
 function deriveIdleMode(query: Partial<DashboardQuery>) {

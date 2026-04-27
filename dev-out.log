@@ -1,0 +1,394 @@
+   ▲ Next.js 15.5.15
+   - Local:        http://localhost:3000
+   - Network:      http://10.45.26.22:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1533ms
+ ○ Compiling / ...
+ ✓ Compiled / in 4   ▲ Next.js 15.5.15
+   - Local:        http://localhost:3001
+   - Network:      http://10.45.26.22:3001
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+509ms
+ GET /api/drilldown 200 in 6121ms
+ GET /api/globe?yearMode=all 200 in 6461ms
+ GET /api/overview 200 in 6844ms
+ GET /api/drilldown?selectionType=donor&selectionId=conrad-n-hilton-foundation 200 in 413ms
+ GET /api/drilldown?selectionType=donor&selectionId=carlos-slim 200 in 345ms
+ GET /api/drilldown?selectionType=donor&selectionId=cartier 200 in 395ms
+ GET /api/globe?yearMode=single&year=2023 200 in 423ms
+ GET /api/globe?yearMode=all 200 in 705ms
+ GET /api/drilldown?selectionType=donor&selectionId=wellcome-trust 200 in 318ms
+ GET /api/globe?yearMode=single&year=2023 200 in 175ms
+ GET /api/globe?yearMode=all 200 in 303ms
+ ✓ Compiled in 341ms (2109 modules)
+ GET / 200 in 52ms
+ ✓ Compiled in 173ms (2109 modules)
+ GET / 200 in 18ms
+ ✓ Compiled in 477ms (4298 modules)
+ GET / 200 in 93ms
+ ✓ Compiled /api/drilldown in 405ms (4298 modules)
+ ✓ Compiled in 0ms (2229 modules)
+ GET / 200 in 437ms
+ GET / 200 in 25ms
+ GET /api/drilldown 200 in 778ms
+ ✓ Compiled in 691ms (4338 modules)
+ GET / 200 in 70ms
+ ✓ Compiled in 350ms (4338 modules)
+ GET / 200 in 36ms
+ ✓ Compiled in 155ms (2109 modules)
+ GET / 200 in 19ms
+ ✓ Compiled in 544ms (4338 modules)
+ GET / 200 in 50ms
+ ✓ Compiled in 460ms (4338 modules)
+ GET / 200 in 57ms
+ ✓ Compiled /api/filters in 274ms (2233 modules)
+ GET /api/filters 200 in 335ms
+ GET / 200 in 86ms
+ ✓ Compiled in 331ms (4342 modules)
+ GET / 200 in 62ms
+ ✓ Compiled in 446ms (4342 modules)
+ GET / 200 in 39ms
+ ✓ Compiled in 922ms (4342 modules)
+ GET / 200 in 38ms
+ ✓ Compiled in 558ms (4342 modules)
+ GET / 200 in 40ms
+ GET / 200 in 139ms
+ GET /api/filters 200 in 83ms
+ ○ Compiling /api/drilldown ...
+ ✓ Compiled /api/drilldown in 965ms (2234 modules)
+ ✓ Compiled in 1ms (2243 modules)
+ ✓ Compiled in 1ms (2243 modules)
+ ✓ Compiled in 0ms (2243 modules)
+ GET /api/globe?yearMode=all 200 in 3482ms
+ GET / 200 in 2903ms
+ GET /api/drilldown 200 in 5051ms
+ GET /api/overview 200 in 5973ms
+ GET / 200 in 340ms
+ GET /api/filters 200 in 506ms
+ GET /api/drilldown 200 in 951ms
+ GET /api/overview 200 in 1207ms
+ GET /api/globe?yearMode=all 200 in 1561ms
+ GET / 200 in 36ms
+ GET /api/filters 200 in 9ms
+ GET /api/drilldown 200 in 174ms
+ GET /api/globe?yearMode=all 200 in 448ms
+ GET /api/overview 200 in 546ms
+ GET /api/globe?yearMode=all&donorCountry=United+States 200 in 673ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 500ms
+ GET /api/drilldown?selectionType=donor&selectionId=sasakawa-africa-association 200 in 442ms
+ ✓ Compiled in 691ms (4338 modules)
+ GET / 200 in 72ms
+ ✓ Compiled in 176ms (2109 modules)
+ GET / 200 in 19ms
+ ✓ Compiled in 586ms (4298 modules)
+ GET / 200 in 93ms
+ ✓ Compiled /api/drilldown in 356ms (4298 modules)
+ ✓ Compiled in 0ms (2229 modules)
+ GET / 200 in 498ms
+ GET /api/drilldown?selectionType=donor&selectionId=sasakawa-africa-association 200 in 884ms
+ ✓ Compiled in 431ms (4338 modules)
+ GET / 200 in 52ms
+ ✓ Compiled in 331ms (4338 modules)
+ GET / 200 in 36ms
+ ✓ Compiled in 506ms (4338 modules)
+ GET / 200 in 79ms
+ ✓ Compiled in 355ms (4338 modules)
+ GET / 200 in 50ms
+ GET / 200 in 101ms
+ ✓ Compiled /api/overview in 318ms (2226 modules)
+ ✓ Compiled (2243 modules)
+ GET /api/filters 200 in 575ms
+ GET / 200 in 106ms
+ GET /api/drilldown 200 in 1131ms
+ GET /api/globe?yearMode=all 200 in 1510ms
+ GET /api/overview 200 in 1684ms
+ GET /api/drilldown?selectionType=donor&selectionId=gates_foundation 200 in 1358ms
+ GET /api/drilldown?selectionType=donor&selectionId=bbvamf 200 in 669ms
+ GET /api/drilldown?selectionType=donor&selectionId=oak-foundation 200 in 604ms
+ GET /api/globe?yearMode=all&donorCountry=United+States 200 in 904ms
+ GET /api/drilldown?selectionType=donor&selectionId=bloomberg-family-foundation 200 in 1048ms
+ ✓ Compiled in 717ms (4298 modules)
+ GET / 200 in 111ms
+ ✓ Compiled in 340ms (4298 modules)
+ GET / 200 in 55ms
+ ✓ Compiled in 689ms (4298 modules)
+ GET / 200 in 44ms
+ ✓ Compiled in 412ms (4298 modules)
+ GET / 200 in 39ms
+ ✓ Compiled in 381ms (4298 modules)
+ GET / 200 in 41ms
+ ✓ Compiled in 469ms (4298 modules)
+ GET / 200 in 54ms
+ ✓ Compiled in 316ms (4298 modules)
+ GET / 200 in 41ms
+ ✓ Compiled in 663ms (4298 modules)
+ GET / 200 in 102ms
+ ✓ Compiled in 1964ms (4298 modules)
+ GET / 200 in 181ms
+ ○ Compiling /api/drilldown ...
+ ✓ Compiled /api/drilldown in 1483ms (2229 modules)
+ GET /api/drilldown?selectionType=country&selectionId=CHN 200 in 2490ms
+ GET /api/drilldown?selectionType=donor&selectionId=tencent-charity-foundation 200 in 384ms
+ GET /api/drilldown?selectionType=country&selectionId=CHN 200 in 461ms
+ GET /api/drilldown?selectionType=donor&selectionId=guangdong-guoqiang-charity-foundation 200 in 385ms
+ GET /api/drilldown?selectionType=country&selectionId=MYS 200 in 347ms
+ GET /api/drilldown?selectionType=donor&selectionId=open-society-foundations 200 in 359ms
+ GET /api/drilldown?selectionType=donor&selectionId=bloomberg-family-foundation 200 in 332ms
+ GET /api/drilldown?selectionType=country&selectionId=RWA 200 in 311ms
+ ✓ Compiled /api/globe in 400ms (2236 modules)
+ GET /api/globe?yearMode=single&year=2023&donorCountry=United+States 200 in 1166ms
+ GET /api/globe?yearMode=all 200 in 981ms
+ GET /api/globe?yearMode=compare&compareFrom=2022&compareTo=2023 200 in 669ms
+ GET /api/globe?yearMode=single&year=2023 200 in 497ms
+ GET /api/globe?yearMode=all 200 in 931ms
+ GET /api/globe?yearMode=single&year=2023 200 in 485ms
+ GET /api/globe?yearMode=all 200 in 823ms
+ GET /api/globe?yearMode=compare&compareFrom=2022&compareTo=2023 200 in 632ms
+ GET /api/globe?yearMode=single&year=2023 200 in 444ms
+ GET /api/globe?yearMode=single&year=2020 200 in 503ms
+ GET /api/globe?yearMode=single&year=2020&donorCountry=United+States 200 in 428ms
+ GET /api/globe?yearMode=all&donorCountry=United+States 200 in 470ms
+ GET /api/globe?yearMode=single&year=2023&donorCountry=United+States 200 in 338ms
+ GET /api/globe?yearMode=all 200 in 666ms
+ GET /api/globe?yearMode=single&year=2023 200 in 451ms
+ GET /api/globe?yearMode=compare&compareFrom=2022&compareTo=2023 200 in 615ms
+ GET /api/globe?yearMode=all 200 in 829ms
+ ✓ Compiled in 1298ms (4340 modules)
+ GET / 200 in 167ms
+ ✓ Compiled in 461ms (4340 modules)
+ GET / 200 in 88ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 1691ms
+ ✓ Compiled /api/drilldown in 485ms (2236 modules)
+ GET /api/drilldown?selectionType=donor&selectionId=sasakawa-africa-association 200 in 1370ms
+ GET /api/drilldown?selectionType=country&selectionId=UGA 200 in 345ms
+ GET /api/globe?yearMode=all 200 in 868ms
+ GET /api/drilldown?selectionType=donor&selectionId=novonordik-fund 200 in 341ms
+ GET /api/drilldown?selectionType=donor&selectionId=john-d-and-catherine-t-macarthur-foundation 200 in 345ms
+ ✓ Compiled in 3.9s (4345 modules)
+ GET / 200 in 216ms
+ ○ Compiling /api/filters ...
+ ✓ Compiled /api/filters in 966ms (2239 modules)
+ GET /api/filters 200 in 1025ms
+ ✓ Compiled in 347ms (4348 modules)
+ GET / 200 in 67ms
+ ✓ Compiled in 802ms (4348 modules)
+ GET / 200 in 44ms
+ GET /api/globe?yearMode=all&selectionType=donor&selectionId=john-d-and-catherine-t-macarthur-foundation 200 in 388ms
+ ✓ Compiled in 426ms (4348 modules)
+ GET / 200 in 135ms
+ ✓ Compiled in 747ms (4348 modules)
+ GET / 200 in 84ms
+ ✓ Compiled in 375ms (4348 modules)
+ GET / 200 in 39ms
+ GET /api/globe?yearMode=all&donorCountry=Japan&selectionType=donor&selectionId=john-d-and-catherine-t-macarthur-foundation 200 in 303ms
+ GET /api/globe?yearMode=all 200 in 903ms
+ GET /api/drilldown 200 in 1308ms
+ GET /api/globe?yearMode=all&donorCountry=Ireland 200 in 157ms
+ ✓ Compiled in 796ms (4298 modules)
+ GET / 200 in 264ms
+ ✓ Compiled in 312ms (4298 modules)
+ GET / 200 in 63ms
+ ✓ Compiled in 593ms (4298 modules)
+ GET / 200 in 49ms
+ ✓ Compiled /api/globe in 150ms (2231 modules)
+ GET /api/globe?yearMode=all&donorCountry=Ireland 200 in 469ms
+ ✓ Compiled in 348ms (4340 modules)
+ GET / 200 in 71ms
+ ✓ Compiled in 442ms (4340 modules)
+ GET / 200 in 72ms
+ ✓ Compiled in 332ms (4340 modules)
+ GET / 200 in 31ms
+ ✓ Compiled in 662ms (4340 modules)
+ GET / 200 in 38ms
+ ✓ Compiled /api/filters in 380ms (4340 modules)
+ ✓ Compiled in 1ms (2234 modules)
+ GET /api/filters 200 in 719ms
+ GET / 200 in 607ms
+ GET / 200 in 103ms
+ ✓ Compiled /api/overview in 179ms (2239 modules)
+ ✓ Compiled (2243 modules)
+ GET /api/filters 200 in 438ms
+ GET /api/globe?yearMode=all 200 in 1063ms
+ GET /api/drilldown 200 in 1313ms
+ GET /api/overview 200 in 1502ms
+ GET / 200 in 136ms
+ GET /api/filters 200 in 12ms
+ GET /api/globe?yearMode=all 200 in 360ms
+ GET /api/drilldown 200 in 531ms
+ GET /api/overview 200 in 655ms
+ ✓ Compiled in 1041ms (4352 modules)
+ GET / 200 in 120ms
+ GET / 200 in 46ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 670ms
+ GET /api/globe?yearMode=single&year=2023&donorCountry=Japan 200 in 5756ms
+ GET /api/globe?yearMode=compare&compareFrom=2022&compareTo=2023&donorCountry=Japan 200 in 5036ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 3051ms
+ GET /api/globe?yearMode=single&year=2023&donorCountry=Japan 200 in 470ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 1013ms
+ ✓ Compiled in 2.2s (4298 modules)
+ GET / 200 in 201ms
+ GET / 200 in 205ms
+ ✓ Compiled in 295ms (2109 modules)
+ GET / 200 in 59ms
+ GET / 200 in 60ms
+ ✓ Compiled in 245ms (2109 modules)
+ GET / 200 in 200ms
+ GET / 200 in 198ms
+ ✓ Compiled in 370ms (2109 modules)
+ GET / 200 in 46ms
+ GET / 200 in 34ms
+ ✓ Compiled in 1143ms (4298 modules)
+ GET / 200 in 153ms
+ GET / 200 in 156ms
+ GET / 200 in 113ms
+ ✓ Compiled /api/overview in 220ms (2226 modules)
+ ✓ Compiled (2243 modules)
+ GET /api/filters 200 in 1146ms
+ GET / 200 in 293ms
+ GET / 200 in 294ms
+ GET /api/drilldown 200 in 1922ms
+ GET /api/globe?yearMode=all 200 in 2101ms
+ GET /api/overview 200 in 2285ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 1896ms
+ ✓ Compiled in 2.1s (4298 modules)
+ GET / 200 in 194ms
+ GET / 200 in 198ms
+ ✓ Compiled in 262ms (2109 modules)
+ GET / 200 in 65ms
+ GET / 200 in 67ms
+ ✓ Compiled in 1890ms (4298 modules)
+ GET / 200 in 170ms
+ GET / 200 in 171ms
+ ✓ Compiled in 329ms (4298 modules)
+ GET / 200 in 57ms
+ GET / 200 in 60ms
+ ✓ Compiled /api/globe in 175ms (2231 modules)
+ GET / 200 in 74ms
+ GET / 200 in 76ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 779ms
+ GET /api/globe?yearMode=all 200 in 945ms
+ ✓ Compiled in 549ms (4340 modules)
+ GET / 200 in 146ms
+ GET / 200 in 150ms
+ GET / 200 in 108ms
+ ✓ Compiled /api/overview in 263ms (2234 modules)
+ ✓ Compiled (2243 modules)
+ GET /api/filters 200 in 663ms
+ GET /api/drilldown 200 in 950ms
+ GET /api/globe?yearMode=all 200 in 1408ms
+ GET /api/overview 200 in 1415ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 1275ms
+ ✓ Compiled in 1904ms (4298 modules)
+ GET / 200 in 232ms
+ GET / 200 in 244ms
+ ✓ Compiled in 260ms (2109 modules)
+ GET / 200 in 56ms
+ GET / 200 in 56ms
+ GET / 200 in 104ms
+ ✓ Compiled /api/overview in 176ms (2226 modules)
+ ✓ Compiled (2243 modules)
+ GET /api/filters 200 in 1047ms
+ GET / 200 in 262ms
+ GET / 200 in 134ms
+ GET /api/drilldown 200 in 1773ms
+ GET /api/globe?yearMode=all 200 in 1973ms
+ GET /api/overview 200 in 2147ms
+ GET /api/globe?yearMode=all&donorCountry=Japan 200 in 501ms
+ GET /api/globe?yearMode=all 200 in 795ms
+ GET /api/drilldown?selectionType=donor&selectionId=gates-foundation 200 in 1242ms
+ GET /api/globe?yearMode=all&recipientCountry=Cuba 200 in 364ms
+ GET /api/globe?yearMode=all&donorCountry=Brazil&recipientCountry=Cuba 200 in 348ms
+ GET /api/globe?yearMode=all&donorCountry=Brazil 200 in 336ms
+ GET /api/globe?yearMode=all 200 in 307ms
+ GET /api/drilldown 200 in 442ms
+ GET /api/globe?yearMode=all&donorCountry=Brazil 200 in 134ms
+ ✓ Compiled in 926ms (4298 modules)
+ GET / 200 in 172ms
+ GET / 200 in 175ms
+ ✓ Compiled in 184ms (2109 modules)
+ GET / 200 in 33ms
+ GET / 200 in 33ms
+ ✓ Compiled in 160ms (2109 modules)
+ GET / 200 in 29ms
+ GET / 200 in 31ms
+ ✓ Compiled in 715ms (4298 modules)
+ GET / 200 in 75ms
+ GET / 200 in 77ms
+ ✓ Compiled /api/filters in 359ms (4298 modules)
+ ✓ Compiled in 0ms (2226 modules)
+ GET /api/filters 200 in 699ms
+ GET /api/filters 200 in 730ms
+ GET / 200 in 631ms
+ GET / 200 in 629ms
+ GET / 200 in 18ms
+ GET / 200 in 20ms
+ ✓ Compiled in 352ms (4335 modules)
+ GET / 200 in 47ms
+ GET / 200 in 47ms
+ ✓ Compiled in 464ms (4335 modules)
+ GET / 200 in 184ms
+ GET / 200 in 186ms
+ ✓ Compiled in 236ms (2109 modules)
+ GET / 200 in 32ms
+ GET / 200 in 32ms
+ ✓ Compiled in 184ms (2109 modules)
+ GET / 200 in 30ms
+ GET / 200 in 31ms
+ ✓ Compiled in 314ms (2109 modules)
+ GET / 200 in 57ms
+ GET / 200 in 67ms
+ ✓ Compiled in 177ms (2109 modules)
+ GET / 200 in 88ms
+ GET / 200 in 89ms
+ ✓ Compiled in 181ms (2109 modules)
+ GET / 200 in 30ms
+ GET / 200 in 32ms
+ ✓ Compiled in 164ms (2109 modules)
+ GET / 200 in 34ms
+ GET / 200 in 30ms
+ GET / 200 in 107ms
+ GET /api/filters 200 in 21ms
+ ✓ Compiled /api/drilldown in 406ms (2234 modules)
+ ✓ Compiled in 1ms (2243 modules)
+ ✓ Compiled in 0ms (2243 modules)
+ ✓ Compiled in 0ms (2243 modules)
+ GET /api/globe?yearMode=all 200 in 1517ms
+ GET / 200 in 1252ms
+ GET / 200 in 1253ms
+ GET /api/drilldown 200 in 2345ms
+ GET /api/overview 200 in 2533ms
+ GET /api/drilldown?selectionType=country&selectionId=DOM 200 in 470ms
+ GET /api/drilldown?selectionType=country&selectionId=EUR 200 in 489ms
+ GET /api/drilldown?selectionType=country&selectionId=BIH 200 in 458ms
+ GET /api/drilldown?selectionType=country&selectionId=MNE 200 in 457ms
+ GET /api/drilldown?selectionType=country&selectionId=GEO 200 in 398ms
+ GET /api/drilldown?selectionType=country&selectionId=ECU 200 in 443ms
+ GET /api/drilldown?selectionType=donor&selectionId=bezos-earth-fund 200 in 463ms
+ GET /api/drilldown?selectionType=country&selectionId=MEX 200 in 445ms
+ GET /api/drilldown?selectionType=country&selectionId=ALB 200 in 466ms
+ GET /api/drilldown?selectionType=country&selectionId=MMR 200 in 462ms
+ GET /api/drilldown?selectionType=country&selectionId=COL 200 in 189ms
+ GET /api/drilldown?selectionType=country&selectionId=TGO 200 in 475ms
+ GET /api/drilldown?selectionType=country&selectionId=GHA 200 in 466ms
+ GET /api/drilldown?selectionType=country&selectionId=RWA 200 in 458ms
+ GET /api/drilldown?selectionType=country&selectionId=CHN 200 in 439ms
+ GET /api/globe?yearMode=all&recipientCountry=China+%28People%27s+Republic+of%29 200 in 545ms
+   ▲ Next.js 15.5.15
+   - Local:        http://localhost:3000
+   - Network:      http://10.45.26.22:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 2.2s
+ ○ Compiling /api/drilldown ...
+ ✓ Compiled /api/drilldown in 1675ms (325 modules)
+ GET /api/drilldown 200 in 2647ms
+ GET /api/globe?yearMode=all 200 in 3958ms
+ GET /api/drilldown?selectionType=country&selectionId=AFG 200 in 255ms
+ GET /api/drilldown 200 in 234ms
+ ✓ Compiled in 17ms

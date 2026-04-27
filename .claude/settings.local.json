@@ -67,7 +67,9 @@
       "Bash(node_modules/.bin/vitest run *)",
       "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); cd \"C:\\\\Users\\\\Ryan\\\\OneDrive\\\\Ryan\\\\Projects\\\\SP26 Data Case Comp\"; npx tsc --noEmit 2>&1 | Select-String \"ArcLayer\")",
       "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); cd \"C:\\\\Users\\\\Ryan\\\\OneDrive\\\\Ryan\\\\Projects\\\\SP26 Data Case Comp\"; npx vitest run 2>&1 | Select-Object -Last 10)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(npx codesight *)",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;$env:PATH\"; npx codesight --version 2>&1)"
     ]
   },
   "enableAllProjectMcpServers": true,

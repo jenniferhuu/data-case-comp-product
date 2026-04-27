@@ -48,7 +48,7 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
     const donor = donors.find((entry) => hyphenateId(entry.donor_id) === query.selectionId)
 
     if (donor === undefined) {
-      return drilldownResponseSchema.parse({ donor: null, country: null })
+      return drilldownResponseSchema.parse({ donor: null, country: null, donorCountry: null })
     }
 
     const yearlyTotals = new Map<number, number>()
@@ -82,6 +82,7 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
         })),
       },
       country: null,
+      donorCountry: null,
     })
   }
 
@@ -92,7 +93,7 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
     )
 
     if (country === undefined) {
-      return drilldownResponseSchema.parse({ donor: null, country: null })
+      return drilldownResponseSchema.parse({ donor: null, country: null, donorCountry: null })
     }
 
     const donors = await readDonorSummary()
@@ -120,8 +121,70 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
           totalUsdM: round4(item.usd_m),
         })),
       },
+      donorCountry: null,
     })
   }
 
-  return drilldownResponseSchema.parse({ donor: null, country: null })
+  if (query.selectionType === 'donorCountry' && query.selectionId !== undefined) {
+    const donors = await readDonorSummary()
+    const countryDonors = donors.filter((d) => d.donor_country === query.selectionId)
+
+    if (countryDonors.length === 0) {
+      return drilldownResponseSchema.parse({ donor: null, country: null, donorCountry: null })
+    }
+
+    const yearlyTotals = new Map<number, number>()
+    const sectorTotals = new Map<string, number>()
+    const recipientTotals = new Map<string, { name: string; iso3: string; usdM: number }>()
+
+    for (const flow of globe.flows) {
+      if (flow.year <= 0) continue
+      const donor = countryDonors.find((d) => d.donor_id === flow.donorId)
+      if (donor === undefined) continue
+
+      yearlyTotals.set(flow.year, (yearlyTotals.get(flow.year) ?? 0) + flow.amountUsdM)
+      sectorTotals.set(flow.sector, (sectorTotals.get(flow.sector) ?? 0) + flow.amountUsdM)
+
+      const existing = recipientTotals.get(flow.recipientIso3)
+      if (existing === undefined) {
+        recipientTotals.set(flow.recipientIso3, { name: flow.recipientName, iso3: flow.recipientIso3, usdM: flow.amountUsdM })
+      } else {
+        existing.usdM += flow.amountUsdM
+      }
+    }
+
+    const totalUsdM = countryDonors.reduce((sum, d) => sum + d.total_usd_m, 0)
+
+    return drilldownResponseSchema.parse({
+      donor: null,
+      country: null,
+      donorCountry: {
+        name: query.selectionId,
+        totalUsdM: round4(totalUsdM),
+        donorCount: countryDonors.length,
+        topDonors: countryDonors
+          .sort((a, b) => b.total_usd_m - a.total_usd_m)
+          .slice(0, 8)
+          .map((d) => ({
+            id: hyphenateId(d.donor_id),
+            name: d.donor_name,
+            country: d.donor_country,
+            totalUsdM: round4(d.total_usd_m),
+          })),
+        sectorBreakdown: [...sectorTotals.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 6)
+          .map(([sector, usdM]) => ({ sector, totalUsdM: round4(usdM) })),
+        yearlyFunding: [...yearlyTotals.entries()]
+          .sort((a, b) => a[0] - b[0])
+          .map(([year, usdM]) => ({ year, totalUsdM: round4(usdM) })),
+        topRecipients: [...recipientTotals.values()]
+          .sort((a, b) => b.usdM - a.usdM)
+          .slice(0, 6)
+          .map((r) => ({ iso3: r.iso3, name: r.name, totalUsdM: round4(r.usdM) })),
+      },
+    })
+  }
+
+  return drilldownResponseSchema.parse({ donor: null, country: null, donorCountry: null })
 }

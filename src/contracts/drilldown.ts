@@ -46,9 +46,20 @@ export const countryDrilldownSchema = z.object({
   topDonors: z.array(topDonorSchema),
 })
 
+export const donorCountryDrilldownSchema = z.object({
+  name: z.string(),
+  totalUsdM: z.number(),
+  donorCount: z.number(),
+  topDonors: z.array(topDonorSchema),
+  sectorBreakdown: z.array(fundingBreakdownSchema),
+  yearlyFunding: z.array(yearlyFundingSchema),
+  topRecipients: z.array(topRecipientSchema),
+})
+
 export const drilldownResponseSchema = z.object({
   donor: donorDrilldownSchema.nullable(),
   country: countryDrilldownSchema.nullable(),
+  donorCountry: donorCountryDrilldownSchema.nullable(),
 })
 
 export type DrilldownResponse = z.infer<typeof drilldownResponseSchema>
