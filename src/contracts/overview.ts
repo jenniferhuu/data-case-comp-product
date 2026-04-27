@@ -20,6 +20,13 @@ export const overviewDistributionSchema = z.object({
   totalUsdM: z.number(),
 })
 
+export const overviewTopDonorSchema = z.object({
+  id: z.string().optional(),
+  label: z.string(),
+  totalUsdM: z.number(),
+  country: z.string(),
+})
+
 export const overviewYearlyFundingSchema = z.object({
   year: z.number(),
   totalUsdM: z.number(),
@@ -30,7 +37,7 @@ export const overviewResponseSchema = z.object({
   highlights: z.array(overviewHighlightSchema),
   topSectors: z.array(overviewDistributionSchema),
   topRecipients: z.array(overviewDistributionSchema),
-  topDonors: z.array(overviewDistributionSchema),
+  topDonors: z.array(overviewTopDonorSchema),
   yearlyFunding: z.array(overviewYearlyFundingSchema),
 })
 

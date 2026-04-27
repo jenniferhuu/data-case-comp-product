@@ -4,16 +4,24 @@ import { create } from 'zustand'
 import type { DashboardQuery } from '../../contracts/filters'
 import { mergeDashboardQuery, parseDashboardQuery } from './queryState'
 
+export interface GlobeStats {
+  visibleFundingUsdM: number
+  arcCount: number
+  pointCount: number
+}
+
 export interface DashboardState extends DashboardQuery {
   idleMode: boolean
   selectedCountryIso3: string | null
   selectedDonorId: string | null
+  globeStats: GlobeStats | null
   hydrateFromQuery: (query: DashboardQuery) => void
   patchQuery: (query: Partial<DashboardQuery>) => void
   resetSelection: () => void
   selectCountry: (iso3: string | null) => void
   selectDonor: (id: string | null) => void
   setIdleMode: (value: boolean) => void
+  setGlobeStats: (stats: GlobeStats) => void
 }
 
 const defaultQuery = parseDashboardQuery()
@@ -60,6 +68,7 @@ export const useDashboardState = create<DashboardState>((set) => ({
   idleMode: true,
   selectedCountryIso3: null,
   selectedDonorId: null,
+  globeStats: null,
   hydrateFromQuery: (query) => {
     const nextQuery = parseDashboardQuery(query)
 
@@ -109,4 +118,5 @@ export const useDashboardState = create<DashboardState>((set) => ({
     })
   },
   setIdleMode: (idleMode) => set({ idleMode }),
+  setGlobeStats: (globeStats) => set({ globeStats }),
 }))

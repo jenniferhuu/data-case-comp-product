@@ -112,6 +112,7 @@ export function GlobeScene() {
   const selectCountry = useDashboardState((state) => state.selectCountry)
   const selectDonor = useDashboardState((state) => state.selectDonor)
   const setIdleMode = useDashboardState((state) => state.setIdleMode)
+  const setGlobeStats = useDashboardState((state) => state.setGlobeStats)
 
   const selectionType = useDashboardState((state) => state.selectionType)
   const selectionId = useDashboardState((state) => state.selectionId)
@@ -178,6 +179,11 @@ export function GlobeScene() {
         if (!cancelled) {
           setGlobeResponse(data)
           setGlobeError(null)
+          setGlobeStats({
+            visibleFundingUsdM: data.visibleFundingUsdM,
+            arcCount: data.arcs.length,
+            pointCount: data.points.length,
+          })
         }
       })
       .catch((error: unknown) => {
@@ -227,31 +233,8 @@ export function GlobeScene() {
 
   return (
     <div ref={containerRef} className="globe-canvas h-full w-full">
-      <div className="pointer-events-none absolute inset-x-4 top-32 z-10 flex justify-center">
-        <div className="grid min-w-[17rem] gap-3 rounded-[1.5rem] border border-white/10 bg-slate-950/68 px-4 py-3 text-left text-white shadow-[0_24px_70px_rgba(2,6,23,0.4)] backdrop-blur-xl md:grid-cols-3">
-          <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Visible funding</p>
-            <p className="mt-1 text-xl font-semibold">
-              {globeResponse === null ? 'Loading...' : formatUsdMillions(globeResponse.visibleFundingUsdM)}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Live corridors</p>
-            <p className="mt-1 text-xl font-semibold">
-              {globeResponse?.arcs.length.toLocaleString('en-US') ?? '--'}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Recipient nodes</p>
-            <p className="mt-1 text-xl font-semibold">
-              {globeResponse?.points.length.toLocaleString('en-US') ?? '--'}
-            </p>
-          </div>
-        </div>
-      </div>
-
       {globeError !== null ? (
-        <div className="pointer-events-none absolute inset-x-4 top-44 z-10 flex justify-center">
+        <div className="pointer-events-none absolute inset-x-4 top-36 z-10 flex justify-center">
           <div className="max-w-xl rounded-[1.5rem] border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-100 shadow-[0_20px_60px_rgba(2,6,23,0.35)] backdrop-blur-xl">
             {globeError}
           </div>

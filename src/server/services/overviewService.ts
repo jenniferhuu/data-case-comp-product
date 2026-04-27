@@ -61,11 +61,12 @@ export async function getOverview(): Promise<OverviewResponse> {
     topDonors: donors
       .slice()
       .sort((left, right) => right.total_usd_m - left.total_usd_m)
-      .slice(0, 6)
+      .slice(0, 30)
       .map((donor) => ({
         id: donor.donor_id,
         label: donor.donor_name,
         totalUsdM: round4(donor.total_usd_m),
+        country: donor.donor_country,
       })),
     yearlyFunding: [...yearlyTotals.entries()]
       .sort((left, right) => left[0] - right[0])

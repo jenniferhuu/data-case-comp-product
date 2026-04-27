@@ -29,6 +29,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
   const selectionId = useDashboardState((state) => state.selectionId)
   const selectCountry = useDashboardState((state) => state.selectCountry)
   const selectDonor = useDashboardState((state) => state.selectDonor)
+  const donorCountry = useDashboardState((state) => state.donorCountry)
   const [liveDrilldown, setLiveDrilldown] = useState<DrilldownResponse | null>(drilldown ?? null)
 
   useEffect(() => {
@@ -77,7 +78,10 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
   const leadHighlight = overview?.highlights[0] ?? null
   const topSectors = overview?.topSectors ?? []
   const topRecipients = overview?.topRecipients ?? []
-  const topDonors = overview?.topDonors ?? []
+  const allTopDonors = overview?.topDonors ?? []
+  const topDonors = donorCountry !== null && donorCountry !== undefined
+    ? allTopDonors.filter((d) => d.country === donorCountry).slice(0, 6)
+    : allTopDonors.slice(0, 6)
   const yearlyFunding = overview?.yearlyFunding ?? []
   const fallbackContext = overview === null
     ? 'Overview metrics and selection drilldowns load from the dashboard API.'
@@ -142,13 +146,13 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
               onSelect={(iso3) => selectCountry(iso3)}
             />
             <InsightRankList
-              title="Top donors"
+              title={donorCountry !== null && donorCountry !== undefined ? `Top donors · ${donorCountry}` : 'Top donors'}
               items={topDonors.map((donor) => ({
                 id: donor.id,
                 label: donor.label,
                 value: formatUsdMillions(donor.totalUsdM),
               }))}
-              onSelect={(id) => selectDonor(id)}
+              onSelect={(id) => selectDonor(id ?? null)}
             />
             <InsightTrendChart title="Yearly distribution" points={yearlyFunding} />
           </>
