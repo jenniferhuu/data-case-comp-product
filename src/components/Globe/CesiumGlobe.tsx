@@ -5,6 +5,12 @@ import type { AppData } from '../../types'
 import { ArcLayer } from './ArcLayer'
 import { CrisisAnnotations } from './CrisisAnnotations'
 import { useStore } from '../../state/store'
+import {
+  COUNTRY_GEOJSON_LOAD_OPTIONS,
+  COUNTRY_GEOJSON_URL,
+  getCountryIso3,
+  resolveGlobeSelection,
+} from '../../lib/globeSelection'
 
 interface Props { data: AppData }
 
@@ -48,15 +54,7 @@ export function CesiumGlobe({ data }: Props) {
     viewer.scene.globe.atmosphereLightIntensity = 10.0
     viewer.scene.globe.baseColor = Color.fromCssColorString('#0a1628')
 
-    GeoJsonDataSource.load(
-      'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson',
-      {
-        stroke: Color.fromCssColorString('#f87171').withAlpha(0.85),
-        fill: Color.WHITE.withAlpha(0.01),
-        strokeWidth: 2.0,
-        clampToGround: false,
-      }
-    ).then((ds) => {
+    GeoJsonDataSource.load(COUNTRY_GEOJSON_URL, COUNTRY_GEOJSON_LOAD_OPTIONS).then((ds) => {
       viewer.dataSources.add(ds)
       countriesDataSourceRef.current = ds
     })
@@ -90,18 +88,16 @@ export function CesiumGlobe({ data }: Props) {
       )
       if (!countryHit) {
         setSelectedDonorId(null)
+        setDonorCountry(null)
         setSelectedCountryIso3(null)
         return
       }
-      const iso3: string | undefined = countryHit.id.properties?.ISO_A3?.getValue()
+      const iso3 = getCountryIso3(countryHit.id.properties)
       if (iso3) {
-        const donor = dataRef.current.donors.find((d) => d.donor_iso3 === iso3)
-        if (donor) {
-          setDonorCountry(donor.donor_country)
-          setSelectedDonorId(donor.donor_id)
-        } else {
-          setSelectedCountryIso3(iso3)
-        }
+        const nextSelection = resolveGlobeSelection(iso3, dataRef.current.donors)
+        setDonorCountry(nextSelection.donorCountry)
+        setSelectedDonorId(nextSelection.selectedDonorId)
+        setSelectedCountryIso3(nextSelection.selectedCountryIso3)
       }
     }, ScreenSpaceEventType.LEFT_CLICK)
 
