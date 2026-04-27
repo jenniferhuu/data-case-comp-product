@@ -102,6 +102,9 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
   const activeDonor = liveDrilldown?.donor ?? null
   const activeCountry = liveDrilldown?.country ?? null
   const leadHighlight = overview?.highlights[0] ?? null
+  const fallbackContext = overview === null
+    ? 'Overview metrics and selection drilldowns load from the dashboard API.'
+    : `Use the globe to move from platform totals into donor and country drilldowns.`
 
   return (
     <aside className="border-l border-white/10 bg-slate-950/45 px-6 py-28 backdrop-blur">
@@ -111,7 +114,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
           <h2 className="mt-2 text-xl font-semibold text-white">Selection-driven analysis</h2>
           <p className="mt-2 text-sm text-slate-300">
             {leadHighlight === null
-              ? 'Overview metrics and selection drilldowns load from the dashboard API.'
+              ? fallbackContext
               : `${leadHighlight.label}: ${leadHighlight.value}`}
           </p>
         </section>

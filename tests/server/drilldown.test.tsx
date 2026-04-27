@@ -154,6 +154,18 @@ describe('dashboard drilldown surfaces', () => {
           })
         }
 
+        if (url === '/api/filters') {
+          return Promise.resolve({
+            ok: true,
+            json: async () => ({
+              donorCountries: ['United States', 'United Kingdom'],
+              sectors: ['720', '930'],
+              years: [2020, 2021, 2022, 2023],
+              markers: [],
+            }),
+          })
+        }
+
         if (url.startsWith('/api/drilldown')) {
           return Promise.resolve({
             ok: true,

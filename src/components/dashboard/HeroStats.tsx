@@ -31,6 +31,9 @@ function buildHeroCards(overview: OverviewResponse): HeroStatCard[] {
 export function HeroStats({ overview }: HeroStatsProps) {
   const heroCards = overview === null ? [] : buildHeroCards(overview)
   const leadHighlight = overview?.highlights[0] ?? null
+  const fallbackContext = overview === null
+    ? 'Loading cross-border funding totals and portfolio context.'
+    : `Tracking ${overview.totals.donors.toLocaleString('en-US')} donors across ${overview.totals.countries.toLocaleString('en-US')} recipient countries.`
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-10 px-6 pt-6">
@@ -40,7 +43,7 @@ export function HeroStats({ overview }: HeroStatsProps) {
           <h1 className="mt-2 text-2xl font-semibold text-white">Global funding command center</h1>
           <p className="mt-2 text-sm text-slate-300">
             {leadHighlight === null
-              ? 'Loading cross-border funding totals and portfolio context.'
+              ? fallbackContext
               : `${leadHighlight.label}: ${leadHighlight.value}`}
           </p>
         </div>
