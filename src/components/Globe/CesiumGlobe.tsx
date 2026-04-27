@@ -49,10 +49,10 @@ export function CesiumGlobe({ data }: Props) {
     GeoJsonDataSource.load(
       'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson',
       {
-        stroke: Color.fromCssColorString('#f87171').withAlpha(0.6),
+        stroke: Color.fromCssColorString('#f87171').withAlpha(0.85),
         fill: Color.TRANSPARENT,
-        strokeWidth: 1.5,
-        clampToGround: true,
+        strokeWidth: 2.0,
+        clampToGround: false,
       }
     ).then((ds) => {
       viewer.dataSources.add(ds)

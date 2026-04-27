@@ -10,14 +10,14 @@ function ensureRegistered() {
         type: MATERIAL_TYPE,
         uniforms: {
           color: Color.WHITE.clone(),
-          speed: 0.006,
+          speed: 0.002,
           dashLength: 0.08,
         },
         source: `
 czm_material czm_getMaterial(czm_materialInput materialInput) {
   czm_material material = czm_getDefaultMaterial(materialInput);
   float offset = mod(czm_frameNumber * speed, 1.0);
-  float phase = fract((materialInput.s + offset) / dashLength);
+  float phase = fract((materialInput.s - offset) / dashLength);
   if (phase > 0.5) discard;
   material.diffuse = color.rgb;
   material.alpha = color.a;
@@ -47,7 +47,7 @@ export class AnimatedDashMaterialProperty {
 
   getValue(_time: JulianDate, result: Record<string, unknown> = {}): Record<string, unknown> {
     result.color = this._color
-    result.speed = 0.006
+    result.speed = 0.002
     result.dashLength = 0.08
     return result
   }
