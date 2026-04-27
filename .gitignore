@@ -18,6 +18,7 @@ test-results/
 
 # Data
 data/raw/*.csv
+data/input/*.csv
 
 # Env
 .env

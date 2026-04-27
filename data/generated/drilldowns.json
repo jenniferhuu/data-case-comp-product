@@ -1,0 +1,3861 @@
+{
+  "donors": [
+    {
+      "id": "gates-foundation",
+      "name": "Gates Foundation",
+      "country": "United States",
+      "totalUsdM": 18890.40334499991
+    },
+    {
+      "id": "bbvamf",
+      "name": "BBVAMF",
+      "country": "Spain",
+      "totalUsdM": 5038.441774782419
+    },
+    {
+      "id": "mastercard-foundation",
+      "name": "Mastercard Foundation",
+      "country": "Canada",
+      "totalUsdM": 4763.853625999998
+    },
+    {
+      "id": "wellcome-trust",
+      "name": "Wellcome Trust",
+      "country": "United Kingdom",
+      "totalUsdM": 2421.246693000004
+    },
+    {
+      "id": "open-society-foundations",
+      "name": "Open Society Foundations",
+      "country": "United States",
+      "totalUsdM": 1878.384187999996
+    },
+    {
+      "id": "children-s-investment-fund-foundation",
+      "name": "Children's Investment Fund Foundation",
+      "country": "United Kingdom",
+      "totalUsdM": 1583.2422310000031
+    },
+    {
+      "id": "susan-t-buffett-foundation",
+      "name": "Susan T. Buffett Foundation",
+      "country": "United States",
+      "totalUsdM": 1306.3768489999998
+    },
+    {
+      "id": "ford-foundation",
+      "name": "Ford Foundation",
+      "country": "United States",
+      "totalUsdM": 1218.2288139999985
+    },
+    {
+      "id": "bloomberg-family-foundation",
+      "name": "Bloomberg Family Foundation",
+      "country": "United States",
+      "totalUsdM": 1075.7660749999984
+    },
+    {
+      "id": "ikea-foundation",
+      "name": "IKEA Foundation",
+      "country": "Netherlands",
+      "totalUsdM": 1009.132121000001
+    },
+    {
+      "id": "howard-g-buffett-foundation",
+      "name": "Howard G. Buffett Foundation",
+      "country": "United States",
+      "totalUsdM": 957.1070119999999
+    },
+    {
+      "id": "tencent-charity-foundation",
+      "name": "Tencent Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 933.181428451
+    },
+    {
+      "id": "bezos-earth-fund",
+      "name": "Bezos Earth Fund",
+      "country": "United States",
+      "totalUsdM": 927.1134319999996
+    },
+    {
+      "id": "dutch-postcode-lottery",
+      "name": "Dutch Postcode Lottery",
+      "country": "Netherlands",
+      "totalUsdM": 860.2134040000005
+    },
+    {
+      "id": "good-ventures-foundation",
+      "name": "Good Ventures Foundation",
+      "country": "United States",
+      "totalUsdM": 758.3229149999996
+    },
+    {
+      "id": "william-and-flora-hewlett-foundation",
+      "name": "William And Flora Hewlett Foundation",
+      "country": "United States",
+      "totalUsdM": 744.915415999999
+    },
+    {
+      "id": "oak-foundation",
+      "name": "Oak Foundation",
+      "country": "Switzerland",
+      "totalUsdM": 734.7314420000013
+    },
+    {
+      "id": "david-and-lucile-packard-foundation",
+      "name": "David And Lucile Packard Foundation",
+      "country": "United States",
+      "totalUsdM": 716.363379
+    },
+    {
+      "id": "china-three-gorges-group-public-welfare-foundation",
+      "name": "China Three Gorges Group Public Welfare Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 657.0838328456277
+    },
+    {
+      "id": "lego-foundation",
+      "name": "LEGO Foundation",
+      "country": "Denmark",
+      "totalUsdM": 656.4809210000002
+    },
+    {
+      "id": "rockefeller-foundation",
+      "name": "Rockefeller Foundation",
+      "country": "United States",
+      "totalUsdM": 656.1216900000011
+    },
+    {
+      "id": "carlos-slim",
+      "name": "Carlos Slim",
+      "country": "Mexico",
+      "totalUsdM": 640.9763949340999
+    },
+    {
+      "id": "conrad-n-hilton-foundation",
+      "name": "Conrad N. Hilton Foundation",
+      "country": "United States",
+      "totalUsdM": 551.7484640000007
+    },
+    {
+      "id": "heren-charity-foundation",
+      "name": "Heren Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 484.5723948950579
+    },
+    {
+      "id": "ubs-optimus-foundation",
+      "name": "UBS Optimus Foundation",
+      "country": "Switzerland",
+      "totalUsdM": 474.64262100000127
+    },
+    {
+      "id": "reliance-industries-limited",
+      "name": "Reliance Industries Limited",
+      "country": "India",
+      "totalUsdM": 446.3204369948918
+    },
+    {
+      "id": "guangdong-guoqiang-charity-foundation",
+      "name": "Guangdong Guoqiang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 419.82755018216403
+    },
+    {
+      "id": "john-d-and-catherine-t-macarthur-foundation",
+      "name": "John D. And Catherine T. Macarthur Foundation",
+      "country": "United States",
+      "totalUsdM": 400.38412200000056
+    },
+    {
+      "id": "tata-trusts",
+      "name": "Tata Trusts",
+      "country": "India",
+      "totalUsdM": 399.94478503859796
+    },
+    {
+      "id": "tata-consultancy-services-limited",
+      "name": "Tata Consultancy Services Limited",
+      "country": "India",
+      "totalUsdM": 393.0258687497841
+    },
+    {
+      "id": "gordon-and-betty-moore-foundation",
+      "name": "Gordon And Betty Moore Foundation",
+      "country": "United States",
+      "totalUsdM": 349.99657099999985
+    },
+    {
+      "id": "alibaba-charity-foundation",
+      "name": "Alibaba Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 343.78768382573395
+    },
+    {
+      "id": "leona-m-and-harry-b-helmsley-charitable-trust",
+      "name": "Leona M. And Harry B. Helmsley Charitable Trust",
+      "country": "United States",
+      "totalUsdM": 317.10601199999996
+    },
+    {
+      "id": "people-s-postcode-lottery",
+      "name": "People's Postcode Lottery",
+      "country": "United Kingdom",
+      "totalUsdM": 301.63244799999984
+    },
+    {
+      "id": "china-energy-group-public-welfare-foundation",
+      "name": "China Energy Group Public Welfare Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 296.249463214228
+    },
+    {
+      "id": "fondation-botnar",
+      "name": "Fondation Botnar",
+      "country": "Switzerland",
+      "totalUsdM": 273.71842300000003
+    },
+    {
+      "id": "fundacion-bbva-mexico",
+      "name": "Fundacion Bbva Mexico",
+      "country": "Mexico",
+      "totalUsdM": 249.5007221300645
+    },
+    {
+      "id": "arcadia",
+      "name": "Arcadia",
+      "country": "United Kingdom",
+      "totalUsdM": 238.10333200000002
+    },
+    {
+      "id": "mava-foundation",
+      "name": "MAVA Foundation",
+      "country": "Switzerland",
+      "totalUsdM": 218.54278699999986
+    },
+    {
+      "id": "eaa",
+      "name": "EAA",
+      "country": "Qatar",
+      "totalUsdM": 217.49206974247403
+    },
+    {
+      "id": "swedish-postcode-lottery",
+      "name": "Swedish Postcode Lottery",
+      "country": "Sweden",
+      "totalUsdM": 216.706859
+    },
+    {
+      "id": "michael-susan-dell-foundation",
+      "name": "Michael & Susan Dell Foundation",
+      "country": "United States",
+      "totalUsdM": 211.00729599999988
+    },
+    {
+      "id": "margaret-a-cargill-foundation",
+      "name": "Margaret A. Cargill Foundation",
+      "country": "United States",
+      "totalUsdM": 209.37305099999995
+    },
+    {
+      "id": "infosys-limited",
+      "name": "Infosys Limited",
+      "country": "India",
+      "totalUsdM": 203.64830548844304
+    },
+    {
+      "id": "zhejiang-jack-ma-foundation",
+      "name": "Zhejiang Jack Ma Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 183.1050835593029
+    },
+    {
+      "id": "ningxia-yanbao-charity-foundation",
+      "name": "Ningxia Yanbao Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 176.11924504849998
+    },
+    {
+      "id": "laudes-foundation",
+      "name": "Laudes Foundation",
+      "country": "Switzerland",
+      "totalUsdM": 169.767431
+    },
+    {
+      "id": "novonordik-fund",
+      "name": "Novonordik Fund",
+      "country": "Denmark",
+      "totalUsdM": 169.02909978942992
+    },
+    {
+      "id": "tata-steel-limited",
+      "name": "Tata Steel Limited",
+      "country": "India",
+      "totalUsdM": 163.75232036449015
+    },
+    {
+      "id": "hunan-eye-care-charity-foundation",
+      "name": "Hunan Eye Care Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 134.22864009809803
+    },
+    {
+      "id": "jacobs-foundation",
+      "name": "Jacobs Foundation",
+      "country": "Switzerland",
+      "totalUsdM": 129.35884299999992
+    },
+    {
+      "id": "zhejiang-ant-charity-foundation",
+      "name": "Zhejiang Ant Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 129.11270989288005
+    },
+    {
+      "id": "ningbo-yu-renrong-education-foundation",
+      "name": "Ningbo Yu Renrong Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 121.530200775
+    },
+    {
+      "id": "hcl-technologies",
+      "name": "Hcl Technologies",
+      "country": "India",
+      "totalUsdM": 119.43293136722384
+    },
+    {
+      "id": "wipro-limited",
+      "name": "Wipro Limited",
+      "country": "India",
+      "totalUsdM": 117.22953427420096
+    },
+    {
+      "id": "the-coca-cola-foundation-inc",
+      "name": "The Coca-Cola Foundation Inc",
+      "country": "United States",
+      "totalUsdM": 114.17785922246001
+    },
+    {
+      "id": "hindustan-zinc-limited",
+      "name": "Hindustan Zinc Limited",
+      "country": "India",
+      "totalUsdM": 111.94696596856103
+    },
+    {
+      "id": "tata-sons-private",
+      "name": "Tata Sons Private",
+      "country": "India",
+      "totalUsdM": 109.38269083337201
+    },
+    {
+      "id": "guangdong-province-and-charity-foundation",
+      "name": "Guangdong Province And Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 108.841565502535
+    },
+    {
+      "id": "guangdong-province-gedi-puji-charity-foundation",
+      "name": "Guangdong Province Gedi Puji Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 108.76919011486797
+    },
+    {
+      "id": "china-resources-charity-foundation",
+      "name": "China Resources Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 107.323926900491
+    },
+    {
+      "id": "beijing-taikang-yicai-charity-foundation",
+      "name": "Beijing Taikang Yicai Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 106.070896513082
+    },
+    {
+      "id": "fundacion-imss",
+      "name": "Fundacion Imss",
+      "country": "Mexico",
+      "totalUsdM": 105.37774561117716
+    },
+    {
+      "id": "lady-lawyer",
+      "name": "Lady Lawyer",
+      "country": "Italy",
+      "totalUsdM": 98.27509075850003
+    },
+    {
+      "id": "hindustan-unilever-limited",
+      "name": "Hindustan Unilever Limited",
+      "country": "India",
+      "totalUsdM": 95.14213936450999
+    },
+    {
+      "id": "jsw-steel-limited",
+      "name": "Jsw Steel Limited",
+      "country": "India",
+      "totalUsdM": 94.57604350372002
+    },
+    {
+      "id": "state-grid-public-welfare-foundation",
+      "name": "State Grid Public Welfare Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 92.99251988928003
+    },
+    {
+      "id": "la-caixa-banking-foundation",
+      "name": "La Caixa Banking Foundation",
+      "country": "Spain",
+      "totalUsdM": 92.47730399999986
+    },
+    {
+      "id": "fundacion-gonzalo-rio-arronte",
+      "name": "Fundacion Gonzalo Rio Arronte",
+      "country": "Mexico",
+      "totalUsdM": 92.08994534389002
+    },
+    {
+      "id": "shanghai-fosun-charity-foundation",
+      "name": "Shanghai Fosun Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 89.31980252178957
+    },
+    {
+      "id": "arcus-foundation",
+      "name": "Arcus Foundation",
+      "country": "United States",
+      "totalUsdM": 84.10565399999992
+    },
+    {
+      "id": "nacional-monte-de-piedad",
+      "name": "Nacional Monte De Piedad",
+      "country": "Mexico",
+      "totalUsdM": 83.08264171548177
+    },
+    {
+      "id": "world-diabetes-foundation",
+      "name": "World Diabetes Foundation",
+      "country": "Denmark",
+      "totalUsdM": 81.89895899999999
+    },
+    {
+      "id": "fundacion-telmex",
+      "name": "Fundacion Telmex",
+      "country": "Mexico",
+      "totalUsdM": 81.67977886695
+    },
+    {
+      "id": "axis-bank-limited",
+      "name": "Axis Bank Limited",
+      "country": "India",
+      "totalUsdM": 80.58370459557398
+    },
+    {
+      "id": "cosco-shipping-charity-foundation",
+      "name": "COSCO SHIPPING Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 80.48085855148003
+    },
+    {
+      "id": "cnooc-marine-environment-and-ecological-protection-public-welfare-foundation",
+      "name": "CNOOC Marine Environment And Ecological Protection Public Welfare Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 78.6513460137194
+    },
+    {
+      "id": "beijing-reignwood-cultural-foundation",
+      "name": "Beijing Reignwood Cultural Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 77.808860565211
+    },
+    {
+      "id": "sichuan-wuliangye-charity-foundation",
+      "name": "Sichuan Wuliangye Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 75.27471870497497
+    },
+    {
+      "id": "king-baudouin",
+      "name": "King Baudouin",
+      "country": "Belgium",
+      "totalUsdM": 74.96942447253419
+    },
+    {
+      "id": "zhejiang-jiaxing-charity-foundation",
+      "name": "Zhejiang Jiaxing Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 74.03711700235999
+    },
+    {
+      "id": "larsen-and-toubro-limited",
+      "name": "Larsen And Toubro Limited",
+      "country": "India",
+      "totalUsdM": 73.13163904162819
+    },
+    {
+      "id": "omidyar-network-fund-inc",
+      "name": "Omidyar Network Fund, Inc.",
+      "country": "United States",
+      "totalUsdM": 72.27170500000001
+    },
+    {
+      "id": "hangzhou-xihu-district-zhong-ziyi-education-foundation",
+      "name": "Hangzhou Xihu District Zhong Ziyi Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 71.275680028699
+    },
+    {
+      "id": "shenzhen-pengrui-charity-foundation",
+      "name": "Shenzhen Pengrui Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 71.14186931131785
+    },
+    {
+      "id": "binzhou-shiping-charity-foundation",
+      "name": "Binzhou Shiping Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 69.57268202820399
+    },
+    {
+      "id": "bosideng-charity-foundation",
+      "name": "Bosideng Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 68.426052661223
+    },
+    {
+      "id": "vanke-charity-foundation",
+      "name": "Vanke Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 67.10370380794001
+    },
+    {
+      "id": "hui-an-county-liangliang-education-foundation",
+      "name": "Hui'an County Liangliang Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 67.0658166968
+    },
+    {
+      "id": "cartier",
+      "name": "Cartier",
+      "country": "France",
+      "totalUsdM": 67.01670518
+    },
+    {
+      "id": "reliance-retail-limited",
+      "name": "Reliance Retail Limited",
+      "country": "India",
+      "totalUsdM": 65.59514394860001
+    },
+    {
+      "id": "fundacion-best",
+      "name": "Fundacion Best",
+      "country": "Mexico",
+      "totalUsdM": 65.38614475289357
+    },
+    {
+      "id": "sf-charity-foundation",
+      "name": "SF Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 64.22963971344203
+    },
+    {
+      "id": "beijing-xiaomi-charity-foundation",
+      "name": "Beijing Xiaomi Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 64.01462208901499
+    },
+    {
+      "id": "carnegie-corporation-of-new-york",
+      "name": "Carnegie Corporation Of New York",
+      "country": "United States",
+      "totalUsdM": 63.56831000000001
+    },
+    {
+      "id": "the-skoll-foundation",
+      "name": "The Skoll Foundation",
+      "country": "United States",
+      "totalUsdM": 63.005399276305965
+    },
+    {
+      "id": "golden-arowana-charity-foundation",
+      "name": "Golden Arowana Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 62.59485448622
+    },
+    {
+      "id": "fundacion-diez-morodo",
+      "name": "Fundacion Diez Morodo",
+      "country": "Mexico",
+      "totalUsdM": 61.67674965002401
+    },
+    {
+      "id": "dongying-qirun-li-minggang-charity-foundation",
+      "name": "Dongying Qirun Li Minggang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 60.747147159427996
+    },
+    {
+      "id": "china-merchants-charity-foundation",
+      "name": "China Merchants Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 59.85723753795229
+    },
+    {
+      "id": "ultratech-cement-limited",
+      "name": "Ultratech Cement Limited",
+      "country": "India",
+      "totalUsdM": 59.59582105035298
+    },
+    {
+      "id": "sioc",
+      "name": "SIOC",
+      "country": "South Africa",
+      "totalUsdM": 59.43015769279353
+    },
+    {
+      "id": "serum-institute-of-india",
+      "name": "Serum Institute Of India",
+      "country": "India",
+      "totalUsdM": 59.381844591534964
+    },
+    {
+      "id": "bajaj-finance",
+      "name": "Bajaj Finance",
+      "country": "India",
+      "totalUsdM": 59.164646315176995
+    },
+    {
+      "id": "jindal-steel-power-limited",
+      "name": "Jindal Steel & Power Limited",
+      "country": "India",
+      "totalUsdM": 58.583109971560006
+    },
+    {
+      "id": "fundacion-coppel",
+      "name": "Fundacion Coppel",
+      "country": "Mexico",
+      "totalUsdM": 57.00076455581699
+    },
+    {
+      "id": "indusind-bank-ltd",
+      "name": "Indusind Bank Ltd.",
+      "country": "India",
+      "totalUsdM": 56.780211681781964
+    },
+    {
+      "id": "rohini",
+      "name": "Rohini",
+      "country": "India",
+      "totalUsdM": 56.349519756820186
+    },
+    {
+      "id": "citi-foundation",
+      "name": "Citi Foundation",
+      "country": "United States",
+      "totalUsdM": 55.81690700000008
+    },
+    {
+      "id": "beijing-jingdong-charity-foundation",
+      "name": "Beijing Jingdong Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 55.75044275955399
+    },
+    {
+      "id": "charity-projects-ltd-comic-relief",
+      "name": "Charity Projects Ltd (Comic Relief)",
+      "country": "United Kingdom",
+      "totalUsdM": 54.20730000000001
+    },
+    {
+      "id": "fundacion-pro-universitaria",
+      "name": "Fundacion Pro Universitaria",
+      "country": "Mexico",
+      "totalUsdM": 54.11830244589324
+    },
+    {
+      "id": "maruti-suzuki-india-limited",
+      "name": "Maruti Suzuki India Limited",
+      "country": "India",
+      "totalUsdM": 53.293617465477
+    },
+    {
+      "id": "wellspring-philanthropic-fund-inc",
+      "name": "Wellspring Philanthropic Fund Inc",
+      "country": "United States",
+      "totalUsdM": 53.213850593974946
+    },
+    {
+      "id": "van-leer-foundation",
+      "name": "Van Leer Foundation",
+      "country": "Netherlands",
+      "totalUsdM": 53.02271899999997
+    },
+    {
+      "id": "beijing-baidu-charity-foundation",
+      "name": "Beijing Baidu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 52.667017412654
+    },
+    {
+      "id": "housing-development-finance-corporation-limited",
+      "name": "Housing Development Finance Corporation Limited",
+      "country": "India",
+      "totalUsdM": 52.559799808310004
+    },
+    {
+      "id": "inner-mongolia-yili-charity-foundation",
+      "name": "Inner Mongolia Yili Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 52.2386033867499
+    },
+    {
+      "id": "zhejiang-li-shufu-charity-foundation",
+      "name": "Zhejiang Li Shufu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 52.171118105711784
+    },
+    {
+      "id": "anhui-lu-an-yingjia-charity-foundation",
+      "name": "Anhui Lu'an Yingjia Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 51.8985370574
+    },
+    {
+      "id": "wk-kellogg-foundation",
+      "name": "Wk Kellogg Foundation",
+      "country": "United States",
+      "totalUsdM": 51.37733697235701
+    },
+    {
+      "id": "huang-yicong-charity-foundation",
+      "name": "Huang Yicong Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 51.102854830992065
+    },
+    {
+      "id": "mahindra-and-mahindra-limited",
+      "name": "Mahindra And Mahindra Limited",
+      "country": "India",
+      "totalUsdM": 50.23860213781493
+    },
+    {
+      "id": "tianjin-sunac-charity-foundation",
+      "name": "Tianjin Sunac Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 48.989909320129996
+    },
+    {
+      "id": "shenzhen-ping-an-charity-foundation",
+      "name": "Shenzhen Ping An Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 48.290323991809984
+    },
+    {
+      "id": "charles-stewart-mott-foundation",
+      "name": "Charles Stewart Mott Foundation",
+      "country": "United States",
+      "totalUsdM": 47.742204583120014
+    },
+    {
+      "id": "china-life-charity-foundation",
+      "name": "China Life Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 47.20788386072
+    },
+    {
+      "id": "shenzhen-longguang-charity-foundation",
+      "name": "Shenzhen Longguang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 47.035683471243
+    },
+    {
+      "id": "rockefeller-brothers-fund-inc",
+      "name": "Rockefeller Brothers Fund Inc",
+      "country": "United States",
+      "totalUsdM": 46.951668075557
+    },
+    {
+      "id": "shenzhen-longhu-charity-foundation",
+      "name": "Shenzhen Longhu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 45.981504103108
+    },
+    {
+      "id": "hebei-xinao-charity-foundation",
+      "name": "Hebei Xinao Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 45.85884787858999
+    },
+    {
+      "id": "fundacion-femsa",
+      "name": "Fundacion Femsa",
+      "country": "Mexico",
+      "totalUsdM": 45.25000824291
+    },
+    {
+      "id": "zhejiang-province-tsai-chongxin-charity-foundation",
+      "name": "Zhejiang Province Tsai Chongxin Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 44.97964155682999
+    },
+    {
+      "id": "beijing-meituan-charity-foundation",
+      "name": "Beijing Meituan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 44.41043711782
+    },
+    {
+      "id": "shenzhen-new-cornerstone-science-foundation",
+      "name": "Shenzhen New Cornerstone Science Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 43.761912763
+    },
+    {
+      "id": "who",
+      "name": "WHO",
+      "country": "Switzerland",
+      "totalUsdM": 43.61049951289999
+    },
+    {
+      "id": "fundacion-mier-y-pesado",
+      "name": "Fundacion Mier Y Pesado",
+      "country": "Mexico",
+      "totalUsdM": 43.327272858499995
+    },
+    {
+      "id": "jpmorgan-chase-foundation",
+      "name": "Jpmorgan Chase Foundation",
+      "country": "United States",
+      "totalUsdM": 41.022706753974
+    },
+    {
+      "id": "shanghai-guotai-junan-social-welfare-foundation",
+      "name": "Shanghai Guotai Junan Social Welfare Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 40.99980353363901
+    },
+    {
+      "id": "fujian-hemin-charity-foundation",
+      "name": "Fujian Hemin Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 40.801705372520004
+    },
+    {
+      "id": "xiamen-renai-medical-foundation",
+      "name": "Xiamen Renai Medical Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 40.307040715999996
+    },
+    {
+      "id": "megha-engineering-infrastructures",
+      "name": "Megha Engineering & Infrastructures",
+      "country": "India",
+      "totalUsdM": 39.76549019788801
+    },
+    {
+      "id": "fundacion-para-unir-y-dar",
+      "name": "Fundacion Para Unir Y Dar",
+      "country": "Mexico",
+      "totalUsdM": 39.62331425862
+    },
+    {
+      "id": "sasakawa-africa-association",
+      "name": "Sasakawa Africa Association",
+      "country": "Japan",
+      "totalUsdM": 38.491970010176
+    },
+    {
+      "id": "shandong-province-le-an-charity-foundation",
+      "name": "Shandong Province Le'an Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 38.28199172140161
+    },
+    {
+      "id": "vodafone",
+      "name": "Vodafone",
+      "country": "United Kingdom",
+      "totalUsdM": 37.57720119261
+    },
+    {
+      "id": "shanxi-xinfei-charity-foundation",
+      "name": "Shanxi Xinfei Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 37.515941994
+    },
+    {
+      "id": "fundacion-alfredo-harp-helu",
+      "name": "Fundacion Alfredo Harp Helu",
+      "country": "Mexico",
+      "totalUsdM": 37.38521824242999
+    },
+    {
+      "id": "hunan-xiangjiang-charity-foundation",
+      "name": "Hunan Xiangjiang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 37.197021356981
+    },
+    {
+      "id": "guangdong-yuexiu-group-charity-foundation",
+      "name": "Guangdong Yuexiu Group Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 36.841849794715
+    },
+    {
+      "id": "zhejiang-dunhe-charity-foundation",
+      "name": "Zhejiang Dunhe Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 36.81724581328902
+    },
+    {
+      "id": "zhejiang-netease-charity-foundation",
+      "name": "Zhejiang Netease Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 36.79756859194999
+    },
+    {
+      "id": "guangdong-vipshop-charity-foundation",
+      "name": "Guangdong Vipshop Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 35.50359204628
+    },
+    {
+      "id": "guangdong-province-xinxing-county-beiying-charity-foundation",
+      "name": "Guangdong Province Xinxing County Beiying Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 35.38779568956791
+    },
+    {
+      "id": "fundacion-grupo-lala",
+      "name": "Fundacion Grupo Lala",
+      "country": "Mexico",
+      "totalUsdM": 35.298417553988344
+    },
+    {
+      "id": "norwegian-postcode-lottery",
+      "name": "Norwegian Postcode Lottery",
+      "country": "Norway",
+      "totalUsdM": 35.109880000000004
+    },
+    {
+      "id": "swiss-re-foundation",
+      "name": "Swiss Re Foundation",
+      "country": "Switzerland",
+      "totalUsdM": 34.63355191834931
+    },
+    {
+      "id": "asian-paints",
+      "name": "Asian Paints",
+      "country": "India",
+      "totalUsdM": 34.552966621485595
+    },
+    {
+      "id": "bajaj-auto-limited",
+      "name": "Bajaj Auto Limited",
+      "country": "India",
+      "totalUsdM": 34.50805351748199
+    },
+    {
+      "id": "bolivar",
+      "name": "Bolivar",
+      "country": "Colombia",
+      "totalUsdM": 33.655751216130014
+    },
+    {
+      "id": "fundacion-nemi",
+      "name": "Fundacion Nemi",
+      "country": "Mexico",
+      "totalUsdM": 33.48639131781414
+    },
+    {
+      "id": "asociacion-educacional-mexico-central",
+      "name": "Asociacion Educacional Mexico Central",
+      "country": "Mexico",
+      "totalUsdM": 33.166779038512004
+    },
+    {
+      "id": "fundacion-grupo-alfa",
+      "name": "Fundacion Grupo Alfa",
+      "country": "Mexico",
+      "totalUsdM": 32.509508848473004
+    },
+    {
+      "id": "muthoot-finance",
+      "name": "Muthoot Finance",
+      "country": "India",
+      "totalUsdM": 32.003009825891006
+    },
+    {
+      "id": "qingshan-charity-foundation",
+      "name": "Qingshan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 31.919095081181005
+    },
+    {
+      "id": "grasim-industries",
+      "name": "Grasim Industries",
+      "country": "India",
+      "totalUsdM": 31.074145202347985
+    },
+    {
+      "id": "hubei-jinpai-charity-foundation",
+      "name": "Hubei Jinpai Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 30.937621610329998
+    },
+    {
+      "id": "guangdong-star-river-charity-foundation",
+      "name": "Guangdong Star River Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 30.6963158108648
+    },
+    {
+      "id": "minsheng-tonghui-charity-foundation",
+      "name": "Minsheng Tonghui Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 30.55626005543199
+    },
+    {
+      "id": "fundacion-alberto-bailleres",
+      "name": "Fundacion Alberto Bailleres",
+      "country": "Mexico",
+      "totalUsdM": 30.462509024877008
+    },
+    {
+      "id": "comedor-santa-maria",
+      "name": "Comedor Santa Maria",
+      "country": "Mexico",
+      "totalUsdM": 30.2169445885
+    },
+    {
+      "id": "fundacion-televisa",
+      "name": "Fundacion Televisa",
+      "country": "Mexico",
+      "totalUsdM": 30.079070132183013
+    },
+    {
+      "id": "jiangsu-ruihua-charity-foundation",
+      "name": "Jiangsu Ruihua Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 29.883553099550003
+    },
+    {
+      "id": "henan-muyuan-agricultural-development-public-welfare-foundation",
+      "name": "Henan Muyuan Agricultural Development Public Welfare Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 29.63115376098
+    },
+    {
+      "id": "edelgive",
+      "name": "Edelgive",
+      "country": "India",
+      "totalUsdM": 29.3759772198
+    },
+    {
+      "id": "formadores-mexicanos",
+      "name": "Formadores Mexicanos",
+      "country": "Mexico",
+      "totalUsdM": 29.331230474999998
+    },
+    {
+      "id": "h-m-foundation",
+      "name": "H&M Foundation",
+      "country": "Sweden",
+      "totalUsdM": 29.22129599999999
+    },
+    {
+      "id": "beijing-chia-tai-charity-foundation",
+      "name": "Beijing Chia Tai Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 29.213016688014
+    },
+    {
+      "id": "hebei-province-cspc-puen-charity-foundation",
+      "name": "Hebei Province CSPC Puen Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 29.210556464660996
+    },
+    {
+      "id": "guangdong-agile-charity-foundation",
+      "name": "Guangdong Agile Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 29.20086867050517
+    },
+    {
+      "id": "segal-family-foundation-inc",
+      "name": "Segal Family Foundation Inc",
+      "country": "United States",
+      "totalUsdM": 29.091934610360497
+    },
+    {
+      "id": "ningbo-yinzhou-bank-charity-foundation",
+      "name": "Ningbo Yinzhou Bank Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 29.083685905449
+    },
+    {
+      "id": "guizhou-xinhe-charity-foundation",
+      "name": "Guizhou Xinhe Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 29.05359538374919
+    },
+    {
+      "id": "xiangtan-zijing-charity-foundation",
+      "name": "Xiangtan Zijing Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 28.8608628568
+    },
+    {
+      "id": "sociedad-de-beneficencia-alianza-monte-sinai",
+      "name": "Sociedad De Beneficencia Alianza Monte Sinai",
+      "country": "Mexico",
+      "totalUsdM": 28.688947048
+    },
+    {
+      "id": "cipla",
+      "name": "Cipla",
+      "country": "India",
+      "totalUsdM": 28.436129945886986
+    },
+    {
+      "id": "byd-charity-foundation",
+      "name": "BYD Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 27.68331132376809
+    },
+    {
+      "id": "guangdong-e-fund-charity-foundation",
+      "name": "Guangdong E Fund Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 27.518144426692977
+    },
+    {
+      "id": "fujian-fashu-charity-foundation",
+      "name": "Fujian Fashu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 27.51238721895
+    },
+    {
+      "id": "sociedad-de-beneficencia-sedaka-y-marpe",
+      "name": "Sociedad De Beneficencia Sedaka Y Marpe",
+      "country": "Mexico",
+      "totalUsdM": 27.413059181237
+    },
+    {
+      "id": "beijing-dali-charity-foundation",
+      "name": "Beijing Dali Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 27.13667816020099
+    },
+    {
+      "id": "beijing-minsheng-culture-and-art-foundation",
+      "name": "Beijing Minsheng Culture And Art Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 26.997215130540003
+    },
+    {
+      "id": "sawiris-foundation",
+      "name": "Sawiris Foundation",
+      "country": "Egypt",
+      "totalUsdM": 26.26271185145099
+    },
+    {
+      "id": "indiabulls-housing-finance-limited",
+      "name": "Indiabulls Housing Finance Limited",
+      "country": "India",
+      "totalUsdM": 25.797156472010002
+    },
+    {
+      "id": "german-postcode-lottery",
+      "name": "German Postcode Lottery",
+      "country": "Germany",
+      "totalUsdM": 25.787671999999997
+    },
+    {
+      "id": "ambuja-cements-limited",
+      "name": "Ambuja Cements Limited",
+      "country": "India",
+      "totalUsdM": 25.637656867282
+    },
+    {
+      "id": "nandu-charity-foundation",
+      "name": "Nandu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 25.592943893606233
+    },
+    {
+      "id": "loreal",
+      "name": "Loreal",
+      "country": "France",
+      "totalUsdM": 25.046238454971014
+    },
+    {
+      "id": "fundacion-banorte",
+      "name": "Fundacion Banorte",
+      "country": "Mexico",
+      "totalUsdM": 24.999699680073327
+    },
+    {
+      "id": "xiamen-chunshui-charity-foundation",
+      "name": "Xiamen Chunshui Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 24.994145872876
+    },
+    {
+      "id": "guangdong-gf-securities-social-welfare-foundation",
+      "name": "Guangdong GF Securities Social Welfare Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 24.73645710704278
+    },
+    {
+      "id": "inner-mongolia-laoniu-charity-foundation",
+      "name": "Inner Mongolia Laoniu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 24.26678885693
+    },
+    {
+      "id": "hubei-zhuoer-charity-foundation",
+      "name": "Hubei Zhuoer Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 23.551445476598687
+    },
+    {
+      "id": "pronatura-mexico",
+      "name": "Pronatura Mexico",
+      "country": "Mexico",
+      "totalUsdM": 23.50086983339604
+    },
+    {
+      "id": "feac",
+      "name": "FEAC",
+      "country": "Brazil",
+      "totalUsdM": 23.29340619062
+    },
+    {
+      "id": "the-christensen-fund",
+      "name": "The Christensen Fund",
+      "country": "United States",
+      "totalUsdM": 23.074537911842977
+    },
+    {
+      "id": "wal-mart-foundation",
+      "name": "Wal-Mart Foundation",
+      "country": "United States",
+      "totalUsdM": 22.7403200867
+    },
+    {
+      "id": "salud-de-los-enfermos",
+      "name": "Salud De Los Enfermos",
+      "country": "Mexico",
+      "totalUsdM": 22.605026811
+    },
+    {
+      "id": "beijing-long-term-care-charity-foundation",
+      "name": "Beijing Long-Term Care Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 22.429596030889996
+    },
+    {
+      "id": "titan-company-limited",
+      "name": "Titan Company Limited",
+      "country": "India",
+      "totalUsdM": 22.390478575439996
+    },
+    {
+      "id": "fundacion-abc",
+      "name": "Fundacion Abc",
+      "country": "Mexico",
+      "totalUsdM": 22.0223707584276
+    },
+    {
+      "id": "shenzhen-chen-yidan-charity-foundation",
+      "name": "Shenzhen Chen Yidan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 21.721405036039897
+    },
+    {
+      "id": "sikka-ports-terminals",
+      "name": "Sikka Ports & Terminals",
+      "country": "India",
+      "totalUsdM": 21.607754203
+    },
+    {
+      "id": "cholamandalam-investment-and-finance-company",
+      "name": "Cholamandalam Investment And Finance Company",
+      "country": "India",
+      "totalUsdM": 21.57943699238999
+    },
+    {
+      "id": "zijin-mining-charity-foundation",
+      "name": "Zijin Mining Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 21.573338437677005
+    },
+    {
+      "id": "guangdong-times-charity-foundation",
+      "name": "Guangdong Times Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 21.456013205760314
+    },
+    {
+      "id": "britannia-industries",
+      "name": "Britannia Industries",
+      "country": "India",
+      "totalUsdM": 20.9485087233
+    },
+    {
+      "id": "sun-tv-network",
+      "name": "Sun Tv Network",
+      "country": "India",
+      "totalUsdM": 20.888359880582996
+    },
+    {
+      "id": "fundacion-marie-stopes-mexico",
+      "name": "Fundacion Marie Stopes Mexico",
+      "country": "Mexico",
+      "totalUsdM": 20.619954754495822
+    },
+    {
+      "id": "china-mobile-charity-foundation",
+      "name": "China Mobile Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 20.52954634233001
+    },
+    {
+      "id": "beijing-sany-charity-foundation",
+      "name": "Beijing Sany Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 20.518298837780897
+    },
+    {
+      "id": "guangdong-chimelong-charity-foundation",
+      "name": "Guangdong Chimelong Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 20.456936612794003
+    },
+    {
+      "id": "fundacion-sertull",
+      "name": "Fundacion Sertull",
+      "country": "Mexico",
+      "totalUsdM": 20.382507528888986
+    },
+    {
+      "id": "un-kilo-de-ayuda",
+      "name": "Un Kilo De Ayuda",
+      "country": "Mexico",
+      "totalUsdM": 20.37691007319054
+    },
+    {
+      "id": "beijing-tanoto-foundation",
+      "name": "Beijing Tanoto Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 20.343300586103002
+    },
+    {
+      "id": "hebei-province-zhongpu-charity-foundation",
+      "name": "Hebei Province Zhongpu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 20.300620249290002
+    },
+    {
+      "id": "jamnagar-utilities-power",
+      "name": "Jamnagar Utilities & Power",
+      "country": "India",
+      "totalUsdM": 20.078014922950004
+    },
+    {
+      "id": "divi",
+      "name": "Divi",
+      "country": "India",
+      "totalUsdM": 20.068971344782994
+    },
+    {
+      "id": "adani-ports-and-special-economic-zone-limited",
+      "name": "Adani Ports And Special Economic Zone Limited",
+      "country": "India",
+      "totalUsdM": 19.820656842648997
+    },
+    {
+      "id": "guangdong-overseas-chinese-town-charity-foundation",
+      "name": "Guangdong Overseas Chinese Town Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 19.670841257836397
+    },
+    {
+      "id": "walton-family-foundation-inc",
+      "name": "Walton Family Foundation Inc",
+      "country": "United States",
+      "totalUsdM": 19.666815860430006
+    },
+    {
+      "id": "tianjin-rongcheng-puji-charity-foundation",
+      "name": "Tianjin Rongcheng Puji Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 19.664203189443384
+    },
+    {
+      "id": "gatsby-charitable-foundation",
+      "name": "Gatsby Charitable Foundation",
+      "country": "United Kingdom",
+      "totalUsdM": 19.561037
+    },
+    {
+      "id": "qingdao-40-financial-education-development-foundation",
+      "name": "Qingdao 40 Financial Education Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 19.467499249821202
+    },
+    {
+      "id": "beijing-didi-charity-foundation",
+      "name": "Beijing Didi Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 19.397353751066
+    },
+    {
+      "id": "hebei-junlebao-charity-foundation",
+      "name": "Hebei Junlebao Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 19.201175086074997
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "country": "Ireland",
+      "totalUsdM": 19.043217912585202
+    },
+    {
+      "id": "ordos-manshi-charity-foundation",
+      "name": "Ordos Manshi Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 18.575874738918593
+    },
+    {
+      "id": "sun-pharma-laboratories",
+      "name": "Sun Pharma Laboratories",
+      "country": "India",
+      "totalUsdM": 18.119753662596995
+    },
+    {
+      "id": "sociedad-botanica-y-zoologica-de-sinaloa",
+      "name": "Sociedad Botanica Y Zoologica De Sinaloa",
+      "country": "Mexico",
+      "totalUsdM": 18.1005058201
+    },
+    {
+      "id": "glenmark-pharmaceuticals",
+      "name": "Glenmark Pharmaceuticals",
+      "country": "India",
+      "totalUsdM": 17.995705638672
+    },
+    {
+      "id": "avenue-supermarts",
+      "name": "Avenue Supermarts",
+      "country": "India",
+      "totalUsdM": 17.974534205921003
+    },
+    {
+      "id": "amway-charity-foundation",
+      "name": "Amway Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 17.929319414522993
+    },
+    {
+      "id": "shenzhen-ci-pan-charity-foundation",
+      "name": "Shenzhen Ci Pan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 17.745359302111506
+    },
+    {
+      "id": "dongfeng-charity-foundation",
+      "name": "Dongfeng Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 17.646226420303
+    },
+    {
+      "id": "institucion-de-beneficencia-privada-escuela-hogar-nuestros-pequenos-hermanos",
+      "name": "Institucion De Beneficencia Privada Escuela Hogar Nuestros Pequenos Hermanos",
+      "country": "Mexico",
+      "totalUsdM": 17.536052891799997
+    },
+    {
+      "id": "jiangsu-shagang-charity-foundation",
+      "name": "Jiangsu Shagang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 17.287630733055003
+    },
+    {
+      "id": "shenzhen-ye-chenghai-charity-foundation",
+      "name": "Shenzhen Ye Chenghai Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 17.2597424706777
+    },
+    {
+      "id": "lund-trust",
+      "name": "Lund Trust",
+      "country": "United Kingdom",
+      "totalUsdM": 17.126323092240003
+    },
+    {
+      "id": "shenzhen-zheng-weining-charity-foundation",
+      "name": "Shenzhen Zheng Weining Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 16.942651386812003
+    },
+    {
+      "id": "bharat-aluminium-co",
+      "name": "Bharat Aluminium Co",
+      "country": "India",
+      "totalUsdM": 16.892485179822003
+    },
+    {
+      "id": "shanghai-tongcheng-charity-foundation",
+      "name": "Shanghai Tongcheng Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 16.855432460358102
+    },
+    {
+      "id": "shanxi-fenjiu-group-charity-foundation",
+      "name": "Shanxi Fenjiu Group Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 16.786545781103005
+    },
+    {
+      "id": "al-servicio-de-mis-hermanos",
+      "name": "Al Servicio De Mis Hermanos",
+      "country": "Mexico",
+      "totalUsdM": 16.656838593
+    },
+    {
+      "id": "dabur-india",
+      "name": "Dabur India",
+      "country": "India",
+      "totalUsdM": 16.48694087378898
+    },
+    {
+      "id": "zhejiang-xinhu-charity-foundation",
+      "name": "Zhejiang Xinhu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 16.443647113116
+    },
+    {
+      "id": "manappuram-finance",
+      "name": "Manappuram Finance",
+      "country": "India",
+      "totalUsdM": 16.340262492236995
+    },
+    {
+      "id": "beijing-qihoo-360-charity-foundation",
+      "name": "Beijing Qihoo 360 Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 16.252376995101002
+    },
+    {
+      "id": "the-associated-building-company",
+      "name": "The Associated Building Company",
+      "country": "India",
+      "totalUsdM": 16.158857598989
+    },
+    {
+      "id": "fujian-jordan-sports-foundation",
+      "name": "Fujian Jordan Sports Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 15.969944813744002
+    },
+    {
+      "id": "zhuhai-huafa-charity-foundation",
+      "name": "Zhuhai Huafa Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 15.946651193440992
+    },
+    {
+      "id": "beijing-bytedance-charity-foundation",
+      "name": "Beijing Bytedance Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 15.881417020789998
+    },
+    {
+      "id": "godrej-consumer-products",
+      "name": "Godrej Consumer Products",
+      "country": "India",
+      "totalUsdM": 15.879106496088994
+    },
+    {
+      "id": "calouste-gulbenkian",
+      "name": "Calouste Gulbenkian",
+      "country": "Portugal",
+      "totalUsdM": 15.87867838660175
+    },
+    {
+      "id": "fundacion-inbursa",
+      "name": "Fundacion Inbursa",
+      "country": "Mexico",
+      "totalUsdM": 15.78233291289981
+    },
+    {
+      "id": "pidilite-industries",
+      "name": "Pidilite Industries",
+      "country": "India",
+      "totalUsdM": 15.574204300098
+    },
+    {
+      "id": "fujian-industrial-securities-charity-foundation",
+      "name": "Fujian Industrial Securities Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 15.531145163324103
+    },
+    {
+      "id": "sun-pharmaceutical-industries",
+      "name": "Sun Pharmaceutical Industries",
+      "country": "India",
+      "totalUsdM": 15.446065702078196
+    },
+    {
+      "id": "shanxi-province-senze-charity-foundation",
+      "name": "Shanxi Province Senze Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 15.345125686060001
+    },
+    {
+      "id": "mphasis-limited",
+      "name": "Mphasis Limited",
+      "country": "India",
+      "totalUsdM": 15.295562633011997
+    },
+    {
+      "id": "fundacion-soriana",
+      "name": "Fundacion Soriana",
+      "country": "Mexico",
+      "totalUsdM": 15.16286505331572
+    },
+    {
+      "id": "zhejiang-hu-cai-jichuan-charity-foundation",
+      "name": "Zhejiang Hu Cai Jichuan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 15.144999160517001
+    },
+    {
+      "id": "fomento-social-citibanamex",
+      "name": "Fomento Social Citibanamex",
+      "country": "Mexico",
+      "totalUsdM": 15.112139456955003
+    },
+    {
+      "id": "fundacion-stella-vega",
+      "name": "Fundacion Stella Vega",
+      "country": "Mexico",
+      "totalUsdM": 15.10896643046001
+    },
+    {
+      "id": "jiangsu-tao-xinbo-student-aid-foundation",
+      "name": "Jiangsu Tao Xinbo Student Aid Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 14.979857487749998
+    },
+    {
+      "id": "tianjin-tasly-charity-foundation",
+      "name": "Tianjin Tasly Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 14.898345654641027
+    },
+    {
+      "id": "alana",
+      "name": "Alana",
+      "country": "Brazil",
+      "totalUsdM": 14.882634308789001
+    },
+    {
+      "id": "guangdong-hopson-pearl-river-education-development-foundation",
+      "name": "Guangdong Hopson Pearl River Education Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 14.765401457076
+    },
+    {
+      "id": "fundacion-alsea",
+      "name": "Fundacion Alsea",
+      "country": "Mexico",
+      "totalUsdM": 14.737611227846697
+    },
+    {
+      "id": "coromandel-international",
+      "name": "Coromandel International",
+      "country": "India",
+      "totalUsdM": 14.649778717935996
+    },
+    {
+      "id": "elion-charity-foundation",
+      "name": "Elion Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 14.593927552330001
+    },
+    {
+      "id": "fundacion-antonio-chedraui-caram",
+      "name": "Fundacion Antonio Chedraui Caram",
+      "country": "Mexico",
+      "totalUsdM": 14.522367051226773
+    },
+    {
+      "id": "zhejiang-chuanhua-charity-foundation",
+      "name": "Zhejiang Chuanhua Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 14.333887401524994
+    },
+    {
+      "id": "zhejiang-ideal-international-charity-foundation",
+      "name": "Zhejiang Ideal International Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 14.262077009561098
+    },
+    {
+      "id": "inner-mongolia-mengniu-charity-foundation",
+      "name": "Inner Mongolia Mengniu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 14.257925634236003
+    },
+    {
+      "id": "fundacion-grupo-imperial",
+      "name": "Fundacion Grupo Imperial",
+      "country": "Mexico",
+      "totalUsdM": 14.174031282789342
+    },
+    {
+      "id": "shanghai-lianhe-xintai-strategic-research-and-development-foundation",
+      "name": "Shanghai Lianhe Xintai Strategic Research And Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 13.974545371841998
+    },
+    {
+      "id": "zhejiang-wahaha-charity-foundation",
+      "name": "Zhejiang Wahaha Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 13.955678160879101
+    },
+    {
+      "id": "zee-entertainment-enterprises-limited",
+      "name": "Zee Entertainment Enterprises Limited",
+      "country": "India",
+      "totalUsdM": 13.947248384418998
+    },
+    {
+      "id": "fundacion-monte-de-piedad",
+      "name": "Fundacion Monte De Piedad",
+      "country": "Mexico",
+      "totalUsdM": 13.94390392466001
+    },
+    {
+      "id": "oceanwide-charity-foundation",
+      "name": "Oceanwide Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 13.846226225899999
+    },
+    {
+      "id": "balkrishna-industries",
+      "name": "Balkrishna Industries",
+      "country": "India",
+      "totalUsdM": 13.843064891979994
+    },
+    {
+      "id": "zhejiang-chint-charity-foundation",
+      "name": "Zhejiang Chint Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 13.591128030391808
+    },
+    {
+      "id": "the-andrew-w-mellon-foundation",
+      "name": "The Andrew W Mellon Foundation",
+      "country": "United States",
+      "totalUsdM": 13.563176232089997
+    },
+    {
+      "id": "the-lemelson-foundation",
+      "name": "The Lemelson Foundation",
+      "country": "United States",
+      "totalUsdM": 13.28220489317
+    },
+    {
+      "id": "eishel-nuestro-hogar",
+      "name": "Eishel Nuestro Hogar",
+      "country": "Mexico",
+      "totalUsdM": 13.128764874
+    },
+    {
+      "id": "shanghai-zijiang-charity-foundation",
+      "name": "Shanghai Zijiang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.947462544975002
+    },
+    {
+      "id": "catolicas-por-el-derecho-a-decidir",
+      "name": "Catolicas Por El Derecho A Decidir",
+      "country": "Mexico",
+      "totalUsdM": 12.864119226186762
+    },
+    {
+      "id": "heilongjiang-province-harbin-pharmaceutical-charity-foundation",
+      "name": "Heilongjiang Province Harbin Pharmaceutical Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.726646885973397
+    },
+    {
+      "id": "casa-de-la-amistad-para-ninos-con-cancer",
+      "name": "Casa De La Amistad Para Ninos Con Cancer",
+      "country": "Mexico",
+      "totalUsdM": 12.6520171986755
+    },
+    {
+      "id": "heilongjiang-feihe-charity-foundation",
+      "name": "Heilongjiang Feihe Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.590536691087104
+    },
+    {
+      "id": "jiangsu-hengli-charity-foundation",
+      "name": "Jiangsu Hengli Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.583844086687
+    },
+    {
+      "id": "espacios-naturales-y-desarrollo-sustentable",
+      "name": "Espacios Naturales Y Desarrollo Sustentable",
+      "country": "Mexico",
+      "totalUsdM": 12.510848574889497
+    },
+    {
+      "id": "aurobindo-pharma",
+      "name": "Aurobindo Pharma",
+      "country": "India",
+      "totalUsdM": 12.458904650306994
+    },
+    {
+      "id": "suzhou-golden-mantis-charity-foundation",
+      "name": "Suzhou Golden Mantis Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.345488490056999
+    },
+    {
+      "id": "fondation-de-luxembourg",
+      "name": "Fondation De Luxembourg",
+      "country": "Luxembourg",
+      "totalUsdM": 12.20122734
+    },
+    {
+      "id": "sichuan-yonghao-charity-foundation",
+      "name": "Sichuan Yonghao Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.192236754118303
+    },
+    {
+      "id": "lianyungang-huilan-charity-foundation",
+      "name": "Lianyungang Huilan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.108421069355995
+    },
+    {
+      "id": "jiangsu-yuanlin-charity-foundation",
+      "name": "Jiangsu Yuanlin Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 12.09490598
+    },
+    {
+      "id": "mission-possiblemexico",
+      "name": "Mission Possiblemexico",
+      "country": "Mexico",
+      "totalUsdM": 11.991924956000002
+    },
+    {
+      "id": "shanghai-stock-exchange-charity-foundation",
+      "name": "Shanghai Stock Exchange Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.987929009095
+    },
+    {
+      "id": "shenzhen-vanke-education-development-foundation",
+      "name": "Shenzhen Vanke Education Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.92632949717
+    },
+    {
+      "id": "picc-charity-foundation",
+      "name": "PICC Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.880577200022
+    },
+    {
+      "id": "fundacion-alberto-y-dolores-andrade",
+      "name": "Fundacion Alberto Y Dolores Andrade",
+      "country": "Mexico",
+      "totalUsdM": 11.863996105346594
+    },
+    {
+      "id": "ty-danjuma",
+      "name": "TY Danjuma",
+      "country": "Nigeria",
+      "totalUsdM": 11.857615308445512
+    },
+    {
+      "id": "shanghai-rongchang-charity-foundation",
+      "name": "Shanghai Rongchang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.848262535661005
+    },
+    {
+      "id": "jiangxi-tellhow-education-foundation",
+      "name": "Jiangxi Tellhow Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.84786119828
+    },
+    {
+      "id": "beijing-new-oriental-charity-foundation",
+      "name": "Beijing New Oriental Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.838396192862003
+    },
+    {
+      "id": "havells-india",
+      "name": "Havells India",
+      "country": "India",
+      "totalUsdM": 11.742978680124997
+    },
+    {
+      "id": "international-tractors",
+      "name": "International Tractors",
+      "country": "India",
+      "totalUsdM": 11.740380204582005
+    },
+    {
+      "id": "seguridad-y-justicia-de-ciudad-juarez",
+      "name": "Seguridad Y Justicia De Ciudad Juarez",
+      "country": "Mexico",
+      "totalUsdM": 11.734977412488002
+    },
+    {
+      "id": "usv-private",
+      "name": "Usv Private",
+      "country": "India",
+      "totalUsdM": 11.677071561808003
+    },
+    {
+      "id": "fondo-ambiental-metropolitano-de-monterrey",
+      "name": "Fondo Ambiental Metropolitano De Monterrey",
+      "country": "Mexico",
+      "totalUsdM": 11.528266653775601
+    },
+    {
+      "id": "hebei-province-jingye-charity-foundation",
+      "name": "Hebei Province Jingye Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.51637451916
+    },
+    {
+      "id": "fundacion-haciendas-del-mundo-maya",
+      "name": "Fundacion Haciendas Del Mundo Maya",
+      "country": "Mexico",
+      "totalUsdM": 11.509367328746555
+    },
+    {
+      "id": "grupo-de-informacion-en-reproduccion-elegida",
+      "name": "Grupo De Informacion En Reproduccion Elegida",
+      "country": "Mexico",
+      "totalUsdM": 11.503422564609558
+    },
+    {
+      "id": "srf",
+      "name": "Srf",
+      "country": "India",
+      "totalUsdM": 11.453949431413006
+    },
+    {
+      "id": "unidos-asociacion-pro-trasplante-de-medula-osea-francisco-casares-cortina",
+      "name": "Unidos Asociacion Pro Trasplante De Medula Osea Francisco Casares Cortina",
+      "country": "Mexico",
+      "totalUsdM": 11.395655143704863
+    },
+    {
+      "id": "dalio-foundation-inc",
+      "name": "Dalio Foundation Inc",
+      "country": "United States",
+      "totalUsdM": 11.391292880499998
+    },
+    {
+      "id": "aditya-birla-finance",
+      "name": "Aditya Birla Finance",
+      "country": "India",
+      "totalUsdM": 11.35430653071
+    },
+    {
+      "id": "jcb-india",
+      "name": "Jcb India",
+      "country": "India",
+      "totalUsdM": 11.317540972700002
+    },
+    {
+      "id": "tata-motors",
+      "name": "Tata Motors",
+      "country": "India",
+      "totalUsdM": 11.305010480500002
+    },
+    {
+      "id": "chengdu-jiaxiang-education-development-foundation",
+      "name": "Chengdu Jiaxiang Education Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.274693995783386
+    },
+    {
+      "id": "tvs-motor-company",
+      "name": "Tvs Motor Company",
+      "country": "India",
+      "totalUsdM": 11.247231758609999
+    },
+    {
+      "id": "shanghai-yongda-charity-foundation",
+      "name": "Shanghai Yongda Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.241887424314003
+    },
+    {
+      "id": "marico",
+      "name": "Marico",
+      "country": "India",
+      "totalUsdM": 11.162629579530002
+    },
+    {
+      "id": "guangzhou-mead-johnson-charity-foundation",
+      "name": "Guangzhou Mead Johnson Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.093825591247
+    },
+    {
+      "id": "beijing-kexing-charity-foundation",
+      "name": "Beijing Kexing Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 11.010262078530001
+    },
+    {
+      "id": "shanxi-hsbc-industrial-group-charity-foundation",
+      "name": "Shanxi HSBC Industrial Group Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 10.996767688720002
+    },
+    {
+      "id": "hengtong-charity-foundation",
+      "name": "Hengtong Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 10.849733417170006
+    },
+    {
+      "id": "federacion-mano-amiga",
+      "name": "Federacion Mano Amiga",
+      "country": "Mexico",
+      "totalUsdM": 10.784558935638
+    },
+    {
+      "id": "sichuan-development-charity-foundation",
+      "name": "Sichuan Development Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 10.727131063792399
+    },
+    {
+      "id": "beijing-offcn-charity-foundation",
+      "name": "Beijing Offcn Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 10.718157590858599
+    },
+    {
+      "id": "beijing-baojian-charity-foundation",
+      "name": "Beijing Baojian Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 10.63887807676722
+    },
+    {
+      "id": "jindal-aluminium",
+      "name": "Jindal Aluminium",
+      "country": "India",
+      "totalUsdM": 10.592453387993
+    },
+    {
+      "id": "bhilosa-industries",
+      "name": "Bhilosa Industries",
+      "country": "India",
+      "totalUsdM": 10.573210430411999
+    },
+    {
+      "id": "incluyendo-mexico",
+      "name": "Incluyendo Mexico",
+      "country": "Mexico",
+      "totalUsdM": 10.484397712800703
+    },
+    {
+      "id": "fundacion-de-rehabilitacion-infantil-teleton",
+      "name": "Fundacion De Rehabilitacion Infantil Teleton",
+      "country": "Mexico",
+      "totalUsdM": 10.332054045
+    },
+    {
+      "id": "fundacion-integral-multidisciplinaria-humana",
+      "name": "Fundacion Integral Multidisciplinaria Humana",
+      "country": "Mexico",
+      "totalUsdM": 10.301957692
+    },
+    {
+      "id": "xinhua-life-insurance-charity-foundation",
+      "name": "Xinhua Life Insurance Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 10.1906681146426
+    },
+    {
+      "id": "j-k-cement",
+      "name": "J. K. Cement",
+      "country": "India",
+      "totalUsdM": 10.117064182729
+    },
+    {
+      "id": "fundacion-castro-limon",
+      "name": "Fundacion Castro Limon",
+      "country": "Mexico",
+      "totalUsdM": 10.089036079227998
+    },
+    {
+      "id": "zhejiang-guofu-charity-foundation",
+      "name": "Zhejiang Guofu Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 10.052631587674995
+    },
+    {
+      "id": "reliance-retail-ventures",
+      "name": "Reliance Retail Ventures",
+      "country": "India",
+      "totalUsdM": 9.939334185859998
+    },
+    {
+      "id": "dcm-shriram",
+      "name": "Dcm Shriram",
+      "country": "India",
+      "totalUsdM": 9.933706445411001
+    },
+    {
+      "id": "zte-charity-foundation",
+      "name": "ZTE Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.913610044598006
+    },
+    {
+      "id": "zhejiang-tailong-charity-foundation",
+      "name": "Zhejiang Tailong Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.82312285594477
+    },
+    {
+      "id": "shenzhen-mingwan-education-foundation",
+      "name": "Shenzhen Mingwan Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.798980906
+    },
+    {
+      "id": "alembic-pharmaceuticals",
+      "name": "Alembic Pharmaceuticals",
+      "country": "India",
+      "totalUsdM": 9.766499604869601
+    },
+    {
+      "id": "zhongtian-love-charity-foundation",
+      "name": "Zhongtian Love Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.724342175784699
+    },
+    {
+      "id": "china-southern-airlines-ten-points-care-foundation",
+      "name": "China Southern Airlines \"Ten Points\" Care Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.718640510971001
+    },
+    {
+      "id": "beijing-huatong-guokang-charity-foundation",
+      "name": "Beijing Huatong Guokang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.674088941482303
+    },
+    {
+      "id": "finolex-industries",
+      "name": "Finolex Industries",
+      "country": "India",
+      "totalUsdM": 9.670195831648009
+    },
+    {
+      "id": "the-ramco-cements",
+      "name": "The Ramco Cements",
+      "country": "India",
+      "totalUsdM": 9.630191608926012
+    },
+    {
+      "id": "beijing-weilan-charity-foundation",
+      "name": "Beijing Weilan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.602299298000002
+    },
+    {
+      "id": "ministerios-de-amor",
+      "name": "Ministerios De Amor",
+      "country": "Mexico",
+      "totalUsdM": 9.544781157188007
+    },
+    {
+      "id": "elas",
+      "name": "Elas+",
+      "country": "Brazil",
+      "totalUsdM": 9.447575306230231
+    },
+    {
+      "id": "citic-reform-and-development-research-foundation",
+      "name": "CITIC Reform And Development Research Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.401068404335
+    },
+    {
+      "id": "adani-enterprises",
+      "name": "Adani Enterprises",
+      "country": "India",
+      "totalUsdM": 9.35361507216
+    },
+    {
+      "id": "bharti-telemedia",
+      "name": "Bharti Telemedia",
+      "country": "India",
+      "totalUsdM": 9.323973576101
+    },
+    {
+      "id": "berger-paints-india",
+      "name": "Berger Paints India",
+      "country": "India",
+      "totalUsdM": 9.304976700000001
+    },
+    {
+      "id": "ting-hsin-charity-foundation",
+      "name": "Ting Hsin Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.27005183954
+    },
+    {
+      "id": "fujian-lin-wenjing-charity-foundation",
+      "name": "Fujian Lin Wenjing Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.258713111503
+    },
+    {
+      "id": "fundacion-legorretahernandez",
+      "name": "Fundacion Legorretahernandez",
+      "country": "Mexico",
+      "totalUsdM": 9.245573355307798
+    },
+    {
+      "id": "changsha-jinhai-education-foundation",
+      "name": "Changsha Jinhai Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.235202796035
+    },
+    {
+      "id": "ganzhou-quanyouneng-education-foundation",
+      "name": "Ganzhou Quanyouneng Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.143364638713898
+    },
+    {
+      "id": "shanghai-tang-junyuan-education-foundation",
+      "name": "Shanghai Tang Junyuan Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.039323747613002
+    },
+    {
+      "id": "fujian-huang-zhongxian-education-foundation",
+      "name": "Fujian Huang Zhongxian Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 9.023273433804
+    },
+    {
+      "id": "asociacion-mexicana-de-bancos-de-alimentos",
+      "name": "Asociacion Mexicana De Bancos De Alimentos",
+      "country": "Mexico",
+      "totalUsdM": 9.007177765255296
+    },
+    {
+      "id": "fundacion-cantaro-azul",
+      "name": "Fundacion Cantaro Azul",
+      "country": "Mexico",
+      "totalUsdM": 9.0005832067351
+    },
+    {
+      "id": "utkal-alumina-international",
+      "name": "Utkal Alumina International",
+      "country": "India",
+      "totalUsdM": 8.951602758763991
+    },
+    {
+      "id": "fujian-hengshen-charity-foundation",
+      "name": "Fujian Hengshen Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 8.9421228761638
+    },
+    {
+      "id": "the-supreme-industries",
+      "name": "The Supreme Industries",
+      "country": "India",
+      "totalUsdM": 8.857715720025002
+    },
+    {
+      "id": "ipca-laboratories",
+      "name": "Ipca Laboratories",
+      "country": "India",
+      "totalUsdM": 8.745719177504002
+    },
+    {
+      "id": "liaocheng-xinfa-foundation",
+      "name": "Liaocheng Xinfa Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 8.72046159397
+    },
+    {
+      "id": "zhejiang-shengao-charity-foundation",
+      "name": "Zhejiang Shengao Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 8.653853014562001
+    },
+    {
+      "id": "villas-asistenciales-santa-maria",
+      "name": "Villas Asistenciales Santa Maria",
+      "country": "Mexico",
+      "totalUsdM": 8.631115408898
+    },
+    {
+      "id": "shanghai-ruiyuan-charity-foundation",
+      "name": "Shanghai Ruiyuan Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 8.591559400745002
+    },
+    {
+      "id": "nirma",
+      "name": "Nirma",
+      "country": "India",
+      "totalUsdM": 8.444095383073002
+    },
+    {
+      "id": "casa-hogar-alegria",
+      "name": "Casa Hogar Alegria",
+      "country": "Mexico",
+      "totalUsdM": 8.43549865548
+    },
+    {
+      "id": "jilin-tongli-charity-foundation",
+      "name": "Jilin Tongli Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 8.392362788808
+    },
+    {
+      "id": "asociacion-mexicana-de-cienciologia-para-el-desarrollo-de-la-comunidad-social",
+      "name": "Asociacion Mexicana De Cienciologia Para El Desarrollo De La Comunidad Social",
+      "country": "Mexico",
+      "totalUsdM": 8.325347438027405
+    },
+    {
+      "id": "campo-san-antonio-fundacion-pape",
+      "name": "Campo San Antonio Fundacion Pape",
+      "country": "Mexico",
+      "totalUsdM": 8.261545215152301
+    },
+    {
+      "id": "shanghai-lingang-charity-foundation",
+      "name": "Shanghai Lingang Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 8.225635920427798
+    },
+    {
+      "id": "beijing-cicc-charity-foundation",
+      "name": "Beijing CICC Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 8.219911036723
+    },
+    {
+      "id": "dlf",
+      "name": "Dlf",
+      "country": "India",
+      "totalUsdM": 8.171233249594
+    },
+    {
+      "id": "fundacion-para-apoyo-a-la-formacion-de-la-infancia",
+      "name": "Fundacion Para Apoyo A La Formacion De La Infancia",
+      "country": "Mexico",
+      "totalUsdM": 8.155614945495902
+    },
+    {
+      "id": "fundacion-dibujando-un-manana",
+      "name": "Fundacion Dibujando Un Manana",
+      "country": "Mexico",
+      "totalUsdM": 8.111967900607633
+    },
+    {
+      "id": "exxonmobil-foundation",
+      "name": "Exxonmobil Foundation",
+      "country": "United States",
+      "totalUsdM": 8.09170280644
+    },
+    {
+      "id": "micro-labs",
+      "name": "Micro Labs",
+      "country": "India",
+      "totalUsdM": 8.086949169690003
+    },
+    {
+      "id": "godawari-power-and-ispat",
+      "name": "Godawari Power And Ispat",
+      "country": "India",
+      "totalUsdM": 8.015031795744202
+    },
+    {
+      "id": "instituto-nuevo-amanecer",
+      "name": "Instituto Nuevo Amanecer",
+      "country": "Mexico",
+      "totalUsdM": 7.988554157200001
+    },
+    {
+      "id": "fundacion-ficosec",
+      "name": "Fundacion Ficosec",
+      "country": "Mexico",
+      "totalUsdM": 7.972994466889002
+    },
+    {
+      "id": "campeones-de-la-vida-nr",
+      "name": "Campeones De La Vida Nr",
+      "country": "Mexico",
+      "totalUsdM": 7.872248515776106
+    },
+    {
+      "id": "zhejiang-xizi-charity-foundation",
+      "name": "Zhejiang Xizi Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 7.863507896243999
+    },
+    {
+      "id": "shanghai-ant-forest-ecological-green-development-foundation",
+      "name": "Shanghai Ant Forest Ecological Green Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 7.855674688200001
+    },
+    {
+      "id": "mindu-tan-kah-kee-charity-foundation",
+      "name": "Mindu Tan Kah Kee Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 7.854171862719998
+    },
+    {
+      "id": "changsha-ausnutria-charity-foundation",
+      "name": "Changsha Ausnutria Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 7.80810539932
+    },
+    {
+      "id": "fondo-golfo-de-mexico",
+      "name": "Fondo Golfo De Mexico",
+      "country": "Mexico",
+      "totalUsdM": 7.783857495521199
+    },
+    {
+      "id": "adobe-home-aid",
+      "name": "Adobe Home Aid",
+      "country": "Mexico",
+      "totalUsdM": 7.7573790142169985
+    },
+    {
+      "id": "shandong-yinfeng-life-science-charity-foundation",
+      "name": "Shandong Yinfeng Life Science Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 7.69218593182
+    },
+    {
+      "id": "construyendo-comunidades-integrales",
+      "name": "Construyendo Comunidades Integrales",
+      "country": "Mexico",
+      "totalUsdM": 7.635005125568
+    },
+    {
+      "id": "fucam",
+      "name": "Fucam",
+      "country": "Mexico",
+      "totalUsdM": 7.6078267835330005
+    },
+    {
+      "id": "apac-asociacion-pro-personas-con-paralisis-cerebral",
+      "name": "Apac Asociacion Pro Personas Con Paralisis Cerebral",
+      "country": "Mexico",
+      "totalUsdM": 7.5408592092
+    },
+    {
+      "id": "fundacion-magdalena-ruiz-de-del-valle",
+      "name": "Fundacion Magdalena Ruiz De Del Valle",
+      "country": "Mexico",
+      "totalUsdM": 7.496416335
+    },
+    {
+      "id": "fundacion-casa-alianza-mexico",
+      "name": "Fundacion Casa Alianza Mexico",
+      "country": "Mexico",
+      "totalUsdM": 7.469740062967803
+    },
+    {
+      "id": "laurus-labs",
+      "name": "Laurus Labs",
+      "country": "India",
+      "totalUsdM": 7.440292993212005
+    },
+    {
+      "id": "ate-chandra",
+      "name": "Ate Chandra",
+      "country": "India",
+      "totalUsdM": 7.368802575340152
+    },
+    {
+      "id": "macrotech-developers",
+      "name": "Macrotech Developers",
+      "country": "India",
+      "totalUsdM": 7.337683595400001
+    },
+    {
+      "id": "fujian-province-huize-charity-foundation",
+      "name": "Fujian Province Huize Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 7.231560685425
+    },
+    {
+      "id": "proeducacion",
+      "name": "Proeducacion",
+      "country": "Mexico",
+      "totalUsdM": 7.2289065459160025
+    },
+    {
+      "id": "corporativa-de-fundaciones",
+      "name": "Corporativa De Fundaciones",
+      "country": "Mexico",
+      "totalUsdM": 7.1427781551191
+    },
+    {
+      "id": "sobha",
+      "name": "Sobha",
+      "country": "India",
+      "totalUsdM": 7.127935286592001
+    },
+    {
+      "id": "caritas-diocesanas-de-torreon",
+      "name": "Caritas Diocesanas De Torreon",
+      "country": "Mexico",
+      "totalUsdM": 7.120381321629002
+    },
+    {
+      "id": "shenzhen-tcl-charity-foundation",
+      "name": "Shenzhen TCL Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 7.116317380836
+    },
+    {
+      "id": "be-the-match-mx",
+      "name": "Be The Match Mx",
+      "country": "Mexico",
+      "totalUsdM": 7.014260721449529
+    },
+    {
+      "id": "hunan-caixin-charity-foundation",
+      "name": "Hunan Caixin Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 6.9844379900270015
+    },
+    {
+      "id": "montepio-luz-savinon",
+      "name": "Montepio Luz Savinon",
+      "country": "Mexico",
+      "totalUsdM": 6.983246679283999
+    },
+    {
+      "id": "fundacion-beta-san-miguel",
+      "name": "Fundacion Beta San Miguel",
+      "country": "Mexico",
+      "totalUsdM": 6.967379087230001
+    },
+    {
+      "id": "fundacion-casa-del-parque",
+      "name": "Fundacion Casa Del Parque",
+      "country": "Mexico",
+      "totalUsdM": 6.908484831999999
+    },
+    {
+      "id": "laboratoria-coding",
+      "name": "Laboratoria Coding",
+      "country": "Mexico",
+      "totalUsdM": 6.873597399933999
+    },
+    {
+      "id": "beijing-sino-ocean-charity-foundation",
+      "name": "Beijing Sino-Ocean Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 6.855387325319999
+    },
+    {
+      "id": "cruz-rosa",
+      "name": "Cruz Rosa",
+      "country": "Mexico",
+      "totalUsdM": 6.846369095200001
+    },
+    {
+      "id": "baosteel-education-foundation",
+      "name": "Baosteel Education Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 6.7635538602
+    },
+    {
+      "id": "prosalud-y-lucha-contra-el-cancer",
+      "name": "Prosalud Y Lucha Contra El Cancer",
+      "country": "Mexico",
+      "totalUsdM": 6.763049148577755
+    },
+    {
+      "id": "qingdao-haier-education-development-foundation",
+      "name": "Qingdao Haier Education Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 6.756428494770001
+    },
+    {
+      "id": "fundacion-pedro-y-elena-hernandez",
+      "name": "Fundacion Pedro Y Elena Hernandez",
+      "country": "Mexico",
+      "totalUsdM": 6.706756339469998
+    },
+    {
+      "id": "fundacion-bepensa",
+      "name": "Fundacion Bepensa",
+      "country": "Mexico",
+      "totalUsdM": 6.683997421285616
+    },
+    {
+      "id": "mankind-pharma",
+      "name": "Mankind Pharma",
+      "country": "India",
+      "totalUsdM": 6.645114217500001
+    },
+    {
+      "id": "hogar-de-la-misericordia",
+      "name": "Hogar De La Misericordia",
+      "country": "Mexico",
+      "totalUsdM": 6.6303909752
+    },
+    {
+      "id": "hogar-y-cultura",
+      "name": "Hogar Y Cultura",
+      "country": "Mexico",
+      "totalUsdM": 6.595627472802999
+    },
+    {
+      "id": "fundacion-farmacias-del-ahorro",
+      "name": "Fundacion Farmacias Del Ahorro",
+      "country": "Mexico",
+      "totalUsdM": 6.54122856929
+    },
+    {
+      "id": "accion-cultural-y-social-de-monterrey",
+      "name": "Accion Cultural Y Social De Monterrey",
+      "country": "Mexico",
+      "totalUsdM": 6.512499857379999
+    },
+    {
+      "id": "fundacion-becar",
+      "name": "Fundacion Becar",
+      "country": "Mexico",
+      "totalUsdM": 6.4932233367356
+    },
+    {
+      "id": "quiera-fundacion-de-la-asociacion-de-bancos-de-mexico",
+      "name": "Quiera Fundacion De La Asociacion De Bancos De Mexico",
+      "country": "Mexico",
+      "totalUsdM": 6.483978830299598
+    },
+    {
+      "id": "jsw-steel-coated",
+      "name": "Jsw Steel Coated",
+      "country": "India",
+      "totalUsdM": 6.476212507836001
+    },
+    {
+      "id": "la-alegria-de-los-ninos",
+      "name": "La Alegria De Los Ninos",
+      "country": "Mexico",
+      "totalUsdM": 6.4511949286
+    },
+    {
+      "id": "voluntad-solidaria-por-mexico",
+      "name": "Voluntad Solidaria Por Mexico",
+      "country": "Mexico",
+      "totalUsdM": 6.381591008178001
+    },
+    {
+      "id": "reforestamos-mexico",
+      "name": "Reforestamos Mexico",
+      "country": "Mexico",
+      "totalUsdM": 6.368152988169999
+    },
+    {
+      "id": "fundacion-iberdrola-mexico",
+      "name": "Fundacion Iberdrola Mexico",
+      "country": "Mexico",
+      "totalUsdM": 6.356160838737
+    },
+    {
+      "id": "sabanci",
+      "name": "Sabanci",
+      "country": "Turkey",
+      "totalUsdM": 6.339514012
+    },
+    {
+      "id": "asistencia-social-alcalde",
+      "name": "Asistencia Social Alcalde",
+      "country": "Mexico",
+      "totalUsdM": 6.3164103494
+    },
+    {
+      "id": "the-kresge-foundation",
+      "name": "The Kresge Foundation",
+      "country": "United States",
+      "totalUsdM": 6.251710310260003
+    },
+    {
+      "id": "foundation-bunge",
+      "name": "Foundation Bunge",
+      "country": "Brazil",
+      "totalUsdM": 6.186908486070699
+    },
+    {
+      "id": "piramal-enterprises-limited",
+      "name": "Piramal Enterprises Limited",
+      "country": "India",
+      "totalUsdM": 6.105927641099999
+    },
+    {
+      "id": "bharat-biotech-international",
+      "name": "Bharat Biotech International",
+      "country": "India",
+      "totalUsdM": 6.067443869294001
+    },
+    {
+      "id": "shanxi-pengfei-charity-foundation",
+      "name": "Shanxi Pengfei Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 6.067191327623999
+    },
+    {
+      "id": "bhushan-power-steel",
+      "name": "Bhushan Power & Steel",
+      "country": "India",
+      "totalUsdM": 5.992514505738001
+    },
+    {
+      "id": "deccan-fine-chemicals",
+      "name": "Deccan Fine Chemicals",
+      "country": "India",
+      "totalUsdM": 5.817220748801001
+    },
+    {
+      "id": "fundacion-de-obras-sociales-de-san-vicente",
+      "name": "Fundacion De Obras Sociales De San Vicente",
+      "country": "Mexico",
+      "totalUsdM": 5.794508592567999
+    },
+    {
+      "id": "fundacion-del-empresariado-sonorense",
+      "name": "Fundacion Del Empresariado Sonorense",
+      "country": "Mexico",
+      "totalUsdM": 5.678464656417803
+    },
+    {
+      "id": "comunidad-y-familia-de-chihuahua",
+      "name": "Comunidad Y Familia De Chihuahua",
+      "country": "Mexico",
+      "totalUsdM": 5.6627294212
+    },
+    {
+      "id": "asociacion-mexicana-de-ayuda-a-ninos-concancer",
+      "name": "Asociacion Mexicana De Ayuda A Ninos Concancer",
+      "country": "Mexico",
+      "totalUsdM": 5.634979136306059
+    },
+    {
+      "id": "tata-capital-financial-services",
+      "name": "Tata Capital Financial Services",
+      "country": "India",
+      "totalUsdM": 5.559104286742001
+    },
+    {
+      "id": "mi-gran-esperanza",
+      "name": "Mi Gran Esperanza",
+      "country": "Mexico",
+      "totalUsdM": 5.5472432850533
+    },
+    {
+      "id": "indian-metals-and-ferro-alloys",
+      "name": "Indian Metals And Ferro Alloys",
+      "country": "India",
+      "totalUsdM": 5.542026046365
+    },
+    {
+      "id": "fratesa",
+      "name": "Fratesa",
+      "country": "Mexico",
+      "totalUsdM": 5.526518772151995
+    },
+    {
+      "id": "castrol-india-limited",
+      "name": "Castrol India Limited",
+      "country": "India",
+      "totalUsdM": 5.422974050340001
+    },
+    {
+      "id": "fomento-moral-y-educativo",
+      "name": "Fomento Moral Y Educativo",
+      "country": "Mexico",
+      "totalUsdM": 5.354030902778999
+    },
+    {
+      "id": "fomento-cultural-citibanamex",
+      "name": "Fomento Cultural Citibanamex",
+      "country": "Mexico",
+      "totalUsdM": 5.336229972507
+    },
+    {
+      "id": "shanghai-minsheng-art-foundation",
+      "name": "Shanghai Minsheng Art Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 5.27335074752
+    },
+    {
+      "id": "coordinadora-de-servicios-de-apoyo-a-la-familia",
+      "name": "Coordinadora De Servicios De Apoyo A La Familia",
+      "country": "Mexico",
+      "totalUsdM": 5.157942611488701
+    },
+    {
+      "id": "conpagnia-san-paolo",
+      "name": "Conpagnia San Paolo",
+      "country": "Italy",
+      "totalUsdM": 5.14845424859
+    },
+    {
+      "id": "fundacion-patronato-pro-zona-mazahua",
+      "name": "Fundacion Patronato Pro Zona Mazahua",
+      "country": "Mexico",
+      "totalUsdM": 5.074324893023269
+    },
+    {
+      "id": "patronato-de-asistencia-social-y-cultural",
+      "name": "Patronato De Asistencia Social Y Cultural",
+      "country": "Mexico",
+      "totalUsdM": 5.0435651623
+    },
+    {
+      "id": "fundacion-unifin",
+      "name": "Fundacion Unifin",
+      "country": "Mexico",
+      "totalUsdM": 5.034187561873798
+    },
+    {
+      "id": "internado-infantil-guadalupano",
+      "name": "Internado Infantil Guadalupano",
+      "country": "Mexico",
+      "totalUsdM": 4.983411834230298
+    },
+    {
+      "id": "fundacion-john-langdon-down",
+      "name": "Fundacion John Langdon Down",
+      "country": "Mexico",
+      "totalUsdM": 4.960707528899999
+    },
+    {
+      "id": "fundacion-frisa",
+      "name": "Fundacion Frisa",
+      "country": "Mexico",
+      "totalUsdM": 4.938359101694001
+    },
+    {
+      "id": "dakshina",
+      "name": "Dakshina",
+      "country": "Mexico",
+      "totalUsdM": 4.908374662625302
+    },
+    {
+      "id": "fundacion-beckmann",
+      "name": "Fundacion Beckmann",
+      "country": "Mexico",
+      "totalUsdM": 4.905932385989792
+    },
+    {
+      "id": "hunan-bohou-charity-foundation",
+      "name": "Hunan Bohou Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 4.895245999618
+    },
+    {
+      "id": "fundacion-pro-empleo-productivo",
+      "name": "Fundacion Pro Empleo Productivo",
+      "country": "Mexico",
+      "totalUsdM": 4.873443481802599
+    },
+    {
+      "id": "fundacion-kaluz",
+      "name": "Fundacion Kaluz",
+      "country": "Mexico",
+      "totalUsdM": 4.858617139166002
+    },
+    {
+      "id": "amigos-de-filantrofilia",
+      "name": "Amigos De Filantrofilia",
+      "country": "Mexico",
+      "totalUsdM": 4.821602505989126
+    },
+    {
+      "id": "fundacion-olami-ort",
+      "name": "Fundacion Olami Ort",
+      "country": "Mexico",
+      "totalUsdM": 4.7678380990299996
+    },
+    {
+      "id": "true-colours-trust",
+      "name": "True Colours Trust",
+      "country": "United Kingdom",
+      "totalUsdM": 4.719836915054
+    },
+    {
+      "id": "fundacion-gazpro",
+      "name": "Fundacion Gazpro",
+      "country": "Mexico",
+      "totalUsdM": 4.70030221561
+    },
+    {
+      "id": "fundacion-ado",
+      "name": "Fundacion Ado",
+      "country": "Mexico",
+      "totalUsdM": 4.678436142391997
+    },
+    {
+      "id": "plan-estrategico-de-juarez",
+      "name": "Plan Estrategico De Juarez",
+      "country": "Mexico",
+      "totalUsdM": 4.6542531793099995
+    },
+    {
+      "id": "fundacion-pepsico-mexico",
+      "name": "Fundacion Pepsico Mexico",
+      "country": "Mexico",
+      "totalUsdM": 4.642513686661197
+    },
+    {
+      "id": "jiangsu-huatai-charity-foundation",
+      "name": "Jiangsu Huatai Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 4.625139025055
+    },
+    {
+      "id": "fundacion-de-beneficencia-privada-villas-juan-diego",
+      "name": "Fundacion De Beneficencia Privada Villas Juan Diego",
+      "country": "Mexico",
+      "totalUsdM": 4.610244093
+    },
+    {
+      "id": "mcknight-foundation",
+      "name": "Mcknight Foundation",
+      "country": "United States",
+      "totalUsdM": 4.548076999999999
+    },
+    {
+      "id": "guangzhou-blue-moon-charity-foundation",
+      "name": "Guangzhou Blue Moon Charity Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 4.3420336904529
+    },
+    {
+      "id": "foundation-pierre-bellon",
+      "name": "Foundation Pierre Bellon",
+      "country": "France",
+      "totalUsdM": 4.336524182109999
+    },
+    {
+      "id": "malabar-gold",
+      "name": "Malabar Gold",
+      "country": "India",
+      "totalUsdM": 4.174907126420001
+    },
+    {
+      "id": "chongqing-tencent-sustainable-development-foundation",
+      "name": "Chongqing Tencent Sustainable Development Foundation",
+      "country": "China (People's Republic of)",
+      "totalUsdM": 4.13372651406
+    },
+    {
+      "id": "indigo",
+      "name": "Indigo",
+      "country": "United Kingdom",
+      "totalUsdM": 3.957954118581998
+    },
+    {
+      "id": "mtn",
+      "name": "MTN",
+      "country": "Nigeria",
+      "totalUsdM": 3.3228383197999998
+    },
+    {
+      "id": "arghyam",
+      "name": "Arghyam",
+      "country": "India",
+      "totalUsdM": 2.2304310752559995
+    },
+    {
+      "id": "fundacion-alpina",
+      "name": "Fundacion Alpina",
+      "country": "Colombia",
+      "totalUsdM": 1.61326229319
+    },
+    {
+      "id": "ecobank-foundation",
+      "name": "Ecobank Foundation",
+      "country": "Togo",
+      "totalUsdM": 1.32514235376
+    },
+    {
+      "id": "kering-foundation",
+      "name": "Kering Foundation",
+      "country": "France",
+      "totalUsdM": 0.370110594194
+    },
+    {
+      "id": "be-the-earth",
+      "name": "Be The Earth",
+      "country": "United Kingdom",
+      "totalUsdM": 0.3184797101300001
+    },
+    {
+      "id": "sicoob",
+      "name": "Sicoob",
+      "country": "Brazil",
+      "totalUsdM": 0.031829530854999996
+    }
+  ],
+  "countries": [
+    {
+      "iso3": "UNK",
+      "name": "Bilateral, unspecified",
+      "totalUsdM": 19834.804057000056
+    },
+    {
+      "iso3": "UNK",
+      "name": "China (People's Republic of)",
+      "totalUsdM": 8846.911118517697
+    },
+    {
+      "iso3": "UNK",
+      "name": "India",
+      "totalUsdM": 6174.581735230779
+    },
+    {
+      "iso3": "UNK",
+      "name": "Mexico",
+      "totalUsdM": 3293.4206393331388
+    },
+    {
+      "iso3": "UNK",
+      "name": "South of Sahara, regional",
+      "totalUsdM": 3240.7812740617196
+    },
+    {
+      "iso3": "UNK",
+      "name": "Peru",
+      "totalUsdM": 2983.757057316658
+    },
+    {
+      "iso3": "UNK",
+      "name": "Africa, regional",
+      "totalUsdM": 2612.8817311174635
+    },
+    {
+      "iso3": "UNK",
+      "name": "Colombia",
+      "totalUsdM": 1880.823677942985
+    },
+    {
+      "iso3": "UNK",
+      "name": "Kenya",
+      "totalUsdM": 1617.9952668685162
+    },
+    {
+      "iso3": "UNK",
+      "name": "Nigeria",
+      "totalUsdM": 1508.7680140589216
+    },
+    {
+      "iso3": "UNK",
+      "name": "Ethiopia",
+      "totalUsdM": 1435.34964138782
+    },
+    {
+      "iso3": "UNK",
+      "name": "Rwanda",
+      "totalUsdM": 914.5172029306738
+    },
+    {
+      "iso3": "UNK",
+      "name": "Ghana",
+      "totalUsdM": 902.1687298147584
+    },
+    {
+      "iso3": "UNK",
+      "name": "South Africa",
+      "totalUsdM": 900.0227666646501
+    },
+    {
+      "iso3": "UNK",
+      "name": "Uganda",
+      "totalUsdM": 774.1572208758548
+    },
+    {
+      "iso3": "UNK",
+      "name": "Pakistan",
+      "totalUsdM": 731.2554222348729
+    },
+    {
+      "iso3": "UNK",
+      "name": "Ukraine",
+      "totalUsdM": 663.0589072870436
+    },
+    {
+      "iso3": "UNK",
+      "name": "Dominican Republic",
+      "totalUsdM": 536.567135640256
+    },
+    {
+      "iso3": "UNK",
+      "name": "Brazil",
+      "totalUsdM": 533.4127031192922
+    },
+    {
+      "iso3": "UNK",
+      "name": "GLOBAL or unspecified",
+      "totalUsdM": 496.7238925293339
+    },
+    {
+      "iso3": "UNK",
+      "name": "Tanzania",
+      "totalUsdM": 485.0594677195143
+    },
+    {
+      "iso3": "UNK",
+      "name": "Asia, regional",
+      "totalUsdM": 390.3024619747496
+    },
+    {
+      "iso3": "UNK",
+      "name": "Indonesia",
+      "totalUsdM": 364.87289821866193
+    },
+    {
+      "iso3": "UNK",
+      "name": "South America, regional",
+      "totalUsdM": 359.8193702328499
+    },
+    {
+      "iso3": "UNK",
+      "name": "America, regional",
+      "totalUsdM": 357.0514553821705
+    },
+    {
+      "iso3": "UNK",
+      "name": "Bangladesh",
+      "totalUsdM": 321.20632875436996
+    },
+    {
+      "iso3": "UNK",
+      "name": "Senegal",
+      "totalUsdM": 296.0181738467002
+    },
+    {
+      "iso3": "UNK",
+      "name": "Democratic Republic of the Congo",
+      "totalUsdM": 277.8773705182309
+    },
+    {
+      "iso3": "UNK",
+      "name": "Burkina Faso",
+      "totalUsdM": 247.14283503196827
+    },
+    {
+      "iso3": "UNK",
+      "name": "Zambia",
+      "totalUsdM": 229.7566726717132
+    },
+    {
+      "iso3": "UNK",
+      "name": "Malawi",
+      "totalUsdM": 225.20068066784296
+    },
+    {
+      "iso3": "UNK",
+      "name": "South & Central Asia, regional",
+      "totalUsdM": 217.12204067099987
+    },
+    {
+      "iso3": "UNK",
+      "name": "Mozambique",
+      "totalUsdM": 176.75703666626103
+    },
+    {
+      "iso3": "UNK",
+      "name": "Europe, regional",
+      "totalUsdM": 174.3137766561302
+    },
+    {
+      "iso3": "UNK",
+      "name": "Far East Asia, regional",
+      "totalUsdM": 168.2096751516999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Afghanistan",
+      "totalUsdM": 167.31246239646194
+    },
+    {
+      "iso3": "UNK",
+      "name": "Central America, regional",
+      "totalUsdM": 164.61492199999998
+    },
+    {
+      "iso3": "UNK",
+      "name": "Middle East, regional",
+      "totalUsdM": 163.4753448150999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Eastern Africa, regional",
+      "totalUsdM": 133.02363900000012
+    },
+    {
+      "iso3": "UNK",
+      "name": "Western Africa, regional",
+      "totalUsdM": 130.9706340000001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Côte d'Ivoire",
+      "totalUsdM": 123.79009998267001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Mali",
+      "totalUsdM": 109.18875770605312
+    },
+    {
+      "iso3": "UNK",
+      "name": "Panama",
+      "totalUsdM": 106.56556688112
+    },
+    {
+      "iso3": "UNK",
+      "name": "Zimbabwe",
+      "totalUsdM": 106.37996727676192
+    },
+    {
+      "iso3": "UNK",
+      "name": "Jordan",
+      "totalUsdM": 100.98467900733462
+    },
+    {
+      "iso3": "UNK",
+      "name": "Thailand",
+      "totalUsdM": 99.80951321504773
+    },
+    {
+      "iso3": "UNK",
+      "name": "Viet Nam",
+      "totalUsdM": 98.72227692965197
+    },
+    {
+      "iso3": "UNK",
+      "name": "Guatemala",
+      "totalUsdM": 98.04667602788757
+    },
+    {
+      "iso3": "UNK",
+      "name": "Ecuador",
+      "totalUsdM": 90.94866148437704
+    },
+    {
+      "iso3": "UNK",
+      "name": "Lebanon",
+      "totalUsdM": 85.76764842811866
+    },
+    {
+      "iso3": "UNK",
+      "name": "Mauritius",
+      "totalUsdM": 80.038232199688
+    },
+    {
+      "iso3": "UNK",
+      "name": "Niger",
+      "totalUsdM": 79.01051287963199
+    },
+    {
+      "iso3": "UNK",
+      "name": "Somalia",
+      "totalUsdM": 77.15121460810701
+    },
+    {
+      "iso3": "UNK",
+      "name": "Sierra Leone",
+      "totalUsdM": 74.34217797943379
+    },
+    {
+      "iso3": "UNK",
+      "name": "Cambodia; South Africa; Developing countries, unspecified; Lebanon; Ghana; Bangladesh; Zambia; India; Thailand; Africa, regional; Madagascar; Tanzania; Uganda; Kenya; Indonesia; China (People's Republic of); Comoros; Morocco; Haiti; Brazil; Myanmar; Sierra Leone; Togo; Namibia; Libya; Türkiye; Pakistan; Afghanistan; Somalia; Ukraine; Moldova; Syrian Arab Republic; Philippines; Democratic Republic of the Congo; Senegal; Côte d'Ivoire; Mali; Rwanda; Nepal; Ethiopia; Peru; Guatemala; Colombia; Mexico; Gambia; Liberia; Guinea-Bissau; Burundi; Malaysia; Mozambique; Malawi; Kosovo; Bosnia and Herzegovina; Djibouti; Jordan",
+      "totalUsdM": 67.01670518
+    },
+    {
+      "iso3": "UNK",
+      "name": "North of Sahara, regional",
+      "totalUsdM": 65.09717600000005
+    },
+    {
+      "iso3": "UNK",
+      "name": "Benin",
+      "totalUsdM": 63.81262878831399
+    },
+    {
+      "iso3": "UNK",
+      "name": "Cameroon",
+      "totalUsdM": 63.39663436257401
+    },
+    {
+      "iso3": "UNK",
+      "name": "Nepal",
+      "totalUsdM": 61.727276808390016
+    },
+    {
+      "iso3": "UNK",
+      "name": "Gabon",
+      "totalUsdM": 61.65703881526699
+    },
+    {
+      "iso3": "UNK",
+      "name": "Philippines",
+      "totalUsdM": 56.90330606619299
+    },
+    {
+      "iso3": "UNK",
+      "name": "Madagascar",
+      "totalUsdM": 53.58848432722301
+    },
+    {
+      "iso3": "UNK",
+      "name": "Syrian Arab Republic",
+      "totalUsdM": 51.419771849341004
+    },
+    {
+      "iso3": "UNK",
+      "name": "Congo",
+      "totalUsdM": 50.891379999743016
+    },
+    {
+      "iso3": "UNK",
+      "name": "Caribbean & Central America, regional",
+      "totalUsdM": 49.921338836360015
+    },
+    {
+      "iso3": "UNK",
+      "name": "Myanmar",
+      "totalUsdM": 46.016566713150006
+    },
+    {
+      "iso3": "UNK",
+      "name": "Egypt",
+      "totalUsdM": 44.865185387173646
+    },
+    {
+      "iso3": "UNK",
+      "name": "Haiti",
+      "totalUsdM": 44.49574185856759
+    },
+    {
+      "iso3": "UNK",
+      "name": "South Sudan",
+      "totalUsdM": 43.193390969000006
+    },
+    {
+      "iso3": "UNK",
+      "name": "South Asia, regional",
+      "totalUsdM": 41.51930900000002
+    },
+    {
+      "iso3": "UNK",
+      "name": "Chad",
+      "totalUsdM": 40.44503200433599
+    },
+    {
+      "iso3": "UNK",
+      "name": "Liberia",
+      "totalUsdM": 38.42684874233001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Türkiye",
+      "totalUsdM": 37.73434246474831
+    },
+    {
+      "iso3": "UNK",
+      "name": "Southern Africa, regional",
+      "totalUsdM": 36.450748000000004
+    },
+    {
+      "iso3": "UNK",
+      "name": "West Bank and Gaza Strip",
+      "totalUsdM": 36.08805037047701
+    },
+    {
+      "iso3": "UNK",
+      "name": "Cambodia",
+      "totalUsdM": 35.88456177093798
+    },
+    {
+      "iso3": "UNK",
+      "name": "Iraq",
+      "totalUsdM": 35.77328794785999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Costa Rica",
+      "totalUsdM": 35.098385419161005
+    },
+    {
+      "iso3": "UNK",
+      "name": "Argentina",
+      "totalUsdM": 34.365935174843
+    },
+    {
+      "iso3": "UNK",
+      "name": "Central African Republic",
+      "totalUsdM": 33.31024682509002
+    },
+    {
+      "iso3": "UNK",
+      "name": "Central Asia, regional",
+      "totalUsdM": 32.7961598114
+    },
+    {
+      "iso3": "UNK",
+      "name": "Oceania, regional",
+      "totalUsdM": 32.457136999999996
+    },
+    {
+      "iso3": "UNK",
+      "name": "Bolivia",
+      "totalUsdM": 32.216408275384
+    },
+    {
+      "iso3": "UNK",
+      "name": "El Salvador",
+      "totalUsdM": 31.605774272074004
+    },
+    {
+      "iso3": "UNK",
+      "name": "Sudan",
+      "totalUsdM": 30.302023159367998
+    },
+    {
+      "iso3": "UNK",
+      "name": "Honduras",
+      "totalUsdM": 30.14036292937201
+    },
+    {
+      "iso3": "UNK",
+      "name": "Guinea",
+      "totalUsdM": 27.885155638669307
+    },
+    {
+      "iso3": "UNK",
+      "name": "Malaysia",
+      "totalUsdM": 26.42380726562699
+    },
+    {
+      "iso3": "UNK",
+      "name": "Burundi",
+      "totalUsdM": 24.278691750757005
+    },
+    {
+      "iso3": "UNK",
+      "name": "Middle Africa, regional",
+      "totalUsdM": 22.664425
+    },
+    {
+      "iso3": "UNK",
+      "name": "Caribbean, regional",
+      "totalUsdM": 20.973643
+    },
+    {
+      "iso3": "UNK",
+      "name": "Tunisia",
+      "totalUsdM": 18.716618234619897
+    },
+    {
+      "iso3": "UNK",
+      "name": "Togo",
+      "totalUsdM": 18.0845665583589
+    },
+    {
+      "iso3": "UNK",
+      "name": "Morocco",
+      "totalUsdM": 17.226600878441396
+    },
+    {
+      "iso3": "UNK",
+      "name": "Venezuela",
+      "totalUsdM": 16.728011083608003
+    },
+    {
+      "iso3": "UNK",
+      "name": "Sri Lanka",
+      "totalUsdM": 16.532515224680004
+    },
+    {
+      "iso3": "UNK",
+      "name": "Lao People's Democratic Republic",
+      "totalUsdM": 16.20148492718
+    },
+    {
+      "iso3": "UNK",
+      "name": "Moldova",
+      "totalUsdM": 16.188763515759998
+    },
+    {
+      "iso3": "UNK",
+      "name": "Djibouti",
+      "totalUsdM": 14.799601837999997
+    },
+    {
+      "iso3": "UNK",
+      "name": "Serbia",
+      "totalUsdM": 14.771233225517099
+    },
+    {
+      "iso3": "UNK",
+      "name": "Yemen",
+      "totalUsdM": 14.434848515352002
+    },
+    {
+      "iso3": "UNK",
+      "name": "Botswana",
+      "totalUsdM": 14.343173704540002
+    },
+    {
+      "iso3": "UNK",
+      "name": "Namibia",
+      "totalUsdM": 13.337103833666
+    },
+    {
+      "iso3": "UNK",
+      "name": "Fiji",
+      "totalUsdM": 13.33058457173
+    },
+    {
+      "iso3": "UNK",
+      "name": "Angola",
+      "totalUsdM": 13.070351112171803
+    },
+    {
+      "iso3": "UNK",
+      "name": "Mauritania",
+      "totalUsdM": 12.438355999999997
+    },
+    {
+      "iso3": "UNK",
+      "name": "Madagascar; South Africa; Senegal; Thailand; Central African Republic; Nepal; Cambodia; Brazil; Burkina Faso; Guatemala; Kenya; Sri Lanka; Niger; Nigeria; Guinea; Namibia; El Salvador; Morocco; West Bank and Gaza Strip; Bangladesh; Democratic Republic of the Congo; India; Zambia; Philippines; Afghanistan; Benin; Cameroon; Cuba; Togo; Zimbabwe; Lebanon; Uganda; Paraguay; Syrian Arab Republic; Malawi; Rwanda; Tanzania; Mongolia; Yemen; Chad; Myanmar; Haiti; Mali; Ghana; Ukraine; Egypt; Moldova; Pakistan; Eswatini; Türkiye; Angola; Guinea-Bissau; Jordan; Iraq; Indonesia; Burundi; Africa, regional",
+      "totalUsdM": 12.20122734
+    },
+    {
+      "iso3": "UNK",
+      "name": "Guinea-Bissau",
+      "totalUsdM": 12.125785351173596
+    },
+    {
+      "iso3": "UNK",
+      "name": "Gambia",
+      "totalUsdM": 9.66386033191
+    },
+    {
+      "iso3": "UNK",
+      "name": "Papua New Guinea",
+      "totalUsdM": 9.64486210246
+    },
+    {
+      "iso3": "UNK",
+      "name": "Nicaragua",
+      "totalUsdM": 9.492959325114999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Paraguay",
+      "totalUsdM": 9.361631817624
+    },
+    {
+      "iso3": "UNK",
+      "name": "Cabo Verde",
+      "totalUsdM": 8.965533271251902
+    },
+    {
+      "iso3": "UNK",
+      "name": "Cuba",
+      "totalUsdM": 8.016435011008998
+    },
+    {
+      "iso3": "UNK",
+      "name": "Eswatini",
+      "totalUsdM": 7.325033275184001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Guyana",
+      "totalUsdM": 6.701864999999999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Armenia",
+      "totalUsdM": 6.403771429760102
+    },
+    {
+      "iso3": "UNK",
+      "name": "Montenegro",
+      "totalUsdM": 5.97741744877
+    },
+    {
+      "iso3": "UNK",
+      "name": "Timor-Leste",
+      "totalUsdM": 5.928968787155
+    },
+    {
+      "iso3": "UNK",
+      "name": "Kyrgyzstan",
+      "totalUsdM": 5.497192425090001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Bhutan",
+      "totalUsdM": 5.481608406500001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Albania",
+      "totalUsdM": 5.444125999730001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Jamaica",
+      "totalUsdM": 5.43832663695
+    },
+    {
+      "iso3": "UNK",
+      "name": "Lesotho",
+      "totalUsdM": 4.727345335955001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Georgia",
+      "totalUsdM": 4.6209004075540205
+    },
+    {
+      "iso3": "UNK",
+      "name": "Bosnia and Herzegovina",
+      "totalUsdM": 4.2448310000000005
+    },
+    {
+      "iso3": "UNK",
+      "name": "North Macedonia",
+      "totalUsdM": 4.083092929919999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Iran",
+      "totalUsdM": 3.6920363673
+    },
+    {
+      "iso3": "UNK",
+      "name": "Kazakhstan",
+      "totalUsdM": 3.6737946398
+    },
+    {
+      "iso3": "UNK",
+      "name": "Developing countries, unspecified",
+      "totalUsdM": 2.9279627724800004
+    },
+    {
+      "iso3": "UNK",
+      "name": "Mongolia",
+      "totalUsdM": 2.781783
+    },
+    {
+      "iso3": "UNK",
+      "name": "Vanuatu",
+      "totalUsdM": 2.6299493102000002
+    },
+    {
+      "iso3": "UNK",
+      "name": "Eritrea",
+      "totalUsdM": 2.514062
+    },
+    {
+      "iso3": "UNK",
+      "name": "Maldives",
+      "totalUsdM": 2.45864683655
+    },
+    {
+      "iso3": "UNK",
+      "name": "States Ex-Yugoslavia unspecified",
+      "totalUsdM": 2.1787600944800003
+    },
+    {
+      "iso3": "UNK",
+      "name": "Samoa",
+      "totalUsdM": 2.09593207216
+    },
+    {
+      "iso3": "UNK",
+      "name": "Uzbekistan",
+      "totalUsdM": 2.077064815336
+    },
+    {
+      "iso3": "UNK",
+      "name": "Turkmenistan",
+      "totalUsdM": 1.933201
+    },
+    {
+      "iso3": "UNK",
+      "name": "São Tomé and Príncipe",
+      "totalUsdM": 1.8761838792977
+    },
+    {
+      "iso3": "UNK",
+      "name": "Saint Lucia",
+      "totalUsdM": 1.6513160096539998
+    },
+    {
+      "iso3": "UNK",
+      "name": "Comoros",
+      "totalUsdM": 1.648498
+    },
+    {
+      "iso3": "UNK",
+      "name": "Suriname",
+      "totalUsdM": 1.64181349027
+    },
+    {
+      "iso3": "UNK",
+      "name": "Equatorial Guinea",
+      "totalUsdM": 1.42907210163
+    },
+    {
+      "iso3": "UNK",
+      "name": "Belize",
+      "totalUsdM": 1.32080758098
+    },
+    {
+      "iso3": "UNK",
+      "name": "Tajikistan",
+      "totalUsdM": 1.30982554801
+    },
+    {
+      "iso3": "UNK",
+      "name": "Azerbaijan",
+      "totalUsdM": 1.25643256119
+    },
+    {
+      "iso3": "UNK",
+      "name": "Libya",
+      "totalUsdM": 1.1798774426
+    },
+    {
+      "iso3": "UNK",
+      "name": "Solomon Islands",
+      "totalUsdM": 1.1089820000000001
+    },
+    {
+      "iso3": "UNK",
+      "name": "Micronesia, regional",
+      "totalUsdM": 0.9922449999999999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Kosovo",
+      "totalUsdM": 0.8039714872359999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Belarus",
+      "totalUsdM": 0.7936701805299999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Democratic People's Republic of Korea",
+      "totalUsdM": 0.721873
+    },
+    {
+      "iso3": "UNK",
+      "name": "Algeria",
+      "totalUsdM": 0.666618
+    },
+    {
+      "iso3": "UNK",
+      "name": "Micronesia",
+      "totalUsdM": 0.618038
+    },
+    {
+      "iso3": "UNK",
+      "name": "Marshall Islands",
+      "totalUsdM": 0.610797
+    },
+    {
+      "iso3": "UNK",
+      "name": "Dominica",
+      "totalUsdM": 0.599416
+    },
+    {
+      "iso3": "UNK",
+      "name": "Kiribati",
+      "totalUsdM": 0.5225996256
+    },
+    {
+      "iso3": "UNK",
+      "name": "Grenada",
+      "totalUsdM": 0.506905
+    },
+    {
+      "iso3": "UNK",
+      "name": "Tonga",
+      "totalUsdM": 0.48131837251
+    },
+    {
+      "iso3": "UNK",
+      "name": "Montserrat",
+      "totalUsdM": 0.463032
+    },
+    {
+      "iso3": "UNK",
+      "name": "Saint Vincent and the Grenadines",
+      "totalUsdM": 0.463032
+    },
+    {
+      "iso3": "UNK",
+      "name": "Palau",
+      "totalUsdM": 0.24293599999999999
+    },
+    {
+      "iso3": "UNK",
+      "name": "Saint Helena",
+      "totalUsdM": 0.026435
+    }
+  ],
+  "defaultSelection": {
+    "donor": null,
+    "country": null
+  }
+}

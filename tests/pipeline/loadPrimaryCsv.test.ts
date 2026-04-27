@@ -22,10 +22,11 @@ describe('loadPrimaryCsv', () => {
   it('reports a summary derived from the loaded primary dataset', async () => {
     const result = await runPipeline()
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       ok: true,
       primaryRowCount: expect.any(Number),
       primaryCsvPath: expect.stringContaining('data'),
+      usedCommittedArtifacts: false,
     })
     expect(result.primaryRowCount).toBeGreaterThan(0)
   })
