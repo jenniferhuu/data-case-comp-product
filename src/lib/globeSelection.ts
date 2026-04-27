@@ -18,6 +18,24 @@ interface DrillPickHit {
   primitive?: {
     id?: PickedEntity
   }
+  properties?: CountryProperties
+  [key: string]: unknown
+}
+
+interface ScreenSpaceEventHandlerLike {
+  removeInputAction?: (type: ScreenSpaceEventType) => void
+}
+
+interface ViewerInputActionsLike {
+  screenSpaceEventHandler?: ScreenSpaceEventHandlerLike
+  cesiumWidget?: {
+    screenSpaceEventHandler?: ScreenSpaceEventHandlerLike
+  }
+}
+
+interface ViewerEntityFocusLike {
+  selectedEntity?: unknown
+  trackedEntity?: unknown
 }
 
 export interface CountryProperties {
@@ -41,6 +59,7 @@ export const COUNTRY_GEOJSON_LOAD_OPTIONS: CountryGeoJsonLoadOptions = {
 }
 
 export const DISABLED_GLOBE_SCREEN_SPACE_EVENTS = [
+  ScreenSpaceEventType.LEFT_CLICK,
   ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
 ]
 
@@ -58,14 +77,48 @@ export function getCountryIso3(properties?: CountryProperties): string | undefin
     ?? readPropertyValue(properties.adm0_a3)
 }
 
+export function getFlowRecipientIso3FromEntityName(name?: string): string | undefined {
+  if (!name?.startsWith('FLOW~')) {
+    return undefined
+  }
+
+  const parts = name.split('~')
+  return parts[3]
+}
+
+export function disableDefaultViewerInputActions(viewer: ViewerInputActionsLike): void {
+  const handlers = [
+    viewer.screenSpaceEventHandler,
+    viewer.cesiumWidget?.screenSpaceEventHandler,
+  ]
+
+  for (const handler of handlers) {
+    for (const eventType of DISABLED_GLOBE_SCREEN_SPACE_EVENTS) {
+      handler?.removeInputAction?.(eventType)
+    }
+  }
+}
+
+export function clearViewerEntityFocus(viewer: ViewerEntityFocusLike): void {
+  viewer.selectedEntity = undefined
+  viewer.trackedEntity = undefined
+}
+
 export function getPickedCountryEntity(
   hits: DrillPickHit[],
   containsEntity: (entity: PickedEntity) => boolean,
 ): PickedEntity {
   for (const hit of hits) {
-    const entity = hit.id ?? hit.primitive?.id
-    if (entity && containsEntity(entity)) {
-      return entity
+    const candidates = [hit.id, hit.primitive?.id, hit]
+
+    for (const entity of candidates) {
+      if (!entity) {
+        continue
+      }
+
+      if (containsEntity(entity) || getCountryIso3(entity.properties)) {
+        return entity
+      }
     }
   }
 
@@ -86,17 +139,9 @@ export function resolveGlobeSelection(
 
   const matchedDonor = donorSummaries.find((donor) => donor.donor_iso3 === clickedIso3)
 
-  if (matchedDonor) {
-    return {
-      selectedDonorId: matchedDonor.donor_id,
-      donorCountry: matchedDonor.donor_country,
-      selectedCountryIso3: null,
-    }
-  }
-
   return {
     selectedDonorId: null,
-    donorCountry: null,
+    donorCountry: matchedDonor?.donor_country ?? null,
     selectedCountryIso3: clickedIso3,
   }
 }

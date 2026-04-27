@@ -64,7 +64,7 @@ export function ArcLayer({ data }: Props) {
         return (
           <Entity
             key={`${flow.donor_id}-${flow.recipient_iso3}-${flow.year}-${i}`}
-            name={`FLOW~${flow.donor_name}~${flow.recipient_name}~${flow.usd_disbursed_m.toFixed(1)}~${flow.top_sector}~${flow.year}`}
+            name={`FLOW~${flow.donor_name}~${flow.recipient_name}~${flow.recipient_iso3}~${flow.usd_disbursed_m.toFixed(1)}~${flow.top_sector}~${flow.year}`}
           >
             <PolylineGraphics
               positions={points}

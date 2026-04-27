@@ -1,14 +1,16 @@
 import { useRef, useEffect, useState } from 'react'
 import { Viewer } from 'resium'
-import { ArcGisMapServerImageryProvider, ImageryLayer, Color, ScreenSpaceEventHandler, ScreenSpaceEventType, GeoJsonDataSource } from 'cesium'
+import { ArcGisMapServerImageryProvider, ImageryLayer, Color, ScreenSpaceEventType, GeoJsonDataSource } from 'cesium'
 import type { AppData } from '../../types'
 import { ArcLayer } from './ArcLayer'
 import { CrisisAnnotations } from './CrisisAnnotations'
 import { useStore } from '../../state/store'
 import {
+  clearViewerEntityFocus,
   COUNTRY_GEOJSON_LOAD_OPTIONS,
   COUNTRY_GEOJSON_URL,
-  DISABLED_GLOBE_SCREEN_SPACE_EVENTS,
+  disableDefaultViewerInputActions,
+  getFlowRecipientIso3FromEntityName,
   getCountryIso3,
   getPickedCountryEntity,
   resolveGlobeSelection,
@@ -61,11 +63,9 @@ export function CesiumGlobe({ data }: Props) {
       countriesDataSourceRef.current = ds
     })
 
-    for (const eventType of DISABLED_GLOBE_SCREEN_SPACE_EVENTS) {
-      viewer.screenSpaceEventHandler.removeInputAction(eventType)
-    }
+    disableDefaultViewerInputActions(viewer)
 
-    const handler = new ScreenSpaceEventHandler(viewer.scene.canvas)
+    const handler = viewer.screenSpaceEventHandler
 
     handler.setInputAction((movement: { endPosition: { x: number; y: number } }) => {
       const picked = viewer.scene.pick(movement.endPosition)
@@ -76,9 +76,9 @@ export function CesiumGlobe({ data }: Props) {
           y: movement.endPosition.y,
           donor: parts[1],
           recipient: parts[2],
-          usd: parts[3],
-          sector: parts[4],
-          year: Number(parts[5]),
+          usd: parts[4],
+          sector: parts[5],
+          year: Number(parts[6]),
         })
       } else {
         setTooltip(null)
@@ -86,6 +86,13 @@ export function CesiumGlobe({ data }: Props) {
     }, ScreenSpaceEventType.MOUSE_MOVE)
 
     handler.setInputAction((movement: { position: { x: number; y: number } }) => {
+      clearViewerEntityFocus(viewer)
+      const picked = viewer.scene.pick(movement.position)
+      const pickedFlowRecipientIso3 = getFlowRecipientIso3FromEntityName(picked?.id?.name)
+      if (pickedFlowRecipientIso3) {
+        applyGlobeSelection(resolveGlobeSelection(pickedFlowRecipientIso3, dataRef.current.donors))
+        return
+      }
       // drillPick goes through all objects at cursor — arcs sit above country polygons
       // so pick() would return the arc; drillPick lets us find the country underneath
       const hits = viewer.scene.drillPick(movement.position)
@@ -107,12 +114,19 @@ export function CesiumGlobe({ data }: Props) {
       }
     }, ScreenSpaceEventType.LEFT_CLICK)
 
+    handler.setInputAction(() => {
+      clearViewerEntityFocus(viewer)
+      setTooltip(null)
+    }, ScreenSpaceEventType.LEFT_DOUBLE_CLICK)
+
     const canvas = viewer.scene.canvas
     const onMouseLeave = () => { setTooltip(null) }
     canvas.addEventListener('mouseleave', onMouseLeave)
 
     return () => {
-      handler.destroy()
+      handler.removeInputAction(ScreenSpaceEventType.MOUSE_MOVE)
+      handler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK)
+      handler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK)
       canvas.removeEventListener('mouseleave', onMouseLeave)
     }
   }, [])

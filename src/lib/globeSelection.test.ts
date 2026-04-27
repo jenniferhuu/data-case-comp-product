@@ -3,7 +3,10 @@ import { Color, ScreenSpaceEventType } from 'cesium'
 import {
   COUNTRY_GEOJSON_LOAD_OPTIONS,
   COUNTRY_GEOJSON_URL,
+  clearViewerEntityFocus,
   DISABLED_GLOBE_SCREEN_SPACE_EVENTS,
+  disableDefaultViewerInputActions,
+  getFlowRecipientIso3FromEntityName,
   getPickedCountryEntity,
   getCountryIso3,
   resolveGlobeSelection,
@@ -24,11 +27,11 @@ const donors: Pick<DonorSummary, 'donor_id' | 'donor_country' | 'donor_iso3'>[] 
 ]
 
 describe('resolveGlobeSelection', () => {
-  it('resolves a clicked donor ISO3 to the matching donor summary', () => {
+  it('resolves a clicked donor ISO3 to a country selection and syncs the donor-country filter', () => {
     expect(resolveGlobeSelection('USA', donors)).toEqual({
-      selectedDonorId: 'gates_foundation',
+      selectedDonorId: null,
       donorCountry: 'United States',
-      selectedCountryIso3: null,
+      selectedCountryIso3: 'USA',
     })
   })
 
@@ -61,8 +64,48 @@ describe('COUNTRY_GEOJSON_LOAD_OPTIONS', () => {
 })
 
 describe('DISABLED_GLOBE_SCREEN_SPACE_EVENTS', () => {
-  it('disables Cesiums default double click camera action', () => {
+  it('tracks the Cesium built-in actions that must be disabled for custom globe selection', () => {
+    expect(DISABLED_GLOBE_SCREEN_SPACE_EVENTS).toContain(ScreenSpaceEventType.LEFT_CLICK)
     expect(DISABLED_GLOBE_SCREEN_SPACE_EVENTS).toContain(ScreenSpaceEventType.LEFT_DOUBLE_CLICK)
+  })
+})
+
+describe('disableDefaultViewerInputActions', () => {
+  it('removes built-in click handlers from both viewer handler surfaces', () => {
+    const removedFromViewer: ScreenSpaceEventType[] = []
+    const removedFromWidget: ScreenSpaceEventType[] = []
+
+    disableDefaultViewerInputActions({
+      screenSpaceEventHandler: {
+        removeInputAction: (type: ScreenSpaceEventType) => {
+          removedFromViewer.push(type)
+        },
+      },
+      cesiumWidget: {
+        screenSpaceEventHandler: {
+          removeInputAction: (type: ScreenSpaceEventType) => {
+            removedFromWidget.push(type)
+          },
+        },
+      },
+    })
+
+    expect(removedFromViewer).toEqual(DISABLED_GLOBE_SCREEN_SPACE_EVENTS)
+    expect(removedFromWidget).toEqual(DISABLED_GLOBE_SCREEN_SPACE_EVENTS)
+  })
+})
+
+describe('clearViewerEntityFocus', () => {
+  it('clears selected and tracked entities after arc double-click interactions', () => {
+    const viewer = {
+      selectedEntity: { id: 'flow-entity' },
+      trackedEntity: { id: 'flow-entity' },
+    }
+
+    clearViewerEntityFocus(viewer)
+
+    expect(viewer.selectedEntity).toBeUndefined()
+    expect(viewer.trackedEntity).toBeUndefined()
   })
 })
 
@@ -77,6 +120,18 @@ describe('getCountryIso3', () => {
 
   it('supports the hyphenated ISO3166-1-Alpha-3 property used by geo-countries', () => {
     expect(getCountryIso3({ 'ISO3166-1-Alpha-3': { getValue: () => 'GBR' } })).toBe('GBR')
+  })
+})
+
+describe('getFlowRecipientIso3FromEntityName', () => {
+  it('extracts the recipient ISO3 from an encoded flow entity name', () => {
+    expect(
+      getFlowRecipientIso3FromEntityName('FLOW~Gates Foundation~Kenya~KEN~6093.4~Health~2023'),
+    ).toBe('KEN')
+  })
+
+  it('returns undefined for names that are not encoded flow entities', () => {
+    expect(getFlowRecipientIso3FromEntityName('Kenya')).toBeUndefined()
   })
 })
 
@@ -99,6 +154,21 @@ describe('getPickedCountryEntity', () => {
       getPickedCountryEntity(
         [{ primitive: { id: entity } }],
         (candidate) => candidate === entity,
+      ),
+    ).toBe(entity)
+  })
+
+  it('falls back to an entity with ISO properties even when membership checks miss it', () => {
+    const entity = {
+      properties: {
+        iso_a3: { getValue: () => 'KEN' },
+      },
+    }
+
+    expect(
+      getPickedCountryEntity(
+        [{ id: entity }],
+        () => false,
       ),
     ).toBe(entity)
   })

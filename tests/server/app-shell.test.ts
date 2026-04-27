@@ -7,12 +7,18 @@ describe('Next app shell scaffold', () => {
     expect(existsSync('src/app/layout.tsx')).toBe(true)
   })
 
-  it('renders the dashboard shell directly from the app router page', () => {
+  it('delegates the app router page to the client dashboard wrapper', () => {
     const pageSource = readFileSync('src/app/page.tsx', 'utf8')
+    const wrapperSource = readFileSync('src/app/DashboardAppClient.tsx', 'utf8')
 
-    expect(pageSource).toContain("../components/dashboard/DashboardShell")
+    expect(pageSource).toContain("./DashboardAppClient")
     expect(pageSource).not.toContain("next/dynamic")
-    expect(pageSource).toMatch(/<DashboardShell\s*\/>/)
+    expect(pageSource).toMatch(/<DashboardAppClient\s*\/>/)
+
+    expect(wrapperSource).toContain("'use client'")
+    expect(wrapperSource).toContain("next/dynamic")
+    expect(wrapperSource).toContain("../App")
+    expect(wrapperSource).toContain("ssr: false")
   })
 
   it('loads global css from the root layout', () => {
