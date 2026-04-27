@@ -9,6 +9,12 @@ venv/
 node_modules/
 dist/
 .next/
+playwright-report/
+test-results/
+.playwright/
+*.tsbuildinfo
+.next-dev.out.log
+.next-dev.err.log
 
 # Data
 data/raw/*.csv

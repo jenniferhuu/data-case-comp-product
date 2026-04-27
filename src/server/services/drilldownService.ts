@@ -9,8 +9,6 @@ const drilldownsArtifactSchema = z.object({
   defaultSelection: drilldownResponseSchema,
 })
 
-type DrilldownsArtifact = z.infer<typeof drilldownsArtifactSchema>
-
 function parseDashboardQuery(searchParams?: URLSearchParams) {
   if (searchParams === undefined) {
     return dashboardQuerySchema.parse({})
