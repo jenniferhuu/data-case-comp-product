@@ -2,8 +2,8 @@ import React from 'react'
 import { ControlRail } from './ControlRail'
 import { HeroStats } from './HeroStats'
 import { InsightRail } from './InsightRail'
-import { GlobeIdleController } from '../globe/GlobeIdleController'
-import { GlobeScene } from '../globe/GlobeScene'
+import { GlobeIdleController } from '../Globe/GlobeIdleController'
+import { GlobeScene } from '../Globe/GlobeScene'
 
 export function DashboardShell() {
   return (
