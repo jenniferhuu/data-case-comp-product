@@ -17,6 +17,16 @@ export interface DashboardState extends DashboardQuery {
 }
 
 const defaultQuery = parseDashboardQuery()
+const clearedQueryState: Partial<DashboardQuery> = {
+  year: undefined,
+  compareFrom: undefined,
+  compareTo: undefined,
+  donorCountry: undefined,
+  sector: undefined,
+  marker: undefined,
+  selectionType: undefined,
+  selectionId: undefined,
+}
 
 function deriveSelectionState(query: Partial<DashboardQuery>) {
   if (query.selectionType === 'country') {
@@ -52,6 +62,7 @@ export const useDashboardState = create<DashboardState>((set) => ({
     const nextQuery = parseDashboardQuery(query)
 
     set({
+      ...clearedQueryState,
       ...nextQuery,
       ...deriveSelectionState(nextQuery),
       idleMode: deriveIdleMode(nextQuery),

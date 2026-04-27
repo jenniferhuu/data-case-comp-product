@@ -78,6 +78,31 @@ describe('DashboardShell', () => {
     })
   })
 
+  it('clears omitted optional query fields during hydration', () => {
+    useDashboardState.getState().patchQuery({
+      yearMode: 'single',
+      year: 2022,
+      selectionType: 'country',
+      selectionId: 'KEN',
+    })
+
+    useDashboardState.getState().hydrateFromQuery(
+      parseDashboardQuery({
+        yearMode: 'all',
+      }),
+    )
+
+    expect(useDashboardState.getState()).toMatchObject({
+      yearMode: 'all',
+      year: undefined,
+      selectionType: undefined,
+      selectionId: undefined,
+      selectedCountryIso3: null,
+      selectedDonorId: null,
+      idleMode: true,
+    })
+  })
+
   it('serializes only real query values', () => {
     const searchParams = createDashboardSearchParams(
       parseDashboardQuery({

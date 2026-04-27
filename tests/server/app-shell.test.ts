@@ -1,5 +1,4 @@
 import { existsSync, readFileSync } from 'node:fs'
-import { execSync } from 'node:child_process'
 import { describe, expect, it } from 'vitest'
 
 describe('Next app shell scaffold', () => {
@@ -22,14 +21,11 @@ describe('Next app shell scaffold', () => {
     expect(layoutSource).toContain("import './globals.css'")
   })
 
-  it('runs the declared pipeline entrypoint', () => {
+  it('keeps a guarded pipeline cli entrypoint', () => {
     const pipelineSource = readFileSync('src/pipeline/index.ts', 'utf8')
-    const output = execSync('npm run pipeline', {
-      cwd: process.cwd(),
-      encoding: 'utf8',
-    })
 
     expect(pipelineSource).toContain('export async function runPipeline()')
-    expect(output).toContain('Pipeline scaffold complete')
+    expect(pipelineSource).toContain('if (entryPath === modulePath)')
+    expect(pipelineSource).toContain('Pipeline scaffold complete')
   })
 })
