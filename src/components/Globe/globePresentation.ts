@@ -205,7 +205,7 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
     }))
     .sort((left, right) => right.amountUsdM - left.amountUsdM)
 
-  const arcs = allArcs.slice(0, 300)
+  const arcs = allArcs
 
   const points = [...pointsByIso3.values()]
     .map(({ donorIds: _donorIds, ...point }) => ({

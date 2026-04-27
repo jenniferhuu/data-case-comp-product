@@ -114,12 +114,10 @@ export function GlobeScene() {
         recipientCountry,
         sector,
         marker: undefined,
-        // Include country selection so the API returns all arcs for that country,
-        // not just the ones that happen to be in the global top-300 cap.
-        selectionType: selectionType === 'country' ? selectionType : undefined,
-        selectionId: selectionType === 'country' ? selectionId : undefined,
+        selectionType: undefined,
+        selectionId: undefined,
       }).toString(),
-    [compareFrom, compareTo, donor, donorCountry, recipientCountry, sector, year, yearMode, selectionType, selectionId],
+    [compareFrom, compareTo, donor, donorCountry, recipientCountry, sector, year, yearMode],
   )
 
   useEffect(() => {

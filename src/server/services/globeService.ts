@@ -47,16 +47,6 @@ export async function getGlobeData(searchParams?: URLSearchParams): Promise<Glob
       return false
     }
 
-    // When a recipient country point is selected, filter by ISO3 so the response
-    // contains all arcs for that country rather than relying on the global top-300 cap.
-    if (
-      query.selectionType === 'country'
-      && query.selectionId !== undefined
-      && flow.recipientIso3.toUpperCase() !== query.selectionId.toUpperCase()
-    ) {
-      return false
-    }
-
     return true
   })
 
