@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg: #09111f;
+  --fg: #f5f7fb;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: radial-gradient(circle at top, #153153 0%, #09111f 58%, #050913 100%);
+  color: var(--fg);
+}
+
+.cesium-viewer,
+.cesium-widget,
+.cesium-widget canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cesium-viewer-bottom {
+  display: none;
+}
