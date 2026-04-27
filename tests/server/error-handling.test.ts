@@ -25,7 +25,9 @@ describe('route error handling', () => {
     }))
 
     const { GET } = await import('../../src/app/api/overview/route')
-    const response = await GET()
+    const response = await GET({
+      nextUrl: { searchParams: new URLSearchParams() },
+    } as Parameters<typeof GET>[0])
 
     expect(response.status).toBe(500)
     await expect(response.json()).resolves.toEqual({

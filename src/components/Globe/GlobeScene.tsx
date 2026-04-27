@@ -207,7 +207,7 @@ export function GlobeScene() {
     return () => {
       cancelled = true
     }
-  }, [globeQueryString])
+  }, [globeQueryString, setGlobeStats])
 
   useEffect(() => {
     const controls = globeRef.current?.controls?.()
