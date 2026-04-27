@@ -82,27 +82,25 @@ export function CesiumGlobe({ data }: Props) {
     }, ScreenSpaceEventType.MOUSE_MOVE)
 
     handler.setInputAction((movement: { position: { x: number; y: number } }) => {
-      // Prevent Cesium from tracking/flying to clicked entities
-      viewer.selectedEntity = undefined
-      viewer.trackedEntity = undefined
-
-      const picked = viewer.scene.pick(movement.position)
-      if (!picked) {
+      // drillPick goes through all objects at cursor — arcs sit above country polygons
+      // so pick() would return the arc; drillPick lets us find the country underneath
+      const hits = viewer.scene.drillPick(movement.position)
+      const countryHit = hits.find(
+        (h: any) => h.id && countriesDataSourceRef.current?.entities.contains(h.id)
+      )
+      if (!countryHit) {
         setSelectedDonorId(null)
         setSelectedCountryIso3(null)
         return
       }
-      const entity = picked.id
-      if (entity && countriesDataSourceRef.current?.entities.contains(entity)) {
-        const iso3: string | undefined = entity.properties?.ISO_A3?.getValue()
-        if (iso3) {
-          const donor = dataRef.current.donors.find((d) => d.donor_iso3 === iso3)
-          if (donor) {
-            setDonorCountry(donor.donor_country)
-            setSelectedDonorId(donor.donor_id)
-          } else {
-            setSelectedCountryIso3(iso3)
-          }
+      const iso3: string | undefined = countryHit.id.properties?.ISO_A3?.getValue()
+      if (iso3) {
+        const donor = dataRef.current.donors.find((d) => d.donor_iso3 === iso3)
+        if (donor) {
+          setDonorCountry(donor.donor_country)
+          setSelectedDonorId(donor.donor_id)
+        } else {
+          setSelectedCountryIso3(iso3)
         }
       }
     }, ScreenSpaceEventType.LEFT_CLICK)
