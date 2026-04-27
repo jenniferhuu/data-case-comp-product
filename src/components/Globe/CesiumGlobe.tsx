@@ -21,6 +21,8 @@ interface TooltipState {
 export function CesiumGlobe({ data }: Props) {
   const viewerRef = useRef<any>(null)
   const countriesDataSourceRef = useRef<GeoJsonDataSource | null>(null)
+  const dataRef = useRef(data)
+  dataRef.current = data
   const { setSelectedDonorId, setSelectedCountryIso3, setDonorCountry } = useStore()
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
 
@@ -50,7 +52,7 @@ export function CesiumGlobe({ data }: Props) {
       'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson',
       {
         stroke: Color.fromCssColorString('#f87171').withAlpha(0.85),
-        fill: Color.TRANSPARENT,
+        fill: Color.WHITE.withAlpha(0.01),
         strokeWidth: 2.0,
         clampToGround: false,
       }
@@ -60,6 +62,7 @@ export function CesiumGlobe({ data }: Props) {
     })
 
     const handler = new ScreenSpaceEventHandler(viewer.scene.canvas)
+
     handler.setInputAction((movement: { endPosition: { x: number; y: number } }) => {
       const picked = viewer.scene.pick(movement.endPosition)
       if (picked?.id?.name?.startsWith('FLOW~')) {
@@ -77,6 +80,32 @@ export function CesiumGlobe({ data }: Props) {
         setTooltip(null)
       }
     }, ScreenSpaceEventType.MOUSE_MOVE)
+
+    handler.setInputAction((movement: { position: { x: number; y: number } }) => {
+      // Prevent Cesium from tracking/flying to clicked entities
+      viewer.selectedEntity = undefined
+      viewer.trackedEntity = undefined
+
+      const picked = viewer.scene.pick(movement.position)
+      if (!picked) {
+        setSelectedDonorId(null)
+        setSelectedCountryIso3(null)
+        return
+      }
+      const entity = picked.id
+      if (entity && countriesDataSourceRef.current?.entities.contains(entity)) {
+        const iso3: string | undefined = entity.properties?.ISO_A3?.getValue()
+        if (iso3) {
+          const donor = dataRef.current.donors.find((d) => d.donor_iso3 === iso3)
+          if (donor) {
+            setDonorCountry(donor.donor_country)
+            setSelectedDonorId(donor.donor_id)
+          } else {
+            setSelectedCountryIso3(iso3)
+          }
+        }
+      }
+    }, ScreenSpaceEventType.LEFT_CLICK)
 
     const canvas = viewer.scene.canvas
     const onMouseLeave = () => { setTooltip(null) }
@@ -102,33 +131,6 @@ export function CesiumGlobe({ data }: Props) {
         geocoder={false}
         infoBox={false}
         selectionIndicator={false}
-        onClick={(movement: any) => {
-          const viewer = viewerRef.current?.cesiumElement
-          if (!viewer) return
-          const picked = viewer.scene.pick(movement.position)
-          if (!picked) {
-            setSelectedDonorId(null)
-            setSelectedCountryIso3(null)
-            return
-          }
-          const entity = picked.id
-          if (
-            entity &&
-            countriesDataSourceRef.current &&
-            countriesDataSourceRef.current.entities.contains(entity)
-          ) {
-            const iso3: string | undefined = entity.properties?.ISO_A3?.getValue()
-            if (iso3) {
-              const donor = data.donors.find((d) => d.donor_iso3 === iso3)
-              if (donor) {
-                setDonorCountry(donor.donor_country)
-                setSelectedDonorId(donor.donor_id)
-              } else {
-                setSelectedCountryIso3(iso3)
-              }
-            }
-          }
-        }}
       >
         <ArcLayer data={data} />
         <CrisisAnnotations events={data.crisisEvents} geo={data.geo} />
