@@ -2,9 +2,9 @@
 
 > **Stack:** raw-http | none | react | typescript
 
-> 0 routes | 0 models | 20 components | 8 lib files | 1 env vars | 0 middleware | 0% test coverage
-> **Token savings:** this file is ~1,800 tokens. Without it, AI exploration would cost ~17,000 tokens. **Saves ~15,200 tokens per conversation.**
-> **Last scanned:** 2026-04-27 01:39 — re-run after significant changes
+> 0 routes | 0 models | 20 components | 9 lib files | 1 env vars | 0 middleware
+> **Token savings:** this file is ~0 tokens. Without it, AI exploration would cost ~0 tokens. **Saves ~0 tokens per conversation.**
+> **Last scanned:** 2026-04-27 03:46 — re-run after significant changes
 
 ---
 
@@ -56,6 +56,7 @@
   - function test_centroids_has_required_columns: ()
   - function test_centroids_ukraine_present: ()
   - function test_centroids_has_over_80_countries: ()
+- `src\lib\animatedDashMaterial.ts` — class AnimatedDashMaterialProperty
 - `src\lib\arcGeometry.ts` — function generateArcPoints: (fromLat, fromLon, toLat, toLon, numPoints) => Cartesian3[]
 - `src\lib\colorScales.ts`
   - function sectorColor: (sector) => Color
@@ -111,11 +112,11 @@
 - `src\components\Controls\YearControls.tsx` — imported by **1** files
 - `src\components\Controls\MarkerSelector.tsx` — imported by **1** files
 - `src\components\Controls\ArcLegend.tsx` — imported by **1** files
+- `src\lib\animatedDashMaterial.ts` — imported by **1** files
 - `src\lib\arcGeometry.ts` — imported by **1** files
 - `src\components\Globe\ArcLayer.tsx` — imported by **1** files
 - `src\components\Globe\CrisisAnnotations.tsx` — imported by **1** files
 - `src\components\Controls\ModeToggle.tsx` — imported by **1** files
-- `src\components\Panel\MarkerCredibilityCard.tsx` — imported by **1** files
 
 ## Import Map (who imports what)
 
@@ -129,13 +130,6 @@
 - `src\components\Sidebar\LeftSidebar.tsx` ← `src\App.tsx`
 - `src\components\Globe\CesiumGlobe.tsx` ← `src\App.tsx`
 - `src\components\Panel\Panel.tsx` ← `src\App.tsx`
-
----
-
-# Test Coverage
-
-> **0%** of routes and models are covered by tests
-> 3 test files found
 
 ---
 

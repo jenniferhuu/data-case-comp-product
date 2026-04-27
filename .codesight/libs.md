@@ -21,6 +21,7 @@
   - function test_centroids_has_required_columns: ()
   - function test_centroids_ukraine_present: ()
   - function test_centroids_has_over_80_countries: ()
+- `src\lib\animatedDashMaterial.ts` — class AnimatedDashMaterialProperty
 - `src\lib\arcGeometry.ts` — function generateArcPoints: (fromLat, fromLon, toLat, toLon, numPoints) => Cartesian3[]
 - `src\lib\colorScales.ts`
   - function sectorColor: (sector) => Color

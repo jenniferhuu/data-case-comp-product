@@ -17,11 +17,11 @@
 - `src\components\Controls\YearControls.tsx` — imported by **1** files
 - `src\components\Controls\MarkerSelector.tsx` — imported by **1** files
 - `src\components\Controls\ArcLegend.tsx` — imported by **1** files
+- `src\lib\animatedDashMaterial.ts` — imported by **1** files
 - `src\lib\arcGeometry.ts` — imported by **1** files
 - `src\components\Globe\ArcLayer.tsx` — imported by **1** files
 - `src\components\Globe\CrisisAnnotations.tsx` — imported by **1** files
 - `src\components\Controls\ModeToggle.tsx` — imported by **1** files
-- `src\components\Panel\MarkerCredibilityCard.tsx` — imported by **1** files
 
 ## Import Map (who imports what)
 

@@ -8,7 +8,9 @@ import { useStore } from '../../state/store'
 import {
   COUNTRY_GEOJSON_LOAD_OPTIONS,
   COUNTRY_GEOJSON_URL,
+  DISABLED_GLOBE_SCREEN_SPACE_EVENTS,
   getCountryIso3,
+  getPickedCountryEntity,
   resolveGlobeSelection,
 } from '../../lib/globeSelection'
 
@@ -59,6 +61,10 @@ export function CesiumGlobe({ data }: Props) {
       countriesDataSourceRef.current = ds
     })
 
+    for (const eventType of DISABLED_GLOBE_SCREEN_SPACE_EVENTS) {
+      viewer.screenSpaceEventHandler.removeInputAction(eventType)
+    }
+
     const handler = new ScreenSpaceEventHandler(viewer.scene.canvas)
 
     handler.setInputAction((movement: { endPosition: { x: number; y: number } }) => {
@@ -83,16 +89,17 @@ export function CesiumGlobe({ data }: Props) {
       // drillPick goes through all objects at cursor — arcs sit above country polygons
       // so pick() would return the arc; drillPick lets us find the country underneath
       const hits = viewer.scene.drillPick(movement.position)
-      const countryHit = hits.find(
-        (h: any) => h.id && countriesDataSourceRef.current?.entities.contains(h.id)
+      const countryEntity = getPickedCountryEntity(
+        hits,
+        (entity) => Boolean(entity && countriesDataSourceRef.current?.entities.contains(entity as any)),
       )
-      if (!countryHit) {
+      if (!countryEntity) {
         setSelectedDonorId(null)
         setDonorCountry(null)
         setSelectedCountryIso3(null)
         return
       }
-      const iso3 = getCountryIso3(countryHit.id.properties)
+      const iso3 = getCountryIso3(countryEntity.properties)
       if (iso3) {
         const nextSelection = resolveGlobeSelection(iso3, dataRef.current.donors)
         setDonorCountry(nextSelection.donorCountry)

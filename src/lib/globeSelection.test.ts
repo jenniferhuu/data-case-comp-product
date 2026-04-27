@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Color } from 'cesium'
+import { Color, ScreenSpaceEventType } from 'cesium'
 import {
   COUNTRY_GEOJSON_LOAD_OPTIONS,
   COUNTRY_GEOJSON_URL,
+  DISABLED_GLOBE_SCREEN_SPACE_EVENTS,
+  getPickedCountryEntity,
   getCountryIso3,
   resolveGlobeSelection,
 } from './globeSelection'
@@ -48,12 +50,19 @@ describe('resolveGlobeSelection', () => {
 })
 
 describe('COUNTRY_GEOJSON_LOAD_OPTIONS', () => {
-  it('uses a transparent fill and clamps country borders to ground', () => {
-    expect(COUNTRY_GEOJSON_LOAD_OPTIONS.fill.equals(Color.TRANSPARENT)).toBe(true)
-    expect(COUNTRY_GEOJSON_LOAD_OPTIONS.fill.alpha).toBe(0)
+  it('uses a nearly transparent fill so country interiors remain pickable', () => {
+    expect(COUNTRY_GEOJSON_LOAD_OPTIONS.fill.equals(Color.TRANSPARENT)).toBe(false)
+    expect(COUNTRY_GEOJSON_LOAD_OPTIONS.fill.alpha).toBeGreaterThan(0)
+    expect(COUNTRY_GEOJSON_LOAD_OPTIONS.fill.alpha).toBeLessThanOrEqual(0.02)
     expect(COUNTRY_GEOJSON_LOAD_OPTIONS.clampToGround).toBe(true)
     expect(COUNTRY_GEOJSON_LOAD_OPTIONS.strokeWidth).toBe(1.5)
     expect(COUNTRY_GEOJSON_URL).toBe('/data/countries.geojson')
+  })
+})
+
+describe('DISABLED_GLOBE_SCREEN_SPACE_EVENTS', () => {
+  it('disables Cesiums default double click camera action', () => {
+    expect(DISABLED_GLOBE_SCREEN_SPACE_EVENTS).toContain(ScreenSpaceEventType.LEFT_DOUBLE_CLICK)
   })
 })
 
@@ -68,5 +77,29 @@ describe('getCountryIso3', () => {
 
   it('supports the hyphenated ISO3166-1-Alpha-3 property used by geo-countries', () => {
     expect(getCountryIso3({ 'ISO3166-1-Alpha-3': { getValue: () => 'GBR' } })).toBe('GBR')
+  })
+})
+
+describe('getPickedCountryEntity', () => {
+  it('accepts a country entity exposed directly on the pick hit', () => {
+    const entity = { id: 'country-1' }
+
+    expect(
+      getPickedCountryEntity(
+        [{ id: entity }],
+        (candidate) => candidate === entity,
+      ),
+    ).toBe(entity)
+  })
+
+  it('accepts a country entity exposed on primitive.id', () => {
+    const entity = { id: 'country-2' }
+
+    expect(
+      getPickedCountryEntity(
+        [{ primitive: { id: entity } }],
+        (candidate) => candidate === entity,
+      ),
+    ).toBe(entity)
   })
 })

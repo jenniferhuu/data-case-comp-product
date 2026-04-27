@@ -1,4 +1,4 @@
-import { Color } from 'cesium'
+import { Color, ScreenSpaceEventType } from 'cesium'
 import type { DonorSummary } from '../types'
 
 export interface GlobeSelectionState {
@@ -8,6 +8,17 @@ export interface GlobeSelectionState {
 }
 
 type PropertyValue = string | { getValue?: () => string | undefined } | undefined
+type PickedEntity = {
+  properties?: CountryProperties
+  [key: string]: unknown
+} | undefined
+
+interface DrillPickHit {
+  id?: PickedEntity
+  primitive?: {
+    id?: PickedEntity
+  }
+}
 
 export interface CountryProperties {
   [key: string]: PropertyValue
@@ -24,10 +35,14 @@ export const COUNTRY_GEOJSON_URL = '/data/countries.geojson'
 
 export const COUNTRY_GEOJSON_LOAD_OPTIONS: CountryGeoJsonLoadOptions = {
   stroke: Color.fromCssColorString('#f87171').withAlpha(0.6),
-  fill: Color.TRANSPARENT,
+  fill: Color.WHITE.withAlpha(0.01),
   strokeWidth: 1.5,
   clampToGround: true,
 }
+
+export const DISABLED_GLOBE_SCREEN_SPACE_EVENTS = [
+  ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+]
 
 function readPropertyValue(value: PropertyValue): string | undefined {
   if (typeof value === 'string') return value
@@ -41,6 +56,20 @@ export function getCountryIso3(properties?: CountryProperties): string | undefin
     ?? readPropertyValue(properties.iso_a3)
     ?? readPropertyValue(properties['ISO3166-1-Alpha-3'])
     ?? readPropertyValue(properties.adm0_a3)
+}
+
+export function getPickedCountryEntity(
+  hits: DrillPickHit[],
+  containsEntity: (entity: PickedEntity) => boolean,
+): PickedEntity {
+  for (const hit of hits) {
+    const entity = hit.id ?? hit.primitive?.id
+    if (entity && containsEntity(entity)) {
+      return entity
+    }
+  }
+
+  return undefined
 }
 
 export function resolveGlobeSelection(
