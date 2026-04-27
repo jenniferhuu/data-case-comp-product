@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
 
 interface FiltersResponse {
@@ -27,22 +27,65 @@ function SelectField({
   options: string[]
   onChange: (value: string | undefined) => void
 }) {
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [open])
+
+  const displayValue = value === '' ? placeholder : value
+
   return (
-    <label className="grid min-w-0 gap-2 text-sm text-slate-200">
+    <div ref={containerRef} className="grid min-w-0 gap-2 text-sm text-slate-200">
       <span className="text-xs uppercase tracking-[0.24em] text-slate-400">{label}</span>
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value === '' ? undefined : event.target.value)}
-        className="w-full rounded-2xl border border-white/20 bg-slate-900/70 px-3 py-3 text-sm text-white outline-none transition focus:border-cyan-300/60"
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </label>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          className="flex w-full items-center justify-between rounded-2xl border border-white/20 bg-slate-900/70 px-3 py-3 text-left text-sm text-white outline-none transition focus:border-cyan-300/60"
+        >
+          <span className={value === '' ? 'text-slate-400' : ''}>{displayValue}</span>
+          <svg
+            className={`ml-2 h-4 w-4 shrink-0 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+          </svg>
+        </button>
+        {open && (
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-52 overflow-y-auto rounded-2xl border border-white/20 bg-slate-900 shadow-xl">
+            <button
+              type="button"
+              onClick={() => { onChange(undefined); setOpen(false) }}
+              className="w-full px-3 py-2.5 text-left text-sm text-slate-400 transition hover:bg-white/5 hover:text-white"
+            >
+              {placeholder}
+            </button>
+            {options.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => { onChange(option); setOpen(false) }}
+                className={`w-full px-3 py-2.5 text-left text-sm transition hover:bg-white/5 hover:text-white ${
+                  option === value ? 'bg-cyan-400/10 text-cyan-300' : 'text-white'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
