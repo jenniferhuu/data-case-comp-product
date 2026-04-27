@@ -21,6 +21,43 @@
   - function test_centroids_has_required_columns: ()
   - function test_centroids_ukraine_present: ()
   - function test_centroids_has_over_80_countries: ()
+- `src\app\api\drilldown\route.ts` — function GET: (request) => void
+- `src\app\api\filters\route.ts` — function GET: () => void
+- `src\app\api\globe\route.ts` — function GET: (request) => void
+- `src\app\api\overview\route.ts` — function GET: () => void
+- `src\components\Globe\globePresentation.ts`
+  - function buildGlobePresentation: (flows, geo) => GlobePresentation
+  - interface GeoCountry
+  - interface GlobeArcDatum
+  - interface GlobePointDatum
+  - interface GlobePresentation
+- `src\features\dashboard\queryState.ts`
+  - function parseDashboardQuery: (searchParams?) => DashboardQuery
+  - function mergeDashboardQuery: (currentQuery, patch) => DashboardQuery
+  - function createDashboardSearchParams: (query) => URLSearchParams
+- `src\features\filters\derivedData.ts`
+  - function buildFilterParams: (input) => Extract<CanonicalFilterParams,
+  - function buildFilterParams: (input) => Extract<CanonicalFilterParams,
+  - function buildFilterParams: (input) => CanonicalFilterParams
+  - function getFilteredFlows: (data, params) => Flow[]
+  - function getFlowStats: (flows) => void
+  - function getLeaderboardEntries: (flows, kind, topN) => LeaderboardEntry[]
+  - _...4 more_
+- `src\features\filters\storeFilters.ts`
+  - function getStoreFilterSnapshot: (state) => Extract<CanonicalFilterParams,
+  - function getStoreFilterSnapshot: (state) => Extract<CanonicalFilterParams,
+  - function getStoreFilterSnapshot: (state) => CanonicalFilterParams
+  - function getStoreFilterSnapshotFromState: (state) => CanonicalFilterParams
+  - function useStoreFilterSnapshot: () => CanonicalFilterParams
+  - type StoreCompareFilterInput
+  - _...3 more_
+- `src\features\selection\selectionActions.ts`
+  - function selectDonorState: (state, donorId) => DrilldownSelectionState
+  - function selectCountryState: (state, iso3) => DrilldownSelectionState
+  - function clearSelectionState: (state) => DrilldownSelectionState
+  - function applyGlobeSelectionState: (currentSelection, nextSelection) => SelectionState
+  - interface DrilldownSelectionState
+  - interface SelectionState
 - `src\lib\animatedDashMaterial.ts` — class AnimatedDashMaterialProperty
 - `src\lib\arcGeometry.ts` — function generateArcPoints: (fromLat, fromLon, toLat, toLon, numPoints) => Cartesian3[]
 - `src\lib\colorScales.ts`
@@ -36,3 +73,29 @@
   - function getLeaderboardCountries: (flows, topN) => LeaderboardEntry[]
   - interface FilterParams
   - interface LeaderboardEntry
+- `src\lib\globeSelection.ts`
+  - function getCountryIso3: (properties?) => string | undefined
+  - function getFlowRecipientIso3FromEntityName: (name?) => string | undefined
+  - function disableDefaultViewerInputActions: (viewer) => void
+  - function clearViewerEntityFocus: (viewer) => void
+  - function getPickedCountryEntity: (hits, containsEntity) => void
+  - function resolveGlobeSelection: (clickedIso3, donorSummaries, 'donor_id' | 'donor_country' | 'donor_iso3'>[]) => GlobeSelectionState
+  - _...6 more_
+- `src\pipeline\derive\buildDrilldownArtifact.ts` — function buildDrilldownArtifact: (rows) => DrilldownsArtifact, interface DrilldownsArtifact
+- `src\pipeline\derive\buildFiltersArtifact.ts` — function buildFiltersArtifact: (rows) => FiltersArtifact, interface FiltersArtifact
+- `src\pipeline\derive\buildGlobeArtifact.ts` — function buildGlobeArtifact: (rows) => GlobeArtifact
+- `src\pipeline\derive\buildOverviewArtifact.ts` — function buildOverviewArtifact: (rows) => OverviewResponse
+- `src\pipeline\index.ts` — function ensureRequiredColumns: (rows, string>[], required) => void, function runPipeline: () => void
+- `src\pipeline\loaders\loadEnrichment.ts` — function loadEnrichment: (fileName) => Promise<RawEnrichmentRow[]>, interface RawEnrichmentRow
+- `src\pipeline\loaders\loadPrimaryCsv.ts` — function loadPrimaryCsv: () => Promise<RawFundingRow[]>, interface RawFundingRow
+- `src\pipeline\normalize\normalizeRows.ts` — function normalizeRows: (rows, string>[]) => CanonicalFundingRow[], interface CanonicalFundingRow
+- `src\pipeline\normalize\resolveCountry.ts` — function resolveCountry: (row, string>) => CanonicalRecipient, interface CanonicalRecipient
+- `src\pipeline\normalize\resolveDonor.ts` — function resolveDonor: (row, string>) => CanonicalDonor, interface CanonicalDonor
+- `src\pipeline\writeArtifacts.ts` — function writeArtifact: (name, data) => Promise<void>
+- `src\server\api\handleApiRequest.ts` — function handleApiRequest: (load) => void
+- `src\server\repositories\artifactRepository.ts` — function readArtifactJson: (name) => Promise<unknown>, type ArtifactName
+- `src\server\repositories\geoRepository.ts` — function readCountriesGeoJson: () => Promise<GeoCountry[]>
+- `src\server\services\drilldownService.ts` — function getDrilldown: (searchParams?) => Promise<DrilldownResponse>
+- `src\server\services\filterService.ts` — function getFilters: () => Promise<FiltersArtifact>
+- `src\server\services\globeService.ts` — function getGlobeData: (searchParams?) => Promise<GlobeResponse>
+- `src\server\services\overviewService.ts` — function getOverview: () => Promise<OverviewResponse>

@@ -27,6 +27,10 @@ export const globeArcSchema = z.object({
   recipientLon: z.number(),
   amountUsdM: z.number(),
   years: z.array(z.number()),
+  yearAmounts: z.array(z.object({
+    year: z.number(),
+    totalUsdM: z.number(),
+  })),
   sector: z.string(),
 })
 

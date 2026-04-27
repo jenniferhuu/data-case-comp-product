@@ -1,4 +1,5 @@
 import type { GlobeArtifact } from '../../contracts/globe'
+import { normalizeSectorLabel } from '../../lib/sectorLabels'
 
 export interface GeoCountry {
   iso3: string
@@ -20,6 +21,10 @@ export interface GlobeArcDatum {
   recipientLon: number
   amountUsdM: number
   years: number[]
+  yearAmounts: Array<{
+    year: number
+    totalUsdM: number
+  }>
   sector: string
 }
 
@@ -133,7 +138,9 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
       continue
     }
 
-    const corridorKey = `${flow.donorId}::${flow.recipientIso3}`
+    // Use the resolved ISO3 so that flows with recipientIso3="UNK" don't all
+    // collapse into the same corridor key.
+    const corridorKey = `${flow.donorId}::${recipientGeo.iso3}`
     const existingArc = arcsByCorridor.get(corridorKey)
 
     if (existingArc === undefined) {
@@ -143,18 +150,25 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
         donorCountry: flow.donorCountry,
         donorLat: donorGeo.lat,
         donorLon: donorGeo.lon,
-        recipientIso3: recipientGeo.iso3,
+        recipientIso3: recipientGeo.iso3,  // resolved, never "UNK"
         recipientName: flow.recipientName,
         recipientLat: recipientGeo.lat,
         recipientLon: recipientGeo.lon,
         amountUsdM: flow.amountUsdM,
         years: [flow.year],
-        sector: flow.sector,
+        yearAmounts: [{ year: flow.year, totalUsdM: flow.amountUsdM }],
+        sector: normalizeSectorLabel(flow.sector),
       })
     } else {
       existingArc.amountUsdM += flow.amountUsdM
       if (!existingArc.years.includes(flow.year)) {
         existingArc.years.push(flow.year)
+      }
+      const yearAmount = existingArc.yearAmounts.find((entry) => entry.year === flow.year)
+      if (yearAmount === undefined) {
+        existingArc.yearAmounts.push({ year: flow.year, totalUsdM: flow.amountUsdM })
+      } else {
+        yearAmount.totalUsdM += flow.amountUsdM
       }
     }
 
@@ -177,14 +191,21 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
     }
   }
 
-  const arcs = [...arcsByCorridor.values()]
+  const allArcs = [...arcsByCorridor.values()]
     .map((arc) => ({
       ...arc,
       amountUsdM: Number(arc.amountUsdM.toFixed(1)),
       years: [...arc.years].sort((left, right) => left - right),
+      yearAmounts: arc.yearAmounts
+        .map((entry) => ({
+          year: entry.year,
+          totalUsdM: Number(entry.totalUsdM.toFixed(1)),
+        }))
+        .sort((left, right) => left.year - right.year),
     }))
     .sort((left, right) => right.amountUsdM - left.amountUsdM)
-    .slice(0, 180)
+
+  const arcs = allArcs.slice(0, 300)
 
   const points = [...pointsByIso3.values()]
     .map(({ donorIds: _donorIds, ...point }) => ({
@@ -192,7 +213,7 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
       totalUsdM: Number(point.totalUsdM.toFixed(1)),
     }))
     .sort((left, right) => right.totalUsdM - left.totalUsdM)
-    .slice(0, 120)
+    .slice(0, 163)
 
   return {
     arcs,

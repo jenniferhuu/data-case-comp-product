@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { drilldownResponseSchema } from '../../src/contracts/drilldown'
 import { overviewResponseSchema } from '../../src/contracts/overview'
+import { normalizeSectorLabels } from '../../src/lib/sectorLabels'
 
 afterEach(() => {
   vi.resetModules()
@@ -10,12 +12,31 @@ afterEach(() => {
 
 describe('server services', () => {
   it('getOverview reads the generated overview artifact', async () => {
-    const expected = overviewResponseSchema.parse(
-      JSON.parse(readFileSync('data/generated/overview.json', 'utf8')),
-    )
     const { getOverview } = await import('../../src/server/services/overviewService')
+    const response = await getOverview()
 
-    await expect(getOverview()).resolves.toEqual(expected)
+    expect(overviewResponseSchema.parse(response)).toEqual(response)
+    expect(response.totals).toEqual(
+      JSON.parse(readFileSync('data/generated/overview.json', 'utf8')).totals,
+    )
+    expect(response.topDonors[0]).toEqual({
+      label: 'Gates Foundation',
+      totalUsdM: 18890.4033,
+    })
+    expect(response.topRecipients[0]).toEqual({
+      label: 'China',
+      totalUsdM: 8846.9111,
+    })
+    expect(response.topSectors[0]).toEqual({
+      label: 'Health',
+      totalUsdM: 27101.589,
+    })
+    expect(response.yearlyFunding).toEqual([
+      { year: 2020, totalUsdM: 17170.5555 },
+      { year: 2021, totalUsdM: 17381.5559 },
+      { year: 2022, totalUsdM: 16679.5496 },
+      { year: 2023, totalUsdM: 16919.8854 },
+    ])
   })
 
   it('getFilters returns the generated filter artifact shape', async () => {
@@ -25,34 +46,39 @@ describe('server services', () => {
       years: number[]
       markers: string[]
     }
+    const normalizedExpected = {
+      ...expected,
+      sectors: normalizeSectorLabels(expected.sectors),
+    }
     const { getFilters } = await import('../../src/server/services/filterService')
 
-    await expect(getFilters()).resolves.toEqual(expected)
+    await expect(getFilters()).resolves.toEqual(normalizedExpected)
   })
 
   it('getDrilldown returns the default empty selection when no selection is provided', async () => {
     const { getDrilldown } = await import('../../src/server/services/drilldownService')
 
-    await expect(getDrilldown()).resolves.toEqual({
+    await expect(getDrilldown()).resolves.toEqual(drilldownResponseSchema.parse({
       donor: null,
       country: null,
-    })
+    }))
   })
 
-  it('getDrilldown resolves a known donor selection from the generated artifact', async () => {
-    const drilldowns = JSON.parse(readFileSync('data/generated/drilldowns.json', 'utf8')) as {
-      donors: Array<{ id: string, name: string, country: string, totalUsdM: number }>
-    }
-    const knownDonor = drilldowns.donors[0]
+  it('getDrilldown resolves a known donor selection from the committed donor summary', async () => {
     const { getDrilldown } = await import('../../src/server/services/drilldownService')
 
     await expect(
       getDrilldown(new URLSearchParams({
         selectionType: 'donor',
-        selectionId: knownDonor.id,
+        selectionId: 'gates-foundation',
       })),
-    ).resolves.toEqual({
-      donor: knownDonor,
+    ).resolves.toMatchObject({
+      donor: {
+        id: 'gates-foundation',
+        name: 'Gates Foundation',
+        country: 'United States',
+        totalUsdM: 18890.4033,
+      },
       country: null,
     })
   })
@@ -68,13 +94,18 @@ describe('server services', () => {
     })
   })
 
-  it('getDrilldown fails at the service contract boundary for an invalid artifact shape', async () => {
+  it('getDrilldown fails at the service contract boundary for an invalid globe artifact shape', async () => {
     vi.doMock('../../src/server/repositories/artifactRepository', () => ({
-      readArtifactJson: vi.fn(async () => ({ defaultSelection: null })),
+      readArtifactJson: vi.fn(async () => ({ flows: 'not-an-array' })),
     }))
     const { getDrilldown } = await import('../../src/server/services/drilldownService')
 
-    await expect(getDrilldown()).rejects.toMatchObject({
+    await expect(
+      getDrilldown(new URLSearchParams({
+        selectionType: 'donor',
+        selectionId: 'gates-foundation',
+      })),
+    ).rejects.toMatchObject({
       name: 'ZodError',
     })
   })

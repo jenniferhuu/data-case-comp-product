@@ -37,6 +37,24 @@ const overview: OverviewResponse = {
       tone: 'positive',
     },
   ],
+  topSectors: [
+    { label: 'Health', totalUsdM: 27101.589 },
+    { label: 'Economic Dev', totalUsdM: 10446.1365 },
+  ],
+  topRecipients: [
+    { label: 'China', totalUsdM: 8846.9111 },
+    { label: 'Ukraine', totalUsdM: 663.0589 },
+  ],
+  topDonors: [
+    { label: 'Gates Foundation', totalUsdM: 18890.4033 },
+    { label: 'BBVAMF', totalUsdM: 5038.4418 },
+  ],
+  yearlyFunding: [
+    { year: 2020, totalUsdM: 17170.5555 },
+    { year: 2021, totalUsdM: 17381.5559 },
+    { year: 2022, totalUsdM: 16679.5496 },
+    { year: 2023, totalUsdM: 16919.8854 },
+  ],
 }
 
 const donorSelection: DrilldownResponse = {
@@ -45,6 +63,22 @@ const donorSelection: DrilldownResponse = {
     name: 'Gates Foundation',
     country: 'United States',
     totalUsdM: 18890.4,
+    recipientCount: 99,
+    topRecipientShare: 6,
+    yearlyFunding: [
+      { year: 2020, totalUsdM: 4721.6974 },
+      { year: 2021, totalUsdM: 4784.3378 },
+      { year: 2022, totalUsdM: 4547.8622 },
+      { year: 2023, totalUsdM: 4836.506 },
+    ],
+    sectorBreakdown: [
+      { sector: 'Health', totalUsdM: 14858.6862 },
+      { sector: 'Economic Dev', totalUsdM: 2339.9873 },
+    ],
+    topRecipients: [
+      { iso3: 'IND', name: 'India', totalUsdM: 1133.5824 },
+      { iso3: 'NGA', name: 'Nigeria', totalUsdM: 797.4976 },
+    ],
   },
   country: null,
 }
@@ -55,6 +89,22 @@ const countrySelection: DrilldownResponse = {
     iso3: 'UKR',
     name: 'Ukraine',
     totalUsdM: 663.1,
+    donorCount: 35,
+    topDonorShare: 76.1,
+    yearlyFunding: [
+      { year: 2020, totalUsdM: 2.1247 },
+      { year: 2021, totalUsdM: 6.7884 },
+      { year: 2022, totalUsdM: 274.978 },
+      { year: 2023, totalUsdM: 379.1678 },
+    ],
+    sectorBreakdown: [
+      { sector: 'Other', totalUsdM: 177.9358 },
+      { sector: 'Economic Dev', totalUsdM: 156.1165 },
+    ],
+    topDonors: [
+      { id: 'howard-g-buffett-foundation', name: 'Howard G. Buffett Foundation', country: 'United States', totalUsdM: 504.8489 },
+      { id: 'ikea-foundation', name: 'IKEA Foundation', country: 'Netherlands', totalUsdM: 29.0193 },
+    ],
   },
 }
 
@@ -97,8 +147,10 @@ describe('dashboard drilldown surfaces', () => {
     const html = renderToString(<DonorDrilldown donor={donorSelection.donor!} />)
 
     expect(html).toContain('Gates Foundation')
-    expect(html).toContain('United States')
     expect(html).toContain('$18,890.4M')
+    expect(html).toContain('99')
+    expect(html).toContain('Health')
+    expect(html).toContain('India')
   })
 
   it('renders country summary content on the server', () => {
@@ -107,6 +159,9 @@ describe('dashboard drilldown surfaces', () => {
     expect(html).toContain('Ukraine')
     expect(html).toContain('UKR')
     expect(html).toContain('$663.1M')
+    expect(html).toContain('35')
+    expect(html).toContain('Howard G. Buffett Foundation')
+    expect(html).toContain('Other')
   })
 
   it('renders overview metrics in the hero surface on the server', () => {
@@ -126,8 +181,8 @@ describe('dashboard drilldown surfaces', () => {
 
     expect(html).toContain('Donor focus')
     expect(html).toContain('Gates Foundation')
-    expect(html).toContain('United States')
     expect(html).toContain('Selection-driven analysis')
+    expect(html).toContain('Top recipients')
   })
 
   it('renders country drilldown content in the insight rail on the server', () => {
@@ -138,7 +193,7 @@ describe('dashboard drilldown surfaces', () => {
     expect(html).toContain('Country focus')
     expect(html).toContain('Ukraine')
     expect(html).toContain('UKR')
-    expect(html).toContain('Tracked recipient footprint')
+    expect(html).toContain('Top donors')
   })
 
   it('fetches overview once in the shell and shares it across task 10 surfaces', async () => {
@@ -231,8 +286,8 @@ describe('dashboard drilldown surfaces', () => {
 
     expect(fetchMock).toHaveBeenCalledWith('/api/drilldown?selectionType=country&selectionId=UKR')
     expect(container.textContent).not.toContain('Donor focus')
-    expect(container.textContent).not.toContain('Donor concentration snapshot')
-    expect(container.textContent).toContain('Overview state')
+    expect(container.textContent).not.toContain('Recipient base')
+    expect(container.textContent).toContain('Platform overview')
 
     countryRequest.resolve(countrySelection)
     await flushEffects()
@@ -246,8 +301,8 @@ describe('dashboard drilldown surfaces', () => {
     await flushEffects()
 
     expect(container.textContent).not.toContain('Country focus')
-    expect(container.textContent).not.toContain('Ukraine')
-    expect(container.textContent).toContain('Overview state')
+    expect(container.textContent).not.toContain('41.4% held by top donor')
+    expect(container.textContent).toContain('Platform overview')
 
     resetRequest.resolve({ donor: null, country: null })
     await flushEffects()

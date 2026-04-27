@@ -1,10 +1,16 @@
 import React from 'react'
 import type { DrilldownResponse } from '../../contracts/drilldown'
+import { InsightBarChart } from '../dashboard/InsightBarChart'
+import { InsightHeader } from '../dashboard/InsightHeader'
+import { InsightMetricCard } from '../dashboard/InsightMetricCard'
+import { InsightRankList } from '../dashboard/InsightRankList'
+import { InsightTrendChart } from '../dashboard/InsightTrendChart'
 
 type CountryDrilldownData = NonNullable<DrilldownResponse['country']>
 
 interface CountryDrilldownProps {
   country: CountryDrilldownData
+  onSelectDonor?: (id: string) => void
 }
 
 function formatUsdMillions(value: number) {
@@ -14,16 +20,49 @@ function formatUsdMillions(value: number) {
   }).format(value)}M`
 }
 
-export function CountryDrilldown({ country }: CountryDrilldownProps) {
+export function CountryDrilldown({ country, onSelectDonor }: CountryDrilldownProps) {
+  const donorCount = country.donorCount ?? 0
+  const topDonorShare = country.topDonorShare ?? 0
+  const sectorBreakdown = country.sectorBreakdown ?? []
+  const topDonors = country.topDonors ?? []
+  const yearlyFunding = country.yearlyFunding ?? []
+
   return (
-    <section className="rounded-3xl border border-white/10 bg-white/5 p-4">
-      <p className="text-xs uppercase tracking-[0.28em] text-emerald-200/70">Country focus</p>
-      <h3 className="mt-2 text-xl font-semibold text-white">{country.name}</h3>
-      <p className="mt-1 text-sm text-slate-300">{country.iso3}</p>
-      <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3">
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Tracked recipient footprint</p>
-        <p className="mt-1 text-lg font-semibold text-white">{formatUsdMillions(country.totalUsdM)}</p>
+    <div className="space-y-4">
+      <InsightHeader
+        eyebrow="Country focus"
+        title={country.name}
+      />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <InsightMetricCard
+          label="Tracked recipient footprint"
+          value={formatUsdMillions(country.totalUsdM)}
+          detail={country.iso3}
+        />
+        <InsightMetricCard
+          label="Donor base"
+          value={donorCount.toLocaleString('en-US')}
+          detail={`${topDonorShare.toFixed(1)}% held by top donor`}
+        />
       </div>
-    </section>
+      <InsightBarChart
+        title="Sector mix"
+        items={sectorBreakdown.map((item) => ({
+          label: item.sector,
+          totalUsdM: item.totalUsdM,
+        }))}
+      />
+      <InsightRankList
+        title="Top donors"
+        items={topDonors.map((donor) => ({
+          id: donor.id,
+          label: donor.name,
+          value: formatUsdMillions(donor.totalUsdM),
+          detail: donor.country,
+        }))}
+        onSelect={onSelectDonor}
+      />
+      <InsightTrendChart title="Yearly distribution" points={yearlyFunding} />
+    </div>
   )
 }

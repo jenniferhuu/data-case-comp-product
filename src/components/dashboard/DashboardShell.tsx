@@ -45,17 +45,17 @@ export function DashboardShell() {
   const overview = useOverviewData()
 
   return (
-    <main data-testid="dashboard-shell" className="dashboard-shell min-h-screen">
+    <main data-testid="dashboard-shell" className="dashboard-shell min-h-screen lg:h-screen lg:overflow-hidden">
       <HeroStats overview={overview} />
-      <div className="grid min-h-screen grid-cols-1 bg-[radial-gradient(circle_at_top,#153153_0%,#09111f_58%,#050913_100%)] lg:grid-cols-[320px_minmax(0,1fr)_380px]">
+      <div className="grid min-h-screen grid-cols-1 bg-[radial-gradient(circle_at_top,#153153_0%,#09111f_58%,#050913_100%)] lg:h-screen lg:grid-cols-[280px_minmax(0,1fr)_360px]">
         <ControlRail />
         <section
           id="globe-stage"
-          className="relative min-h-screen overflow-hidden"
+          className="relative min-h-screen overflow-hidden lg:min-h-0"
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.16),transparent_48%)]" />
-          <div className="absolute inset-8 rounded-[2rem] border border-white/10 bg-white/[0.03]" />
-          <div className="relative h-full min-h-screen w-full">
+          <div className="absolute inset-5 rounded-[1.75rem] border border-white/10 bg-white/[0.03]" />
+          <div className="relative h-full min-h-screen w-full lg:min-h-0">
             <GlobeIdleController />
             <GlobeScene />
           </div>

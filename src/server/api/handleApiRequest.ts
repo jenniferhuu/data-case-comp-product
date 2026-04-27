@@ -8,7 +8,8 @@ export async function handleApiRequest<T>(
   try {
     const data = await load()
     return NextResponse.json(data)
-  } catch {
+  } catch (cause) {
+    console.error(`[api] ${error}`, cause)
     return NextResponse.json(
       {
         error,

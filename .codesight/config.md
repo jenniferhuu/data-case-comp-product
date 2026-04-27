@@ -6,11 +6,13 @@
 
 ## Config Files
 
+- `next.config.ts`
 - `tailwind.config.js`
 - `tsconfig.json`
 - `vercel.json`
-- `vite.config.ts`
 
 ## Key Dependencies
 
-- react: ^18.3.1
+- next: ^15.0.0
+- react: ^19.0.0
+- zod: ^3.23.8

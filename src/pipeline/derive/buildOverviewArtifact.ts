@@ -21,5 +21,9 @@ export function buildOverviewArtifact(rows: CanonicalFundingRow[]): OverviewResp
       corridors,
     },
     highlights: [],
+    topSectors: [],
+    topRecipients: [],
+    topDonors: [],
+    yearlyFunding: [],
   }
 }

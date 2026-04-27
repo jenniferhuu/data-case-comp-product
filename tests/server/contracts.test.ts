@@ -7,6 +7,10 @@ describe('shared contracts', () => {
     const parsed = overviewResponseSchema.parse({
       totals: { fundingUsdM: 1, donors: 2, countries: 3, corridors: 4 },
       highlights: [],
+      topSectors: [],
+      topRecipients: [],
+      topDonors: [],
+      yearlyFunding: [],
     })
 
     expect(parsed.totals.donors).toBe(2)

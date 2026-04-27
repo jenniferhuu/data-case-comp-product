@@ -1,4 +1,4 @@
-import { access } from 'node:fs/promises'
+import { access, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { GENERATED_ROOT, PRIMARY_CSV_PATH } from './config'
@@ -9,6 +9,7 @@ import { buildOverviewArtifact } from './derive/buildOverviewArtifact'
 import { loadPrimaryCsv } from './loaders/loadPrimaryCsv'
 import { normalizeRows } from './normalize/normalizeRows'
 import { writeArtifact } from './writeArtifacts'
+import type { GeoCountry } from '../components/Globe/globePresentation'
 
 type RequiredColumn = string | readonly string[]
 const REQUIRED_GENERATED_ARTIFACTS = ['overview', 'globe', 'filters', 'drilldowns'] as const
@@ -74,9 +75,12 @@ export async function runPipeline() {
   ])
   const rows = normalizeRows(rawRows)
 
+  const geoPath = resolve(process.cwd(), 'public', 'data', 'countries_geo.json')
+  const geo: GeoCountry[] = await readFile(geoPath, 'utf8').then(JSON.parse).catch(() => [])
+
   await writeArtifact('overview', buildOverviewArtifact(rows))
   await writeArtifact('globe', buildGlobeArtifact(rows))
-  await writeArtifact('filters', buildFiltersArtifact(rows))
+  await writeArtifact('filters', buildFiltersArtifact(rows, geo))
   await writeArtifact('drilldowns', buildDrilldownArtifact(rows))
 
   return {

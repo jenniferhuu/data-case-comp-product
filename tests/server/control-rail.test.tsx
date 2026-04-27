@@ -49,4 +49,54 @@ describe('ControlRail', () => {
     expect(state.compareFrom).toBeUndefined()
     expect(state.compareTo).toBeUndefined()
   })
+
+  it('shows an unavailable message when filters fail to load', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({
+      ok: false,
+      json: async () => ({
+        message: 'Filter data is unavailable.',
+      }),
+    })))
+
+    await act(async () => {
+      root.render(<ControlRail />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(container.textContent).toContain('Filter data is unavailable.')
+    expect(container.textContent).not.toContain('Loading dashboard filters...')
+  })
+
+  it('explains compare mode as delta analysis instead of generic year layering', async () => {
+    useDashboardState.setState({
+      ...parseDashboardQuery(),
+      yearMode: 'compare',
+      compareFrom: 2020,
+      compareTo: 2023,
+    })
+
+    vi.stubGlobal('fetch', vi.fn(async () => ({
+      ok: true,
+      json: async () => ({
+        donorCountries: ['United States'],
+        sectors: ['Health'],
+        years: [2020, 2021, 2022, 2023],
+        markers: [],
+      }),
+    })))
+
+    await act(async () => {
+      root.render(<ControlRail />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(container.textContent).toContain('Compare mode highlights funding deltas')
+    expect(container.textContent).toContain('line weight continues to show visible funding volume')
+  })
 })

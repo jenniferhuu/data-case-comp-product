@@ -9,7 +9,7 @@ afterEach(() => {
 })
 
 describe('GET /api/overview', () => {
-  it('returns a 200 response with overview totals', async () => {
+  it('returns a 200 response with overview totals and enriched idle analytics', async () => {
     const { GET } = await import('../../src/app/api/overview/route')
 
     const response = await GET()
@@ -18,6 +18,23 @@ describe('GET /api/overview', () => {
     expect(response.status).toBe(200)
     expect(body.totals.countries).toBeTypeOf('number')
     expect(Array.isArray(body.highlights)).toBe(true)
+    expect(body.topSectors[0]).toMatchObject({
+      label: expect.any(String),
+      totalUsdM: expect.any(Number),
+    })
+    expect(body.topRecipients[0]).toMatchObject({
+      label: expect.any(String),
+      totalUsdM: expect.any(Number),
+    })
+    expect(body.topDonors[0]).toMatchObject({
+      label: expect.any(String),
+      totalUsdM: expect.any(Number),
+    })
+    expect(body.yearlyFunding).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ year: expect.any(Number), totalUsdM: expect.any(Number) }),
+      ]),
+    )
   })
 
   it('returns a stable 500 payload when the service throws', async () => {
@@ -93,7 +110,17 @@ describe('GET /api/drilldown', () => {
       expect(receivedSearchParams?.get('selectionId')).toBe('acme-foundation')
 
       return {
-        donor: { id: 'acme-foundation', name: 'Acme Foundation', country: 'United States', totalUsdM: 10 },
+        donor: {
+          id: 'acme-foundation',
+          name: 'Acme Foundation',
+          country: 'United States',
+          totalUsdM: 10,
+          recipientCount: 1,
+          topRecipientShare: 40,
+          yearlyFunding: [{ year: 2023, totalUsdM: 10 }],
+          sectorBreakdown: [{ sector: 'Health', totalUsdM: 6 }],
+          topRecipients: [{ iso3: 'UKR', name: 'Ukraine', totalUsdM: 4 }],
+        },
         country: null,
       }
     })
@@ -109,7 +136,17 @@ describe('GET /api/drilldown', () => {
 
     expect(response.status).toBe(200)
     await expect(response.json()).resolves.toEqual({
-      donor: { id: 'acme-foundation', name: 'Acme Foundation', country: 'United States', totalUsdM: 10 },
+      donor: {
+        id: 'acme-foundation',
+        name: 'Acme Foundation',
+        country: 'United States',
+        totalUsdM: 10,
+        recipientCount: 1,
+        topRecipientShare: 40,
+        yearlyFunding: [{ year: 2023, totalUsdM: 10 }],
+        sectorBreakdown: [{ sector: 'Health', totalUsdM: 6 }],
+        topRecipients: [{ iso3: 'UKR', name: 'Ukraine', totalUsdM: 4 }],
+      },
       country: null,
     })
     expect(getDrilldown).toHaveBeenCalledTimes(1)

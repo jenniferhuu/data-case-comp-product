@@ -31,7 +31,15 @@ export async function getGlobeData(searchParams?: URLSearchParams): Promise<Glob
       return false
     }
 
+    if (query.donor !== undefined && flow.donorName !== query.donor) {
+      return false
+    }
+
     if (query.donorCountry !== undefined && flow.donorCountry !== query.donorCountry) {
+      return false
+    }
+
+    if (query.recipientCountry !== undefined && flow.recipientName !== query.recipientCountry) {
       return false
     }
 

@@ -5,7 +5,9 @@ import dynamic from 'next/dynamic'
 import { createDashboardSearchParams } from '../../features/dashboard/queryState'
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
 import type { GlobeResponse } from '../../contracts/globe'
+import { DELTA_COLOR_RAMPS, getSectorArcColors } from '../../lib/colorScales'
 import type { GlobeArcDatum, GlobePointDatum } from './globePresentation'
+import { GlobeLegend } from './GlobeLegend'
 
 function GlobeLoadingState() {
   return (
@@ -37,35 +39,41 @@ function formatUsdMillions(value: number) {
   }).format(value)}M`
 }
 
-function getArcColor(arc: GlobeArcDatum, compareMode: boolean) {
+function getCompareDelta(arc: GlobeArcDatum, compareFrom?: number, compareTo?: number) {
+  if (compareFrom === undefined || compareTo === undefined) {
+    return 0
+  }
+
+  const fromAmount = arc.yearAmounts.find((entry) => entry.year === compareFrom)?.totalUsdM ?? 0
+  const toAmount = arc.yearAmounts.find((entry) => entry.year === compareTo)?.totalUsdM ?? 0
+
+  return toAmount - fromAmount
+}
+
+function getArcColor(arc: GlobeArcDatum, compareMode: boolean, compareFrom?: number, compareTo?: number) {
   if (compareMode) {
-    const latestYear = arc.years.at(-1) ?? 0
-    const earliestYear = arc.years[0] ?? latestYear
+    const delta = getCompareDelta(arc, compareFrom, compareTo)
 
-    return latestYear > earliestYear ? ['#6ee7ff', '#7c3aed'] : ['#fbbf24', '#f97316']
+    if (Math.abs(delta) < 0.05) {
+      return [...DELTA_COLOR_RAMPS.neutral]
+    }
+
+    return delta > 0 ? [...DELTA_COLOR_RAMPS.positive] : [...DELTA_COLOR_RAMPS.negative]
   }
 
-  if (arc.amountUsdM >= 500) {
-    return ['#f5d66b', '#f59e0b']
-  }
-
-  if (arc.amountUsdM >= 100) {
-    return ['#67e8f9', '#22d3ee']
-  }
-
-  return ['#7dd3fc', '#38bdf8']
+  return getSectorArcColors(arc.sector)
 }
 
 function getPointColor(point: GlobePointDatum) {
   if (point.totalUsdM >= 500) {
-    return '#facc15'
+    return '#a5f3fc'
   }
 
   if (point.totalUsdM >= 100) {
-    return '#38bdf8'
+    return '#67e8f9'
   }
 
-  return '#67e8f9'
+  return '#c4b5fd'
 }
 
 export function GlobeScene() {
@@ -73,6 +81,7 @@ export function GlobeScene() {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [size, setSize] = useState({ width: 1000, height: 820 })
   const [globeResponse, setGlobeResponse] = useState<GlobeResponse | null>(null)
+  const [globeError, setGlobeError] = useState<string | null>(null)
   const [hoveredArc, setHoveredArc] = useState<GlobeArcDatum | null>(null)
   const [hoveredPoint, setHoveredPoint] = useState<GlobePointDatum | null>(null)
   const idleMode = useDashboardState((state) => state.idleMode)
@@ -80,13 +89,18 @@ export function GlobeScene() {
   const year = useDashboardState((state) => state.year)
   const compareFrom = useDashboardState((state) => state.compareFrom)
   const compareTo = useDashboardState((state) => state.compareTo)
+  const donor = useDashboardState((state) => state.donor)
   const donorCountry = useDashboardState((state) => state.donorCountry)
+  const recipientCountry = useDashboardState((state) => state.recipientCountry)
   const sector = useDashboardState((state) => state.sector)
   const selectedCountryIso3 = useDashboardState((state) => state.selectedCountryIso3)
   const selectedDonorId = useDashboardState((state) => state.selectedDonorId)
   const selectCountry = useDashboardState((state) => state.selectCountry)
   const selectDonor = useDashboardState((state) => state.selectDonor)
   const setIdleMode = useDashboardState((state) => state.setIdleMode)
+
+  const selectionType = useDashboardState((state) => state.selectionType)
+  const selectionId = useDashboardState((state) => state.selectionId)
 
   const globeQueryString = useMemo(
     () =>
@@ -95,13 +109,15 @@ export function GlobeScene() {
         year,
         compareFrom,
         compareTo,
+        donor,
         donorCountry,
+        recipientCountry,
         sector,
         marker: undefined,
         selectionType: undefined,
         selectionId: undefined,
       }).toString(),
-    [compareFrom, compareTo, donorCountry, sector, year, yearMode],
+    [compareFrom, compareTo, donor, donorCountry, recipientCountry, sector, year, yearMode],
   )
 
   useEffect(() => {
@@ -138,7 +154,8 @@ export function GlobeScene() {
     void fetch(href)
       .then(async (response) => {
         if (!response.ok) {
-          throw new Error('Globe request failed')
+          const payload = await response.json().catch(() => null) as { message?: string } | null
+          throw new Error(payload?.message ?? 'Globe data is unavailable.')
         }
 
         return response.json() as Promise<GlobeResponse>
@@ -146,11 +163,13 @@ export function GlobeScene() {
       .then((data) => {
         if (!cancelled) {
           setGlobeResponse(data)
+          setGlobeError(null)
         }
       })
-      .catch(() => {
+      .catch((error: unknown) => {
         if (!cancelled) {
           setGlobeResponse({ arcs: [], points: [], visibleFundingUsdM: 0 })
+          setGlobeError(error instanceof Error ? error.message : 'Globe data is unavailable.')
         }
       })
 
@@ -173,16 +192,29 @@ export function GlobeScene() {
     controls.maxDistance = 420
   }, [idleMode, globeResponse])
 
-  const selectedArc = globeResponse?.arcs.find((arc) => arc.donorId === selectedDonorId) ?? null
+  const visibleArcs = useMemo(() => {
+    const arcs = globeResponse?.arcs ?? []
+    if (selectionType === 'donor' && selectionId !== undefined) {
+      const normalizedId = selectionId.replace(/_/g, '-')
+      return arcs.filter((arc) => arc.donorId === normalizedId)
+    }
+    if (selectionType === 'country' && selectionId !== undefined) {
+      return arcs.filter((arc) => arc.recipientIso3 === selectionId)
+    }
+    return arcs.slice(0, 300)
+  }, [globeResponse, selectionId, selectionType])
+
+  const selectedArc = visibleArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
   const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
   const compareMode = yearMode === 'compare'
   const overlayArc = hoveredArc ?? selectedArc
   const overlayPoint = hoveredPoint ?? selectedPoint
+  const overlayDelta = overlayArc === null ? 0 : getCompareDelta(overlayArc, compareFrom, compareTo)
 
   return (
     <div ref={containerRef} className="globe-canvas h-full w-full">
-      <div className="pointer-events-none absolute inset-x-8 top-28 z-10 flex justify-center">
-        <div className="grid min-w-[18rem] gap-3 rounded-[1.75rem] border border-white/10 bg-slate-950/68 px-4 py-3 text-left text-white shadow-[0_30px_80px_rgba(2,6,23,0.45)] backdrop-blur-xl md:grid-cols-3">
+      <div className="pointer-events-none absolute inset-x-4 top-32 z-10 flex justify-center">
+        <div className="grid min-w-[17rem] gap-3 rounded-[1.5rem] border border-white/10 bg-slate-950/68 px-4 py-3 text-left text-white shadow-[0_24px_70px_rgba(2,6,23,0.4)] backdrop-blur-xl md:grid-cols-3">
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Visible funding</p>
             <p className="mt-1 text-xl font-semibold">
@@ -204,23 +236,35 @@ export function GlobeScene() {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute bottom-10 left-10 z-10 max-w-sm rounded-[1.75rem] border border-white/10 bg-slate-950/72 px-5 py-4 text-white shadow-[0_30px_80px_rgba(2,6,23,0.55)] backdrop-blur-xl">
+      {globeError !== null ? (
+        <div className="pointer-events-none absolute inset-x-4 top-44 z-10 flex justify-center">
+          <div className="max-w-xl rounded-[1.5rem] border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-100 shadow-[0_20px_60px_rgba(2,6,23,0.35)] backdrop-blur-xl">
+            {globeError}
+          </div>
+        </div>
+      ) : null}
+
+      <div className="pointer-events-none absolute bottom-5 left-5 z-10 max-w-xs rounded-[1.5rem] border border-white/10 bg-slate-950/72 px-4 py-3 text-white shadow-[0_24px_70px_rgba(2,6,23,0.45)] backdrop-blur-xl">
         {overlayArc !== null ? (
           <>
-            <p className="text-xs uppercase tracking-[0.28em] text-amber-200/70">Funding corridor</p>
-            <h3 className="mt-2 text-xl font-semibold">{overlayArc.donorName}</h3>
+            <p className="text-xs uppercase tracking-[0.28em] text-amber-200/70">Active flow</p>
+            <h3 className="mt-2 text-lg font-semibold">{overlayArc.donorName}</h3>
             <p className="mt-1 text-sm text-slate-300">
-              {overlayArc.donorCountry} to {overlayArc.recipientName}
+              {overlayArc.sector}
             </p>
-            <p className="mt-4 text-3xl font-semibold">{formatUsdMillions(overlayArc.amountUsdM)}</p>
-            <p className="mt-2 text-sm text-slate-300">Click arc to open donor drilldown in the insight rail.</p>
+            <p className="mt-3 text-2xl font-semibold">{formatUsdMillions(overlayArc.amountUsdM)}</p>
+            <p className="mt-2 text-sm text-slate-300">
+              {compareMode
+                ? `${overlayDelta > 0 ? 'Positive' : overlayDelta < 0 ? 'Negative' : 'Neutral'} delta of ${formatUsdMillions(Math.abs(overlayDelta))} across the selected years.`
+                : `${overlayArc.sector} corridor. Click arc to open donor drilldown in the insight rail.`}
+            </p>
           </>
         ) : overlayPoint !== null ? (
           <>
             <p className="text-xs uppercase tracking-[0.28em] text-emerald-200/70">Recipient node</p>
-            <h3 className="mt-2 text-xl font-semibold">{overlayPoint.name}</h3>
+            <h3 className="mt-2 text-lg font-semibold">{overlayPoint.name}</h3>
             <p className="mt-1 text-sm text-slate-300">{overlayPoint.iso3}</p>
-            <p className="mt-4 text-3xl font-semibold">{formatUsdMillions(overlayPoint.totalUsdM)}</p>
+            <p className="mt-3 text-2xl font-semibold">{formatUsdMillions(overlayPoint.totalUsdM)}</p>
             <p className="mt-2 text-sm text-slate-300">
               Supported by {overlayPoint.donorCount.toLocaleString('en-US')} donor
               {overlayPoint.donorCount === 1 ? '' : 's'}.
@@ -229,15 +273,21 @@ export function GlobeScene() {
         ) : (
           <>
             <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/70">Live flow map</p>
-            <h3 className="mt-2 text-xl font-semibold">Follow the strongest funding corridors</h3>
+            <h3 className="mt-2 text-lg font-semibold">Follow the strongest funding corridors</h3>
             <p className="mt-3 text-sm leading-6 text-slate-300">
-              Hover arcs for corridor context, click arcs for donor drilldowns, and click glow points to pivot into
-              recipient-country analysis.
+              {compareMode
+                ? 'Compare mode highlights funding deltas across two years. Hover corridors for context, then click arcs or recipient nodes to pivot into the insight rail.'
+                : 'Hover arcs for corridor context, click arcs for donor drilldowns, and click glow points to pivot into recipient-country analysis.'}
             </p>
           </>
         )}
       </div>
 
+      <div className="pointer-events-none absolute bottom-5 right-5 z-10 w-[18rem] max-w-[calc(100%-2.5rem)]">
+        <GlobeLegend compareMode={compareMode} />
+      </div>
+
+      <div style={{ transform: 'translateY(72px)' }}>
       <Globe
         ref={globeRef}
         width={size.width}
@@ -249,14 +299,14 @@ export function GlobeScene() {
         atmosphereColor="#7dd3fc"
         atmosphereAltitude={0.16}
         animateIn
-        arcsData={globeResponse?.arcs ?? []}
+        arcsData={visibleArcs}
         arcStartLat={(arc: GlobeArcDatum) => arc.donorLat}
         arcStartLng={(arc: GlobeArcDatum) => arc.donorLon}
         arcEndLat={(arc: GlobeArcDatum) => arc.recipientLat}
         arcEndLng={(arc: GlobeArcDatum) => arc.recipientLon}
-        arcColor={(arc: GlobeArcDatum) => getArcColor(arc, compareMode)}
-        arcAltitude={(arc: GlobeArcDatum) => Math.min(0.42, 0.08 + arc.amountUsdM / 2500)}
-        arcStroke={(arc: GlobeArcDatum) => Math.min(1.8, 0.35 + arc.amountUsdM / 450)}
+        arcColor={(arc: GlobeArcDatum) => getArcColor(arc, compareMode, compareFrom, compareTo)}
+        arcAltitude={(arc: GlobeArcDatum) => Math.min(0.48, 0.22 + arc.amountUsdM / 2800)}
+        arcStroke={(arc: GlobeArcDatum) => Math.min(1.35, 0.28 + arc.amountUsdM / 900)}
         arcDashLength={0.8}
         arcDashGap={0.35}
         arcDashAnimateTime={1600}
@@ -270,7 +320,7 @@ export function GlobeScene() {
         pointLat={(point: GlobePointDatum) => point.lat}
         pointLng={(point: GlobePointDatum) => point.lon}
         pointAltitude={(point: GlobePointDatum) => Math.min(0.28, 0.03 + point.totalUsdM / 2500)}
-        pointRadius={(point: GlobePointDatum) => Math.min(0.65, 0.14 + point.totalUsdM / 1600)}
+        pointRadius={(point: GlobePointDatum) => Math.min(0.5, 0.12 + point.totalUsdM / 2400)}
         pointColor={(point: GlobePointDatum) => getPointColor(point)}
         pointsMerge
         pointLabel={(point: GlobePointDatum) => `${point.name}: ${formatUsdMillions(point.totalUsdM)}`}
@@ -279,7 +329,27 @@ export function GlobeScene() {
           setIdleMode(false)
           selectCountry((point as GlobePointDatum).iso3)
         }}
+        onGlobeClick={({ lat, lng }: { lat: number; lng: number }) => {
+          const points = globeResponse?.points ?? []
+          if (points.length === 0) return
+          let nearest = points[0]!
+          let minDist = Infinity
+          for (const point of points) {
+            const dlat = point.lat - lat
+            const dlng = point.lon - lng
+            const dist = dlat * dlat + dlng * dlng
+            if (dist < minDist) {
+              minDist = dist
+              nearest = point
+            }
+          }
+          if (minDist < 100) {
+            setIdleMode(false)
+            selectCountry(nearest.iso3)
+          }
+        }}
       />
+      </div>
     </div>
   )
 }

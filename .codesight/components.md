@@ -1,5 +1,7 @@
 # Components
 
+- **RootLayout** — `src\app\layout.tsx`
+- **HomePage** — `src\app\page.tsx`
 - **App** — `src\App.tsx`
 - **ArcLegend** — `src\components\Controls\ArcLegend.tsx`
 - **DonorCountryFilter** — props: options — `src\components\Controls\DonorCountryFilter.tsx`
@@ -8,9 +10,16 @@
 - **ModeToggle** — `src\components\Controls\ModeToggle.tsx`
 - **SectorFilter** — props: options — `src\components\Controls\SectorFilter.tsx`
 - **YearControls** — `src\components\Controls\YearControls.tsx`
+- **ControlRail** [client] — `src\components\dashboard\ControlRail.tsx`
+- **DashboardShell** [client] — `src\components\dashboard\DashboardShell.tsx`
+- **HeroStats** [client] — props: overview — `src\components\dashboard\HeroStats.tsx`
+- **InsightRail** [client] — props: overview, drilldown — `src\components\dashboard\InsightRail.tsx`
+- **TrendDrawer** — props: eyebrow, title, items — `src\components\dashboard\TrendDrawer.tsx`
 - **ArcLayer** — props: data — `src\components\Globe\ArcLayer.tsx`
 - **CesiumGlobe** — props: data — `src\components\Globe\CesiumGlobe.tsx`
 - **CrisisAnnotations** — props: events, geo — `src\components\Globe\CrisisAnnotations.tsx`
+- **GlobeIdleController** [client] — `src\components\Globe\GlobeIdleController.tsx`
+- **GlobeScene** [client] — `src\components\Globe\GlobeScene.tsx`
 - **Header** — `src\components\Layout\Header.tsx`
 - **MethodologyFooter** — `src\components\Layout\MethodologyFooter.tsx`
 - **StatsStrip** — props: data — `src\components\Layout\StatsStrip.tsx`
@@ -18,5 +27,7 @@
 - **DonorPanel** — props: donor, markerData — `src\components\Panel\DonorPanel.tsx`
 - **MarkerCredibilityCard** — props: markerData — `src\components\Panel\MarkerCredibilityCard.tsx`
 - **Panel** — props: title, onClose — `src\components\Panel\Panel.tsx`
+- **CountryDrilldown** — props: country — `src\components\panels\CountryDrilldown.tsx`
+- **DonorDrilldown** — props: donor — `src\components\panels\DonorDrilldown.tsx`
 - **Leaderboard** — props: data — `src\components\Sidebar\Leaderboard.tsx`
 - **LeftSidebar** — props: data — `src\components\Sidebar\LeftSidebar.tsx`

@@ -11,9 +11,23 @@ export const SECTOR_COLORS: Record<string, string> = {
   Other:              '#adb5bd',
 }
 
+export const DELTA_COLOR_RAMPS = {
+  positive: ['#86efac', '#22c55e'],
+  negative: ['#f87171', '#dc2626'],
+  neutral: ['#94a3b8', '#64748b'],
+} as const
+
+export function getSectorColorHex(sector: string): string {
+  return SECTOR_COLORS[sector] ?? SECTOR_COLORS.Other
+}
+
+export function getSectorArcColors(sector: string): [string, string] {
+  const color = getSectorColorHex(sector)
+  return [color, color]
+}
+
 export function sectorColor(sector: string): Color {
-  const hex = SECTOR_COLORS[sector] ?? SECTOR_COLORS.Other
-  return Color.fromCssColorString(hex)
+  return Color.fromCssColorString(getSectorColorHex(sector))
 }
 
 // growth_rate: positive = green, negative = red, null/0 = gray
