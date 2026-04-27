@@ -64,6 +64,20 @@ function getArcColor(arc: GlobeArcDatum, compareMode: boolean, compareFrom?: num
   return getSectorArcColors(arc.sector)
 }
 
+function getArcAltitude(arc: GlobeArcDatum) {
+  const toRad = Math.PI / 180
+  const lat1 = arc.donorLat * toRad
+  const lat2 = arc.recipientLat * toRad
+  const dLat = (arc.recipientLat - arc.donorLat) * toRad
+  const dLon = (arc.recipientLon - arc.donorLon) * toRad
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2
+  const centralAngle = 2 * Math.asin(Math.min(1, Math.sqrt(a)))
+  // Minimum altitude needed to keep the arc above the globe surface is
+  // 1/cos(θ/2) - 1. Add a small buffer and cap for readability.
+  const minAlt = 1 / Math.cos(centralAngle / 2) - 1
+  return Math.min(0.8, Math.max(0.1, minAlt + 0.05))
+}
+
 function getPointColor(point: GlobePointDatum) {
   if (point.totalUsdM >= 500) {
     return '#a5f3fc'
@@ -305,7 +319,7 @@ export function GlobeScene() {
         arcEndLat={(arc: GlobeArcDatum) => arc.recipientLat}
         arcEndLng={(arc: GlobeArcDatum) => arc.recipientLon}
         arcColor={(arc: GlobeArcDatum) => getArcColor(arc, compareMode, compareFrom, compareTo)}
-        arcAltitude={(arc: GlobeArcDatum) => Math.min(0.48, 0.22 + arc.amountUsdM / 2800)}
+        arcAltitude={(arc: GlobeArcDatum) => getArcAltitude(arc)}
         arcStroke={(arc: GlobeArcDatum) => Math.min(1.35, 0.28 + arc.amountUsdM / 900)}
         arcDashLength={0.8}
         arcDashGap={0.35}
