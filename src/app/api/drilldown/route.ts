@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { getDrilldown } from '../../../server/services/drilldownService'
-import { handleApiRequest } from '../overview/route'
+import { handleApiRequest } from '../../../server/api/handleApiRequest'
 
 export async function GET(request: NextRequest) {
   return handleApiRequest(

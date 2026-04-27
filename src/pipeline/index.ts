@@ -9,8 +9,26 @@ import { loadPrimaryCsv } from './loaders/loadPrimaryCsv'
 import { normalizeRows } from './normalize/normalizeRows'
 import { writeArtifact } from './writeArtifacts'
 
+export function ensureRequiredColumns(rows: Record<string, string>[], required: string[]) {
+  const sample = rows[0] ?? {}
+
+  for (const column of required) {
+    if (!(column in sample)) {
+      throw new Error(`Missing required column: ${column}`)
+    }
+  }
+}
+
 export async function runPipeline() {
   const rawRows = await loadPrimaryCsv()
+  ensureRequiredColumns(rawRows, [
+    'year',
+    'organization_name',
+    'country',
+    'Donor_country',
+    'usd_disbursements_defl',
+    'Sector',
+  ])
   const rows = normalizeRows(rawRows)
 
   await writeArtifact('overview', buildOverviewArtifact(rows))
