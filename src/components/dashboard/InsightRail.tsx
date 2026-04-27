@@ -9,7 +9,7 @@ import { DonorDrilldown } from '../panels/DonorDrilldown'
 import { TrendDrawer, type TrendDrawerItem } from './TrendDrawer'
 
 interface InsightRailProps {
-  overview?: OverviewResponse
+  overview: OverviewResponse | null
   drilldown?: DrilldownResponse
 }
 
@@ -56,40 +56,7 @@ function buildCountryItems(drilldown: NonNullable<DrilldownResponse['country']>)
 export function InsightRail({ overview, drilldown }: InsightRailProps) {
   const selectionType = useDashboardState((state) => state.selectionType)
   const selectionId = useDashboardState((state) => state.selectionId)
-  const [liveOverview, setLiveOverview] = useState<OverviewResponse | null>(overview ?? null)
   const [liveDrilldown, setLiveDrilldown] = useState<DrilldownResponse | null>(drilldown ?? null)
-
-  useEffect(() => {
-    if (overview !== undefined) {
-      setLiveOverview(overview)
-      return
-    }
-
-    let cancelled = false
-
-    void fetch('/api/overview')
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error('Overview request failed')
-        }
-
-        return response.json() as Promise<OverviewResponse>
-      })
-      .then((data) => {
-        if (!cancelled) {
-          setLiveOverview(data)
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setLiveOverview(null)
-        }
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [overview])
 
   useEffect(() => {
     if (drilldown !== undefined) {
@@ -98,6 +65,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
     }
 
     let cancelled = false
+    setLiveDrilldown(null)
     const searchParams = new URLSearchParams()
 
     if (selectionType !== undefined && selectionId !== undefined) {
@@ -133,7 +101,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
 
   const activeDonor = liveDrilldown?.donor ?? null
   const activeCountry = liveDrilldown?.country ?? null
-  const leadHighlight = liveOverview?.highlights[0] ?? null
+  const leadHighlight = overview?.highlights[0] ?? null
 
   return (
     <aside className="border-l border-white/10 bg-slate-950/45 px-6 py-28 backdrop-blur">
@@ -168,8 +136,8 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
           <TrendDrawer eyebrow="Drilldown" title="Tracked recipient footprint" items={buildCountryItems(activeCountry)} />
         ) : null}
 
-        {activeDonor === null && activeCountry === null && liveOverview !== null ? (
-          <TrendDrawer eyebrow="Portfolio" title="Platform overview" items={buildIdleItems(liveOverview)} />
+        {activeDonor === null && activeCountry === null && overview !== null ? (
+          <TrendDrawer eyebrow="Portfolio" title="Platform overview" items={buildIdleItems(overview)} />
         ) : null}
       </div>
     </aside>

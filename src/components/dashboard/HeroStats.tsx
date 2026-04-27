@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import type { OverviewResponse } from '../../contracts/overview'
 
 interface HeroStatsProps {
-  overview?: OverviewResponse
+  overview: OverviewResponse | null
 }
 
 interface HeroStatCard {
@@ -29,42 +29,8 @@ function buildHeroCards(overview: OverviewResponse): HeroStatCard[] {
 }
 
 export function HeroStats({ overview }: HeroStatsProps) {
-  const [liveOverview, setLiveOverview] = useState<OverviewResponse | null>(overview ?? null)
-
-  useEffect(() => {
-    if (overview !== undefined) {
-      setLiveOverview(overview)
-      return
-    }
-
-    let cancelled = false
-
-    void fetch('/api/overview')
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error('Overview request failed')
-        }
-
-        return response.json() as Promise<OverviewResponse>
-      })
-      .then((data) => {
-        if (!cancelled) {
-          setLiveOverview(data)
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setLiveOverview(null)
-        }
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [overview])
-
-  const heroCards = liveOverview === null ? [] : buildHeroCards(liveOverview)
-  const leadHighlight = liveOverview?.highlights[0] ?? null
+  const heroCards = overview === null ? [] : buildHeroCards(overview)
+  const leadHighlight = overview?.highlights[0] ?? null
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-10 px-6 pt-6">

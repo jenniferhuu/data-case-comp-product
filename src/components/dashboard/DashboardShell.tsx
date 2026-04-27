@@ -1,14 +1,52 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import type { OverviewResponse } from '../../contracts/overview'
 import { ControlRail } from './ControlRail'
 import { HeroStats } from './HeroStats'
 import { InsightRail } from './InsightRail'
 import { GlobeIdleController } from '../Globe/GlobeIdleController'
 import { GlobeScene } from '../Globe/GlobeScene'
 
+function useOverviewData() {
+  const [overview, setOverview] = useState<OverviewResponse | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    void fetch('/api/overview')
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Overview request failed')
+        }
+
+        return response.json() as Promise<OverviewResponse>
+      })
+      .then((data) => {
+        if (!cancelled) {
+          setOverview(data)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setOverview(null)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  return overview
+}
+
 export function DashboardShell() {
+  const overview = useOverviewData()
+
   return (
     <main data-testid="dashboard-shell" className="dashboard-shell min-h-screen">
-      <HeroStats />
+      <HeroStats overview={overview} />
       <div className="grid min-h-screen grid-cols-1 bg-[radial-gradient(circle_at_top,#153153_0%,#09111f_58%,#050913_100%)] lg:grid-cols-[320px_minmax(0,1fr)_380px]">
         <ControlRail />
         <section
@@ -22,7 +60,7 @@ export function DashboardShell() {
             <GlobeScene />
           </div>
         </section>
-        <InsightRail />
+        <InsightRail overview={overview} />
       </div>
     </main>
   )
