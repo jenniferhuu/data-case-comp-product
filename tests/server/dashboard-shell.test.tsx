@@ -89,4 +89,18 @@ describe('DashboardShell', () => {
     expect(searchParams.toString()).toBe('yearMode=single&year=2024')
     expect(renderToString(<DashboardShell />)).not.toContain('Current query')
   })
+
+  it('accepts hydrated typed query input without materializing absent optional fields', () => {
+    const parsed = parseDashboardQuery({
+      yearMode: 'single',
+      year: 2024,
+    })
+
+    expect(parsed).toMatchObject({
+      yearMode: 'single',
+      year: 2024,
+    })
+    expect(parsed).not.toHaveProperty('selectionType')
+    expect(parsed).not.toHaveProperty('selectionId')
+  })
 })

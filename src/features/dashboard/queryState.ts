@@ -5,18 +5,6 @@ type DashboardQueryInput =
   | Partial<DashboardQuery>
   | Record<string, string | number | undefined>
 
-const emptyDashboardQuery = {
-  yearMode: 'all' as const,
-  year: undefined,
-  compareFrom: undefined,
-  compareTo: undefined,
-  donorCountry: undefined,
-  sector: undefined,
-  marker: undefined,
-  selectionType: undefined,
-  selectionId: undefined,
-}
-
 function normalizeDashboardQueryRecord(searchParams: DashboardQueryInput): Record<string, string | undefined> {
   const normalizedEntries = Object.entries(searchParams).flatMap(([key, value]) => {
     if (value === undefined) {
@@ -29,27 +17,20 @@ function normalizeDashboardQueryRecord(searchParams: DashboardQueryInput): Recor
   return Object.fromEntries(normalizedEntries)
 }
 
-function materializeDashboardQuery(query: DashboardQuery): DashboardQuery {
-  return {
-    ...emptyDashboardQuery,
-    ...query,
-  }
-}
-
 export function parseDashboardQuery(searchParams?: URLSearchParams | string | DashboardQueryInput): DashboardQuery {
   if (searchParams === undefined) {
-    return materializeDashboardQuery(dashboardQuerySchema.parse({}))
+    return dashboardQuerySchema.parse({})
   }
 
   if (typeof searchParams === 'string') {
-    return materializeDashboardQuery(dashboardQuerySchema.parse(Object.fromEntries(new URLSearchParams(searchParams).entries())))
+    return dashboardQuerySchema.parse(Object.fromEntries(new URLSearchParams(searchParams).entries()))
   }
 
   if (searchParams instanceof URLSearchParams) {
-    return materializeDashboardQuery(dashboardQuerySchema.parse(Object.fromEntries(searchParams.entries())))
+    return dashboardQuerySchema.parse(Object.fromEntries(searchParams.entries()))
   }
 
-  return materializeDashboardQuery(dashboardQuerySchema.parse(normalizeDashboardQueryRecord(searchParams)))
+  return dashboardQuerySchema.parse(normalizeDashboardQueryRecord(searchParams))
 }
 
 export function mergeDashboardQuery(currentQuery: DashboardQuery, patch: Partial<DashboardQuery>): DashboardQuery {
@@ -69,7 +50,10 @@ export function mergeDashboardQuery(currentQuery: DashboardQuery, patch: Partial
     mergedQuery[key] = value === undefined ? undefined : String(value)
   }
 
-  return parseDashboardQuery(mergedQuery)
+  return {
+    ...parseDashboardQuery(mergedQuery),
+    ...Object.fromEntries(Object.entries(patch).filter(([, value]) => value === undefined)),
+  }
 }
 
 export function createDashboardSearchParams(query: DashboardQuery): URLSearchParams {
