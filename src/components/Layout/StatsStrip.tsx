@@ -1,20 +1,17 @@
 import { useMemo } from 'react'
-import { useStore } from '../../state/store'
-import { applyFilters } from '../../lib/filters'
 import type { AppData } from '../../types'
+import { getFilteredFlows, getFlowStats } from '../../features/filters/derivedData'
+import { useStoreFilterSnapshot } from '../../features/filters/storeFilters'
 
 interface Props { data: AppData }
 
 export function StatsStrip({ data }: Props) {
-  const { yearSelection, compareYears, donorCountry, sector, flowSizeMin } = useStore()
+  const filters = useStoreFilterSnapshot()
 
   const { count, totalUsd } = useMemo(() => {
-    const filtered = applyFilters(data.flows.flows, {
-      yearSelection, compareYears, donorCountry, sector, flowSizeMin,
-    })
-    const totalUsd = filtered.reduce((sum, f) => sum + f.usd_disbursed_m, 0)
-    return { count: filtered.length, totalUsd }
-  }, [data.flows.flows, yearSelection, compareYears, donorCountry, sector, flowSizeMin])
+    const filtered = getFilteredFlows(data.flows.flows, filters)
+    return getFlowStats(filtered)
+  }, [data.flows.flows, filters])
 
   const fmt = (n: number) =>
     n >= 1000 ? `$${(n / 1000).toFixed(1)}B` : `$${n.toFixed(0)}M`

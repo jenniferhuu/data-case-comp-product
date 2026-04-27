@@ -31,7 +31,7 @@ export function CesiumGlobe({ data }: Props) {
   const countriesDataSourceRef = useRef<GeoJsonDataSource | null>(null)
   const dataRef = useRef(data)
   dataRef.current = data
-  const { setSelectedDonorId, setSelectedCountryIso3, setDonorCountry } = useStore()
+  const { applyGlobeSelection } = useStore()
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
 
   useEffect(() => {
@@ -94,17 +94,16 @@ export function CesiumGlobe({ data }: Props) {
         (entity) => Boolean(entity && countriesDataSourceRef.current?.entities.contains(entity as any)),
       )
       if (!countryEntity) {
-        setSelectedDonorId(null)
-        setDonorCountry(null)
-        setSelectedCountryIso3(null)
+        applyGlobeSelection({
+          selectedDonorId: null,
+          donorCountry: null,
+          selectedCountryIso3: null,
+        })
         return
       }
       const iso3 = getCountryIso3(countryEntity.properties)
       if (iso3) {
-        const nextSelection = resolveGlobeSelection(iso3, dataRef.current.donors)
-        setDonorCountry(nextSelection.donorCountry)
-        setSelectedDonorId(nextSelection.selectedDonorId)
-        setSelectedCountryIso3(nextSelection.selectedCountryIso3)
+        applyGlobeSelection(resolveGlobeSelection(iso3, dataRef.current.donors))
       }
     }, ScreenSpaceEventType.LEFT_CLICK)
 

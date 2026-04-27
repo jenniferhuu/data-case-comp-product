@@ -10,11 +10,16 @@ export interface FilterParams {
 }
 
 export function applyFilters(flows: Flow[], params: FilterParams): Flow[] {
+  if (params.yearSelection === 'compare' && !params.compareYears) {
+    throw new Error('compareYears is required when yearSelection is "compare"')
+  }
+
   return flows.filter((f) => {
     if (params.yearSelection !== 'all' && params.yearSelection !== 'compare') {
       if (f.year !== params.yearSelection) return false
     }
-    if (params.yearSelection === 'compare' && params.compareYears) {
+    if (params.yearSelection === 'compare') {
+      if (!params.compareYears) return false
       const [y1, y2] = params.compareYears
       if (f.year !== y1 && f.year !== y2) return false
     }

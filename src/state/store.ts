@@ -1,5 +1,12 @@
 import { create } from 'zustand'
 import type { Mode, YearSelection, MarkerKey } from '../types'
+import {
+  applyGlobeSelectionState,
+  clearSelectionState,
+  selectCountryState,
+  selectDonorState,
+} from '../features/selection/selectionActions'
+import type { GlobeSelectionState } from '../lib/globeSelection'
 
 interface AppState {
   // Mode
@@ -28,9 +35,11 @@ interface AppState {
 
   // Drilldown panels
   selectedDonorId: string | null
-  setSelectedDonorId: (id: string | null) => void
   selectedCountryIso3: string | null
-  setSelectedCountryIso3: (iso3: string | null) => void
+  selectDonor: (id: string | null) => void
+  selectCountry: (iso3: string | null) => void
+  clearSelection: () => void
+  applyGlobeSelection: (nextSelection: GlobeSelectionState) => void
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -55,7 +64,10 @@ export const useStore = create<AppState>((set) => ({
   setSelectedMarker: (selectedMarker) => set({ selectedMarker }),
 
   selectedDonorId: null,
-  setSelectedDonorId: (selectedDonorId) => set({ selectedDonorId }),
   selectedCountryIso3: null,
-  setSelectedCountryIso3: (selectedCountryIso3) => set({ selectedCountryIso3 }),
+  selectDonor: (donorId) => set((state) => selectDonorState(state, donorId)),
+  selectCountry: (iso3) => set((state) => selectCountryState(state, iso3)),
+  clearSelection: () => set((state) => clearSelectionState(state)),
+  applyGlobeSelection: (nextSelection) =>
+    set((state) => applyGlobeSelectionState(state, nextSelection)),
 }))

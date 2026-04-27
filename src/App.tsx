@@ -17,7 +17,7 @@ import { useStore } from './state/store'
 export default function App() {
   const [data, setData] = useState<AppData | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const { selectedDonorId, setSelectedDonorId, selectedCountryIso3, setSelectedCountryIso3, mode } = useStore()
+  const { selectedDonorId, selectedCountryIso3, clearSelection, mode } = useStore()
 
   useEffect(() => {
     loadAppData().then(setData).catch((e) => setError(String(e)))
@@ -48,7 +48,7 @@ export default function App() {
         {(selectedDonor || selectedCountry) && (
           <Panel
             title={selectedDonor?.donor_name ?? selectedCountry?.name ?? ''}
-            onClose={() => { setSelectedDonorId(null); setSelectedCountryIso3(null) }}
+            onClose={clearSelection}
           >
             {selectedDonor   && <DonorPanel donor={selectedDonor} markerData={markerData} />}
             {selectedCountry && !selectedDonor && <CountryPanel country={selectedCountry} />}

@@ -68,6 +68,30 @@ describe('applyFilters', () => {
     const result = applyFilters(flows, { yearSelection: 'all', donorCountry: null, sector: null, flowSizeMin: 0, flowSizeMax: null })
     expect(result).toHaveLength(3)
   })
+
+  it('throws when compare mode has no compareYears', () => {
+    expect(() =>
+      applyFilters(flows, {
+        yearSelection: 'compare',
+        donorCountry: null,
+        sector: null,
+        flowSizeMin: 0,
+      }),
+    ).toThrow('compareYears is required when yearSelection is "compare"')
+  })
+
+  it('filters compare mode by the provided years only', () => {
+    const result = applyFilters(flows, {
+      yearSelection: 'compare',
+      compareYears: [2020, 2022],
+      donorCountry: null,
+      sector: null,
+      flowSizeMin: 0,
+    })
+
+    expect(result).toHaveLength(2)
+    expect(result.map((flow) => flow.year)).toEqual([2022, 2020])
+  })
 })
 
 describe('getLeaderboardDonors', () => {

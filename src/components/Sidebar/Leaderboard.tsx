@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { applyFilters, getLeaderboardCountries, getLeaderboardDonors } from '../../lib/filters'
 import { useStore } from '../../state/store'
 import type { AppData } from '../../types'
+import { getFilteredFlows, getLeaderboardEntries } from '../../features/filters/derivedData'
+import { useStoreFilterSnapshot } from '../../features/filters/storeFilters'
 
 interface Props {
   data: AppData
@@ -10,25 +11,14 @@ interface Props {
 export function Leaderboard({ data }: Props) {
   const [tab, setTab] = useState<'donors' | 'countries'>('donors')
   const [query, setQuery] = useState<string>('')
+  const filters = useStoreFilterSnapshot()
   const {
-    yearSelection,
-    compareYears,
-    donorCountry,
-    sector,
-    flowSizeMin,
     selectedDonorId,
     selectedCountryIso3,
-    setSelectedDonorId,
-    setSelectedCountryIso3,
+    selectDonor,
+    selectCountry,
   } = useStore()
-
-  const filtered = applyFilters(data.flows.flows, {
-    yearSelection,
-    compareYears,
-    donorCountry,
-    sector,
-    flowSizeMin,
-  })
+  const filtered = getFilteredFlows(data.flows.flows, filters)
 
   useEffect(() => {
     if (selectedDonorId) {
@@ -44,9 +34,7 @@ export function Leaderboard({ data }: Props) {
     setQuery('')
   }, [tab])
 
-  const allEntries = tab === 'donors'
-    ? getLeaderboardDonors(filtered, 1000)
-    : getLeaderboardCountries(filtered, 1000)
+  const allEntries = getLeaderboardEntries(filtered, tab, 1000)
 
   const filteredEntries = query
     ? allEntries.filter((e) => e.name.toLowerCase().includes(query.toLowerCase()))
@@ -56,11 +44,9 @@ export function Leaderboard({ data }: Props) {
 
   function selectEntry(id: string) {
     if (tab === 'donors') {
-      setSelectedCountryIso3(null)
-      setSelectedDonorId(id)
+      selectDonor(id)
     } else {
-      setSelectedDonorId(null)
-      setSelectedCountryIso3(id)
+      selectCountry(id)
     }
   }
 

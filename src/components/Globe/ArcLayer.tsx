@@ -3,9 +3,10 @@ import { AnimatedDashMaterialProperty } from '../../lib/animatedDashMaterial'
 import { Entity, PolylineGraphics } from 'resium'
 import { useStore } from '../../state/store'
 import type { AppData, Flow } from '../../types'
-import { applyFilters } from '../../lib/filters'
 import { generateArcPoints } from '../../lib/arcGeometry'
 import { sectorColor, growthRateColor, credibilityColor, arcWidth } from '../../lib/colorScales'
+import { getFilteredFlows } from '../../features/filters/derivedData'
+import { useStoreFilterSnapshot } from '../../features/filters/storeFilters'
 
 interface Props { data: AppData }
 
@@ -25,15 +26,13 @@ function getCompareColor(
 }
 
 export function ArcLayer({ data }: Props) {
-  const { mode, yearSelection, compareYears, donorCountry, sector, flowSizeMin, flowSizeMax, selectedMarker } = useStore()
+  const { mode, yearSelection, compareYears, selectedMarker } = useStore()
+  const filters = useStoreFilterSnapshot()
 
   const geoByIso3 = new Map(data.geo.map(c => [c.iso3, c]))
   const donorIso3Map = new Map(data.donors.map(d => [d.donor_id, d.donor_iso3]))
   const markerMap = new Map(data.markers.map(m => [m.donor_id, m]))
-
-  const filtered = applyFilters(data.flows.flows, {
-    yearSelection, compareYears, donorCountry, sector, flowSizeMin, flowSizeMax,
-  })
+  const filtered = getFilteredFlows(data.flows.flows, filters)
 
   return (
     <>
@@ -51,6 +50,8 @@ export function ArcLayer({ data }: Props) {
           const score = markerData?.markers[selectedMarker]?.credibility_score ?? 0
           color = credibilityColor(score)
         } else if (yearSelection === 'compare') {
+          // Preserve compare-mode semantics: added/removed state is based on
+          // the full year-pair dataset, not the currently visible filtered subset.
           color = getCompareColor(flow, data.flows.flows, compareYears)
         } else if (yearSelection === 'all') {
           color = growthRateColor(flow.growth_rate)
