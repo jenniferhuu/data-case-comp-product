@@ -183,12 +183,14 @@ export function GlobeScene() {
             visibleFundingUsdM: data.visibleFundingUsdM,
             arcCount: data.arcs.length,
             pointCount: data.points.length,
+            crossBorderPct: data.crossBorderPct,
+            domesticPct: data.domesticPct,
           })
         }
       })
       .catch((error: unknown) => {
         if (!cancelled) {
-          setGlobeResponse({ arcs: [], points: [], visibleFundingUsdM: 0 })
+          setGlobeResponse({ arcs: [], points: [], visibleFundingUsdM: 0, crossBorderPct: 0, domesticPct: 0 })
           setGlobeError(error instanceof Error ? error.message : 'Globe data is unavailable.')
         }
       })

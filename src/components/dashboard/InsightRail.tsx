@@ -31,6 +31,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
   const selectCountry = useDashboardState((state) => state.selectCountry)
   const selectDonor = useDashboardState((state) => state.selectDonor)
   const donorCountry = useDashboardState((state) => state.donorCountry)
+  const globeStats = useDashboardState((state) => state.globeStats)
   const [liveDrilldown, setLiveDrilldown] = useState<DrilldownResponse | null>(drilldown ?? null)
 
   useEffect(() => {
@@ -119,17 +120,42 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
               title="Platform overview"
             />
             {overview !== null ? (
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <InsightMetricCard
-                  label="Tracked recipient footprint"
-                  value={overview.totals.countries.toLocaleString('en-US')}
-                  detail="recipient countries"
-                />
-                <InsightMetricCard
-                  label="Active donor base"
-                  value={overview.totals.donors.toLocaleString('en-US')}
-                  detail={`${overview.totals.corridors.toLocaleString('en-US')} funding corridors`}
-                />
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <InsightMetricCard
+                    label="Tracked recipient footprint"
+                    value={overview.totals.countries.toLocaleString('en-US')}
+                    detail="recipient countries"
+                  />
+                  <InsightMetricCard
+                    label="Active donor base"
+                    value={overview.totals.donors.toLocaleString('en-US')}
+                    detail={`${overview.totals.corridors.toLocaleString('en-US')} funding corridors`}
+                  />
+                </div>
+                {globeStats !== null && (
+                  <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] px-4 py-3">
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Flow geography</p>
+                    <div className="mt-2.5 flex items-center gap-2">
+                      <div className="relative h-2.5 flex-1 overflow-hidden rounded-full bg-white/10">
+                        <div
+                          className="absolute inset-y-0 left-0 rounded-full bg-cyan-400"
+                          style={{ width: `${globeStats.crossBorderPct}%` }}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-2 flex justify-between text-xs">
+                      <span className="flex items-center gap-1.5 text-cyan-300">
+                        <span className="inline-block h-2 w-2 rounded-full bg-cyan-400" />
+                        Cross-border {globeStats.crossBorderPct}%
+                      </span>
+                      <span className="flex items-center gap-1.5 text-slate-400">
+                        <span className="inline-block h-2 w-2 rounded-full bg-white/20" />
+                        Domestic {globeStats.domesticPct}%
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <section className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-4">

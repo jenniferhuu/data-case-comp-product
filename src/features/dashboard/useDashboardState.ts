@@ -8,6 +8,8 @@ export interface GlobeStats {
   visibleFundingUsdM: number
   arcCount: number
   pointCount: number
+  crossBorderPct: number
+  domesticPct: number
 }
 
 export interface DashboardState extends DashboardQuery {

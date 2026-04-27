@@ -47,6 +47,8 @@ export const globeResponseSchema = z.object({
   arcs: z.array(globeArcSchema),
   points: z.array(globePointSchema),
   visibleFundingUsdM: z.number(),
+  crossBorderPct: z.number(),
+  domesticPct: z.number(),
 })
 
 export type GlobeArtifact = z.infer<typeof globeArtifactSchema>

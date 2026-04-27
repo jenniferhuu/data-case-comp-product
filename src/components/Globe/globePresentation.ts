@@ -41,6 +41,8 @@ export interface GlobePresentation {
   arcs: GlobeArcDatum[]
   points: GlobePointDatum[]
   visibleFundingUsdM: number
+  crossBorderPct: number
+  domesticPct: number
 }
 
 const COUNTRY_NAME_ALIASES: Record<string, string> = {
@@ -127,7 +129,7 @@ function resolveCountryGeo(value: string, index: ReturnType<typeof buildGeoIndex
 
 export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCountry[]): GlobePresentation {
   const geoIndex = buildGeoIndex(geo)
-  const arcsByCorridor = new Map<string, GlobeArcDatum>()
+  const arcsByCorridor = new Map<string, GlobeArcDatum & { donorIso3: string }>()
   const pointsByIso3 = new Map<string, GlobePointDatum & { donorIds: Set<string> }>()
 
   for (const flow of flows) {
@@ -148,6 +150,7 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
         donorId: flow.donorId,
         donorName: flow.donorName,
         donorCountry: flow.donorCountry,
+        donorIso3: donorGeo.iso3,
         donorLat: donorGeo.lat,
         donorLon: donorGeo.lon,
         recipientIso3: recipientGeo.iso3,  // resolved, never "UNK"
@@ -191,8 +194,21 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
     }
   }
 
+  let crossBorderUsdM = 0
+  let domesticUsdM = 0
+  for (const arc of arcsByCorridor.values()) {
+    if (arc.donorIso3.toUpperCase() === arc.recipientIso3.toUpperCase()) {
+      domesticUsdM += arc.amountUsdM
+    } else {
+      crossBorderUsdM += arc.amountUsdM
+    }
+  }
+  const totalFlowUsdM = crossBorderUsdM + domesticUsdM
+  const crossBorderPct = totalFlowUsdM > 0 ? Number(((crossBorderUsdM / totalFlowUsdM) * 100).toFixed(1)) : 0
+  const domesticPct = totalFlowUsdM > 0 ? Number(((domesticUsdM / totalFlowUsdM) * 100).toFixed(1)) : 0
+
   const allArcs = [...arcsByCorridor.values()]
-    .map((arc) => ({
+    .map(({ donorIso3: _donorIso3, ...arc }) => ({
       ...arc,
       amountUsdM: Number(arc.amountUsdM.toFixed(1)),
       years: [...arc.years].sort((left, right) => left - right),
@@ -219,5 +235,7 @@ export function buildGlobePresentation(flows: GlobeArtifact['flows'], geo: GeoCo
     arcs,
     points,
     visibleFundingUsdM: Number(arcs.reduce((sum, arc) => sum + arc.amountUsdM, 0).toFixed(1)),
+    crossBorderPct,
+    domesticPct,
   }
 }
