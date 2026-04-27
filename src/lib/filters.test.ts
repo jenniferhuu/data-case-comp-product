@@ -57,6 +57,17 @@ describe('applyFilters', () => {
     const result = applyFilters(flows, { yearSelection: 'all', donorCountry: 'United Kingdom', sector: 'Emergency', flowSizeMin: 1.0 })
     expect(result).toHaveLength(1)
   })
+
+  it('filters by flowSizeMax', () => {
+    const result = applyFilters(flows, { yearSelection: 'all', donorCountry: null, sector: null, flowSizeMin: 0, flowSizeMax: 3 })
+    expect(result).toHaveLength(2)
+    result.forEach(f => expect(f.usd_disbursed_m).toBeLessThanOrEqual(3))
+  })
+
+  it('applies no upper cap when flowSizeMax is null', () => {
+    const result = applyFilters(flows, { yearSelection: 'all', donorCountry: null, sector: null, flowSizeMin: 0, flowSizeMax: null })
+    expect(result).toHaveLength(3)
+  })
 })
 
 describe('getLeaderboardDonors', () => {

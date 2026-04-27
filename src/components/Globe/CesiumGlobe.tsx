@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import { Viewer } from 'resium'
-import { TileMapServiceImageryProvider, ImageryLayer, buildModuleUrl, Color, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium'
+import { ArcGisMapServerImageryProvider, ImageryLayer, Color, ScreenSpaceEventHandler, ScreenSpaceEventType, GeoJsonDataSource } from 'cesium'
 import type { AppData } from '../../types'
 import { ArcLayer } from './ArcLayer'
 import { CrisisAnnotations } from './CrisisAnnotations'
@@ -20,19 +20,23 @@ interface TooltipState {
 
 export function CesiumGlobe({ data }: Props) {
   const viewerRef = useRef<any>(null)
-  const { setSelectedDonorId, setSelectedCountryIso3 } = useStore()
+  const countriesDataSourceRef = useRef<GeoJsonDataSource | null>(null)
+  const { setSelectedDonorId, setSelectedCountryIso3, setDonorCountry } = useStore()
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
 
   useEffect(() => {
     const viewer = viewerRef.current?.cesiumElement
     if (!viewer) return
-    // Replace default Ion imagery with bundled Natural Earth II (no Ion token needed)
-    TileMapServiceImageryProvider.fromUrl(
-      buildModuleUrl('Assets/Textures/NaturalEarthII')
+    viewer.useBrowserRecommendedResolution = false
+    viewer.resolutionScale = window.devicePixelRatio
+
+    ArcGisMapServerImageryProvider.fromUrl(
+      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
     ).then((provider) => {
       viewer.imageryLayers.removeAll()
       viewer.imageryLayers.add(new ImageryLayer(provider))
     })
+
     viewer.scene.skyAtmosphere.show = true
     viewer.scene.globe.enableLighting = true
     viewer.scene.fog.enabled = true
@@ -41,6 +45,19 @@ export function CesiumGlobe({ data }: Props) {
     viewer.scene.globe.showGroundAtmosphere = true
     viewer.scene.globe.atmosphereLightIntensity = 10.0
     viewer.scene.globe.baseColor = Color.fromCssColorString('#0a1628')
+
+    GeoJsonDataSource.load(
+      'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson',
+      {
+        stroke: Color.fromCssColorString('#f87171').withAlpha(0.6),
+        fill: Color.TRANSPARENT,
+        strokeWidth: 1.5,
+        clampToGround: true,
+      }
+    ).then((ds) => {
+      viewer.dataSources.add(ds)
+      countriesDataSourceRef.current = ds
+    })
 
     const handler = new ScreenSpaceEventHandler(viewer.scene.canvas)
     handler.setInputAction((movement: { endPosition: { x: number; y: number } }) => {
@@ -92,6 +109,24 @@ export function CesiumGlobe({ data }: Props) {
           if (!picked) {
             setSelectedDonorId(null)
             setSelectedCountryIso3(null)
+            return
+          }
+          const entity = picked.id
+          if (
+            entity &&
+            countriesDataSourceRef.current &&
+            countriesDataSourceRef.current.entities.contains(entity)
+          ) {
+            const iso3: string | undefined = entity.properties?.ISO_A3?.getValue()
+            if (iso3) {
+              const donor = data.donors.find((d) => d.donor_iso3 === iso3)
+              if (donor) {
+                setDonorCountry(donor.donor_country)
+                setSelectedDonorId(donor.donor_id)
+              } else {
+                setSelectedCountryIso3(iso3)
+              }
+            }
           }
         }}
       >

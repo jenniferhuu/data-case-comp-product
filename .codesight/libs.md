@@ -1,0 +1,37 @@
+# Libraries
+
+- `scripts\build_data.py`
+  - function make_slug: (name) -> str
+  - function load_centroids: () -> dict
+  - function resolve_iso3: (name, centroid_lookup) -> str | None
+  - function sector_group: (sector_val) -> str
+  - function compute_marker_stats: (group, col) -> dict
+  - function main: ()
+- `scripts\geocode_countries.py` — function name_to_iso3: (name) -> str | None, function main: ()
+- `scripts\tests\test_build_data.py`
+  - function run_pipeline: ()
+  - function test_all_output_files_created: (run_pipeline)
+  - function test_flows_schema: (run_pipeline)
+  - function test_donor_summary_has_rank_and_iso3: (run_pipeline)
+  - function test_countries_geo_includes_donor_countries: (run_pipeline)
+  - function test_marker_breakdown_has_all_seven: (run_pipeline)
+  - _...4 more_
+- `scripts\tests\test_geocode.py`
+  - function test_centroids_file_created: ()
+  - function test_centroids_has_required_columns: ()
+  - function test_centroids_ukraine_present: ()
+  - function test_centroids_has_over_80_countries: ()
+- `src\lib\arcGeometry.ts` — function generateArcPoints: (fromLat, fromLon, toLat, toLon, numPoints) => Cartesian3[]
+- `src\lib\colorScales.ts`
+  - function sectorColor: (sector) => Color
+  - function growthRateColor: (rate) => Color
+  - function credibilityColor: (score) => Color
+  - function arcWidth: (usd_m) => number
+  - const SECTOR_COLORS: Record<string, string>
+- `src\lib\dataLoader.ts` — function loadAppData: () => Promise<AppData>
+- `src\lib\filters.ts`
+  - function applyFilters: (flows, params) => Flow[]
+  - function getLeaderboardDonors: (flows, topN) => LeaderboardEntry[]
+  - function getLeaderboardCountries: (flows, topN) => LeaderboardEntry[]
+  - interface FilterParams
+  - interface LeaderboardEntry

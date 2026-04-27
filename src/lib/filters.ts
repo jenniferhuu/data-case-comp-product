@@ -5,6 +5,7 @@ export interface FilterParams {
   donorCountry: string | null
   sector: string | null
   flowSizeMin: number
+  flowSizeMax?: number | null
   compareYears?: [number, number]
 }
 
@@ -20,6 +21,7 @@ export function applyFilters(flows: Flow[], params: FilterParams): Flow[] {
     if (params.donorCountry && f.donor_country !== params.donorCountry) return false
     if (params.sector && f.top_sector !== params.sector) return false
     if (f.usd_disbursed_m < params.flowSizeMin) return false
+    if (params.flowSizeMax != null && f.usd_disbursed_m > params.flowSizeMax) return false
     return true
   })
 }

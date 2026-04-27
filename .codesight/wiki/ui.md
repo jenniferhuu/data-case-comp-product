@@ -1,0 +1,31 @@
+# UI
+
+> **Navigation aid.** Component inventory and prop signatures extracted via AST. Read the source files before adding props or modifying component logic.
+
+**20 components** (react)
+
+## Components
+
+- **App** — `src\App.tsx`
+- **ArcLegend** — `src\components\Controls\ArcLegend.tsx`
+- **DonorCountryFilter** — props: options — `src\components\Controls\DonorCountryFilter.tsx`
+- **FlowSizeSlider** — `src\components\Controls\FlowSizeSlider.tsx`
+- **MarkerSelector** — `src\components\Controls\MarkerSelector.tsx`
+- **ModeToggle** — `src\components\Controls\ModeToggle.tsx`
+- **SectorFilter** — props: options — `src\components\Controls\SectorFilter.tsx`
+- **YearControls** — `src\components\Controls\YearControls.tsx`
+- **ArcLayer** — props: data — `src\components\Globe\ArcLayer.tsx`
+- **CesiumGlobe** — props: data — `src\components\Globe\CesiumGlobe.tsx`
+- **CrisisAnnotations** — props: events, geo — `src\components\Globe\CrisisAnnotations.tsx`
+- **Header** — `src\components\Layout\Header.tsx`
+- **MethodologyFooter** — `src\components\Layout\MethodologyFooter.tsx`
+- **StatsStrip** — props: data — `src\components\Layout\StatsStrip.tsx`
+- **CountryPanel** — props: country — `src\components\Panel\CountryPanel.tsx`
+- **DonorPanel** — props: donor, markerData — `src\components\Panel\DonorPanel.tsx`
+- **MarkerCredibilityCard** — props: markerData — `src\components\Panel\MarkerCredibilityCard.tsx`
+- **Panel** — props: title, onClose — `src\components\Panel\Panel.tsx`
+- **Leaderboard** — props: data — `src\components\Sidebar\Leaderboard.tsx`
+- **LeftSidebar** — props: data — `src\components\Sidebar\LeftSidebar.tsx`
+
+---
+_Back to [overview.md](./overview.md)_

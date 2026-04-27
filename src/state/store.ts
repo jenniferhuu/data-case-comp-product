@@ -19,6 +19,8 @@ interface AppState {
   setSector: (s: string | null) => void
   flowSizeMin: number
   setFlowSizeMin: (n: number) => void
+  flowSizeMax: number | null
+  setFlowSizeMax: (n: number | null) => void
 
   // Credibility mode
   selectedMarker: MarkerKey
@@ -46,6 +48,8 @@ export const useStore = create<AppState>((set) => ({
   setSector: (sector) => set({ sector }),
   flowSizeMin: 1,
   setFlowSizeMin: (flowSizeMin) => set({ flowSizeMin }),
+  flowSizeMax: null,
+  setFlowSizeMax: (flowSizeMax) => set({ flowSizeMax }),
 
   selectedMarker: 'gender',
   setSelectedMarker: (selectedMarker) => set({ selectedMarker }),

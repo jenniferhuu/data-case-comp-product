@@ -5,7 +5,7 @@ import { Cartesian3 } from 'cesium'
 export function generateArcPoints(
   fromLat: number, fromLon: number,
   toLat: number,   toLon: number,
-  numPoints = 64
+  numPoints = 128
 ): Cartesian3[] {
   const start = Cartesian3.fromDegrees(fromLon, fromLat)
   const end   = Cartesian3.fromDegrees(toLon,   toLat)

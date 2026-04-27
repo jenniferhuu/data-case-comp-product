@@ -1,4 +1,5 @@
-import { PolylineGlowMaterialProperty, ArcType, Color as CesiumColor } from 'cesium'
+import { ArcType, Color as CesiumColor } from 'cesium'
+import { AnimatedDashMaterialProperty } from '../../lib/animatedDashMaterial'
 import { Entity, PolylineGraphics } from 'resium'
 import { useStore } from '../../state/store'
 import type { AppData, Flow } from '../../types'
@@ -24,14 +25,14 @@ function getCompareColor(
 }
 
 export function ArcLayer({ data }: Props) {
-  const { mode, yearSelection, compareYears, donorCountry, sector, flowSizeMin, selectedMarker, setSelectedDonorId } = useStore()
+  const { mode, yearSelection, compareYears, donorCountry, sector, flowSizeMin, flowSizeMax, selectedMarker, setSelectedDonorId } = useStore()
 
   const geoByIso3 = new Map(data.geo.map(c => [c.iso3, c]))
   const donorIso3Map = new Map(data.donors.map(d => [d.donor_id, d.donor_iso3]))
   const markerMap = new Map(data.markers.map(m => [m.donor_id, m]))
 
   const filtered = applyFilters(data.flows.flows, {
-    yearSelection, compareYears, donorCountry, sector, flowSizeMin,
+    yearSelection, compareYears, donorCountry, sector, flowSizeMin, flowSizeMax,
   })
 
   return (
@@ -68,7 +69,7 @@ export function ArcLayer({ data }: Props) {
             <PolylineGraphics
               positions={points}
               width={width}
-              material={new PolylineGlowMaterialProperty({ color: displayColor, glowPower: 0.25, taperPower: 0.7 })}
+              material={new AnimatedDashMaterialProperty(displayColor)}
               arcType={ArcType.NONE}
             />
           </Entity>
