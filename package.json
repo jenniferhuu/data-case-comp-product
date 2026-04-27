@@ -11,7 +11,7 @@
     "test": "vitest run --exclude tests/e2e/**",
     "test:watch": "vitest --exclude tests/e2e/**",
     "pipeline": "tsx src/pipeline/index.ts",
-    "test:e2e": "npm run build && playwright test"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "cesium": "^1.118.0",

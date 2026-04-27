@@ -7,7 +7,7 @@ export default defineConfig({
     baseURL: 'http://127.0.0.1:3000',
   },
   webServer: {
-    command: 'npm run start -- --hostname 127.0.0.1 --port 3000',
+    command: `node -e "require('node:fs').rmSync('.next', { recursive: true, force: true })" && npm run build && npm run start -- --hostname 127.0.0.1 --port 3000`,
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: false,
     timeout: 180000,
