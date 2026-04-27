@@ -20,6 +20,7 @@ export interface DashboardState extends DashboardQuery {
   resetSelection: () => void
   selectCountry: (iso3: string | null) => void
   selectDonor: (id: string | null) => void
+  selectDonorCountry: (name: string | null) => void
   setIdleMode: (value: boolean) => void
   setGlobeStats: (stats: GlobeStats) => void
 }
@@ -112,6 +113,16 @@ export const useDashboardState = create<DashboardState>((set) => ({
       selectedDonorId,
       selectedCountryIso3: null,
       idleMode: selectedDonorId === null,
+    })
+  },
+  selectDonorCountry: (name) => {
+    set({
+      donorCountry: name ?? undefined,
+      selectionType: name === null ? undefined : 'donorCountry',
+      selectionId: name ?? undefined,
+      selectedCountryIso3: null,
+      selectedDonorId: null,
+      idleMode: name === null,
     })
   },
   setIdleMode: (idleMode) => set({ idleMode }),

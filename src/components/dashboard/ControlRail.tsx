@@ -96,6 +96,7 @@ export function ControlRail() {
   const resetSelection = useDashboardState((state) => state.resetSelection)
   const selectCountry = useDashboardState((state) => state.selectCountry)
   const selectDonor = useDashboardState((state) => state.selectDonor)
+  const selectDonorCountry = useDashboardState((state) => state.selectDonorCountry)
   const setIdleMode = useDashboardState((state) => state.setIdleMode)
   const yearMode = useDashboardState((state) => state.yearMode)
   const year = useDashboardState((state) => state.year)
@@ -298,16 +299,7 @@ export function ControlRail() {
                 options={filters.donorCountries}
                 onChange={(value) => {
                   activateManualMode()
-                  if (value !== undefined) {
-                    patchQuery({
-                      donorCountry: value,
-                      selectionType: 'donorCountry',
-                      selectionId: value,
-                    })
-                  } else {
-                    patchQuery({ donorCountry: undefined })
-                    resetSelection()
-                  }
+                  selectDonorCountry(value ?? null)
                 }}
               />
 
