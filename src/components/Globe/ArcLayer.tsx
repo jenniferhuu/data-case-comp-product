@@ -25,7 +25,7 @@ function getCompareColor(
 }
 
 export function ArcLayer({ data }: Props) {
-  const { mode, yearSelection, compareYears, donorCountry, sector, flowSizeMin, flowSizeMax, selectedMarker, setSelectedDonorId } = useStore()
+  const { mode, yearSelection, compareYears, donorCountry, sector, flowSizeMin, flowSizeMax, selectedMarker } = useStore()
 
   const geoByIso3 = new Map(data.geo.map(c => [c.iso3, c]))
   const donorIso3Map = new Map(data.donors.map(d => [d.donor_id, d.donor_iso3]))
@@ -64,7 +64,6 @@ export function ArcLayer({ data }: Props) {
           <Entity
             key={`${flow.donor_id}-${flow.recipient_iso3}-${flow.year}-${i}`}
             name={`FLOW~${flow.donor_name}~${flow.recipient_name}~${flow.usd_disbursed_m.toFixed(1)}~${flow.top_sector}~${flow.year}`}
-            onClick={() => setSelectedDonorId(flow.donor_id)}
           >
             <PolylineGraphics
               positions={points}
