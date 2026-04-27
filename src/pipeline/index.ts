@@ -9,12 +9,17 @@ import { loadPrimaryCsv } from './loaders/loadPrimaryCsv'
 import { normalizeRows } from './normalize/normalizeRows'
 import { writeArtifact } from './writeArtifacts'
 
-export function ensureRequiredColumns(rows: Record<string, string>[], required: string[]) {
+type RequiredColumn = string | readonly string[]
+
+export function ensureRequiredColumns(rows: Record<string, string>[], required: readonly RequiredColumn[]) {
   const sample = rows[0] ?? {}
 
-  for (const column of required) {
-    if (!(column in sample)) {
-      throw new Error(`Missing required column: ${column}`)
+  for (const requirement of required) {
+    const aliases = Array.isArray(requirement) ? requirement : [requirement]
+    const hasSupportedColumn = aliases.some((column) => column in sample)
+
+    if (!hasSupportedColumn) {
+      throw new Error(`Missing required column: ${aliases.join(' or ')}`)
     }
   }
 }
@@ -23,11 +28,11 @@ export async function runPipeline() {
   const rawRows = await loadPrimaryCsv()
   ensureRequiredColumns(rawRows, [
     'year',
-    'organization_name',
-    'country',
-    'Donor_country',
-    'usd_disbursements_defl',
-    'Sector',
+    ['donor_name', 'organization_name'],
+    ['recipient_name', 'country'],
+    ['donor_country', 'Donor_country'],
+    ['usd_disbursed', 'usd_disbursed_m', 'usd_disbursements_defl'],
+    ['sector', 'Sector'],
   ])
   const rows = normalizeRows(rawRows)
 
