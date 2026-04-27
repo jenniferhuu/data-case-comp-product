@@ -1,35 +1,8 @@
-import { dashboardQuerySchema } from '../../contracts/filters'
 import { drilldownResponseSchema, type DrilldownResponse } from '../../contracts/drilldown'
-import { z } from 'zod'
-import { readArtifactJson } from '../repositories/artifactRepository'
-import { readCountrySummary, readDonorSummary } from '../repositories/dashboardRepository'
-
-const globeFlowSchema = z.object({
-  donorId: z.string(),
-  donorName: z.string(),
-  donorCountry: z.string(),
-  recipientIso3: z.string(),
-  recipientName: z.string(),
-  year: z.number(),
-  amountUsdM: z.number(),
-  sector: z.string(),
-})
-
-const globeArtifactSchema = z.object({
-  flows: z.array(globeFlowSchema),
-})
-
-function parseDashboardQuery(searchParams?: URLSearchParams) {
-  if (searchParams === undefined) {
-    return dashboardQuerySchema.parse({})
-  }
-
-  return dashboardQuerySchema.parse(Object.fromEntries(searchParams.entries()))
-}
-
-function hyphenateId(value: string) {
-  return value.replace(/_/g, '-')
-}
+import { normalizeSectorLabel } from '../../lib/sectorLabels'
+import type { CanonicalFundingRow } from '../../pipeline/normalize/normalizeRows'
+import { readCountriesGeoJson } from '../repositories/geoRepository'
+import { getRowAmount, loadFilteredRows } from './dashboardData'
 
 function round1(value: number) {
   return Number(value.toFixed(1))
@@ -39,47 +12,109 @@ function round4(value: number) {
   return Number(value.toFixed(4))
 }
 
+function getRecipientGroupKey(row: CanonicalFundingRow): string {
+  return row.recipient.iso3 === 'UNK'
+    ? `name:${row.recipient.name.trim().toLowerCase()}`
+    : `iso3:${row.recipient.iso3}`
+}
+
+function sortTotals<T extends { totalUsdM: number }>(items: T[]) {
+  return items.sort((left, right) => right.totalUsdM - left.totalUsdM)
+}
+
+function buildSectorBreakdown(rows: CanonicalFundingRow[], valueMode: 'disbursements' | 'commitments') {
+  const totals = new Map<string, number>()
+
+  for (const row of rows) {
+    const amount = getRowAmount(row, valueMode)
+    if (amount <= 0) continue
+    const sector = normalizeSectorLabel(row.sector)
+    totals.set(sector, (totals.get(sector) ?? 0) + amount)
+  }
+
+  return sortTotals(
+    [...totals.entries()].map(([sector, totalUsdM]) => ({
+      sector,
+      totalUsdM: round4(totalUsdM),
+    })),
+  ).slice(0, 6)
+}
+
+function buildTopImplementers(rows: CanonicalFundingRow[], valueMode: 'disbursements' | 'commitments') {
+  const totals = new Map<string, number>()
+
+  for (const row of rows) {
+    const amount = getRowAmount(row, valueMode)
+    if (amount <= 0) continue
+    totals.set(row.channelName, (totals.get(row.channelName) ?? 0) + amount)
+  }
+
+  return sortTotals(
+    [...totals.entries()].map(([name, totalUsdM]) => ({
+      name,
+      totalUsdM: round4(totalUsdM),
+    })),
+  ).slice(0, 6)
+}
+
+function buildYearlyFunding(rows: CanonicalFundingRow[], valueMode: 'disbursements' | 'commitments') {
+  const totals = new Map<number, number>()
+
+  for (const row of rows) {
+    const amount = getRowAmount(row, valueMode)
+    if (row.year <= 0 || amount <= 0) continue
+    totals.set(row.year, (totals.get(row.year) ?? 0) + amount)
+  }
+
+  return [...totals.entries()]
+    .sort((left, right) => left[0] - right[0])
+    .map(([year, totalUsdM]) => ({ year, totalUsdM: round4(totalUsdM) }))
+}
+
 export async function getDrilldown(searchParams?: URLSearchParams): Promise<DrilldownResponse> {
-  const query = parseDashboardQuery(searchParams)
-  const globe = globeArtifactSchema.parse(await readArtifactJson('globe'))
+  const { query, rows } = await loadFilteredRows(searchParams)
 
   if (query.selectionType === 'donor' && query.selectionId !== undefined) {
-    const donors = await readDonorSummary()
-    const donor = donors.find((entry) => hyphenateId(entry.donor_id) === query.selectionId)
+    const donorRows = rows.filter((row) => row.donor.id === query.selectionId)
+    const totalUsdM = donorRows.reduce((sum, row) => sum + getRowAmount(row, query.valueMode), 0)
 
-    if (donor === undefined) {
+    if (donorRows.length === 0 || totalUsdM <= 0) {
       return drilldownResponseSchema.parse({ donor: null, country: null, donorCountry: null })
     }
 
-    const yearlyTotals = new Map<number, number>()
-    for (const flow of globe.flows) {
-      if (flow.year <= 0 || flow.donorId !== query.selectionId) {
-        continue
+    const topRecipients = new Map<string, { iso3: string; name: string; totalUsdM: number }>()
+    for (const row of donorRows) {
+      const amount = getRowAmount(row, query.valueMode)
+      if (amount <= 0) continue
+      const key = getRecipientGroupKey(row)
+      const existing = topRecipients.get(key) ?? {
+        iso3: row.recipient.iso3,
+        name: row.recipient.name,
+        totalUsdM: 0,
       }
-
-      yearlyTotals.set(flow.year, (yearlyTotals.get(flow.year) ?? 0) + flow.amountUsdM)
+      existing.totalUsdM += amount
+      topRecipients.set(key, existing)
     }
+
+    const topRecipientEntries = sortTotals(
+      [...topRecipients.values()].map((recipient) => ({
+        ...recipient,
+        totalUsdM: round4(recipient.totalUsdM),
+      })),
+    ).slice(0, 6)
 
     return drilldownResponseSchema.parse({
       donor: {
         id: query.selectionId,
-        name: donor.donor_name,
-        country: donor.donor_country,
-        totalUsdM: round4(donor.total_usd_m),
-        recipientCount: donor.n_countries,
-        topRecipientShare: round1(((donor.top_recipients[0]?.usd_m ?? 0) / donor.total_usd_m) * 100),
-        yearlyFunding: [...yearlyTotals.entries()]
-          .sort((left, right) => left[0] - right[0])
-          .map(([year, usdM]) => ({ year, totalUsdM: round4(usdM) })),
-        sectorBreakdown: donor.top_sectors.map((item) => ({
-          sector: item.name,
-          totalUsdM: round4(item.usd_m),
-        })),
-        topRecipients: donor.top_recipients.map((item) => ({
-          iso3: item.iso3,
-          name: item.name,
-          totalUsdM: round4(item.usd_m),
-        })),
+        name: donorRows[0]!.donor.name,
+        country: donorRows[0]!.donor.country,
+        totalUsdM: round4(totalUsdM),
+        recipientCount: topRecipients.size,
+        topRecipientShare: round1(((topRecipientEntries[0]?.totalUsdM ?? 0) / totalUsdM) * 100),
+        yearlyFunding: buildYearlyFunding(donorRows, query.valueMode),
+        sectorBreakdown: buildSectorBreakdown(donorRows, query.valueMode),
+        topRecipients: topRecipientEntries,
+        topImplementers: buildTopImplementers(donorRows, query.valueMode),
       },
       country: null,
       donorCountry: null,
@@ -87,73 +122,90 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
   }
 
   if (query.selectionType === 'country' && query.selectionId !== undefined) {
-    const countries = await readCountrySummary()
-    const country = countries.find(
-      (entry) => entry.iso3 === query.selectionId || entry.name === query.selectionId,
+    const geo = await readCountriesGeoJson()
+    const selectedGeoName = geo.find((entry) => entry.iso3 === query.selectionId)?.name
+    const countryRows = rows.filter((row) =>
+      row.recipient.iso3 === query.selectionId
+      || row.recipient.name === query.selectionId
+      || (selectedGeoName !== undefined && row.recipient.name === selectedGeoName),
     )
+    const totalUsdM = countryRows.reduce((sum, row) => sum + getRowAmount(row, query.valueMode), 0)
 
-    if (country === undefined) {
+    if (countryRows.length === 0 || totalUsdM <= 0) {
       return drilldownResponseSchema.parse({ donor: null, country: null, donorCountry: null })
     }
 
-    const donors = await readDonorSummary()
-    const donorCountryById = new Map(donors.map((entry) => [entry.donor_id, entry.donor_country]))
+    const topDonors = new Map<string, { id: string; name: string; country: string; totalUsdM: number }>()
+    for (const row of countryRows) {
+      const amount = getRowAmount(row, query.valueMode)
+      if (amount <= 0) continue
+      const existing = topDonors.get(row.donor.id) ?? {
+        id: row.donor.id,
+        name: row.donor.name,
+        country: row.donor.country,
+        totalUsdM: 0,
+      }
+      existing.totalUsdM += amount
+      topDonors.set(row.donor.id, existing)
+    }
+
+    const topDonorEntries = sortTotals(
+      [...topDonors.values()].map((donor) => ({
+        ...donor,
+        totalUsdM: round4(donor.totalUsdM),
+      })),
+    ).slice(0, 6)
 
     return drilldownResponseSchema.parse({
       donor: null,
       country: {
-        iso3: country.iso3,
-        name: country.name,
-        totalUsdM: round4(country.total_received_usd_m),
-        donorCount: country.n_donors,
-        topDonorShare: round1(((country.top_donors[0]?.usd_m ?? 0) / country.total_received_usd_m) * 100),
-        yearlyFunding: Object.entries(country.by_year)
-          .map(([year, usdM]) => ({ year: Number(year), totalUsdM: round4(usdM) }))
-          .sort((left, right) => left.year - right.year),
-        sectorBreakdown: country.top_sectors.map((item) => ({
-          sector: item.name,
-          totalUsdM: round4(item.usd_m),
-        })),
-        topDonors: country.top_donors.map((item) => ({
-          id: hyphenateId(item.donor_id),
-          name: item.donor_name,
-          country: donorCountryById.get(item.donor_id) ?? 'Unknown',
-          totalUsdM: round4(item.usd_m),
-        })),
+        iso3: countryRows[0]!.recipient.iso3 === 'UNK' ? query.selectionId : countryRows[0]!.recipient.iso3,
+        name: countryRows[0]!.recipient.name,
+        totalUsdM: round4(totalUsdM),
+        donorCount: topDonors.size,
+        topDonorShare: round1(((topDonorEntries[0]?.totalUsdM ?? 0) / totalUsdM) * 100),
+        yearlyFunding: buildYearlyFunding(countryRows, query.valueMode),
+        sectorBreakdown: buildSectorBreakdown(countryRows, query.valueMode),
+        topDonors: topDonorEntries,
+        topImplementers: buildTopImplementers(countryRows, query.valueMode),
       },
       donorCountry: null,
     })
   }
 
   if (query.selectionType === 'donorCountry' && query.selectionId !== undefined) {
-    const donors = await readDonorSummary()
-    const countryDonors = donors.filter((d) => d.donor_country === query.selectionId)
+    const donorCountryRows = rows.filter((row) => row.donor.country === query.selectionId)
+    const totalUsdM = donorCountryRows.reduce((sum, row) => sum + getRowAmount(row, query.valueMode), 0)
 
-    if (countryDonors.length === 0) {
+    if (donorCountryRows.length === 0 || totalUsdM <= 0) {
       return drilldownResponseSchema.parse({ donor: null, country: null, donorCountry: null })
     }
 
-    const yearlyTotals = new Map<number, number>()
-    const sectorTotals = new Map<string, number>()
-    const recipientTotals = new Map<string, { name: string; iso3: string; usdM: number }>()
+    const donorTotals = new Map<string, { id: string; name: string; country: string; totalUsdM: number }>()
+    const recipientTotals = new Map<string, { iso3: string; name: string; totalUsdM: number }>()
 
-    for (const flow of globe.flows) {
-      if (flow.year <= 0) continue
-      const donor = countryDonors.find((d) => d.donor_id === flow.donorId)
-      if (donor === undefined) continue
+    for (const row of donorCountryRows) {
+      const amount = getRowAmount(row, query.valueMode)
+      if (amount <= 0) continue
 
-      yearlyTotals.set(flow.year, (yearlyTotals.get(flow.year) ?? 0) + flow.amountUsdM)
-      sectorTotals.set(flow.sector, (sectorTotals.get(flow.sector) ?? 0) + flow.amountUsdM)
-
-      const existing = recipientTotals.get(flow.recipientIso3)
-      if (existing === undefined) {
-        recipientTotals.set(flow.recipientIso3, { name: flow.recipientName, iso3: flow.recipientIso3, usdM: flow.amountUsdM })
-      } else {
-        existing.usdM += flow.amountUsdM
+      const donor = donorTotals.get(row.donor.id) ?? {
+        id: row.donor.id,
+        name: row.donor.name,
+        country: row.donor.country,
+        totalUsdM: 0,
       }
-    }
+      donor.totalUsdM += amount
+      donorTotals.set(row.donor.id, donor)
 
-    const totalUsdM = countryDonors.reduce((sum, d) => sum + d.total_usd_m, 0)
+      const recipientKey = getRecipientGroupKey(row)
+      const recipient = recipientTotals.get(recipientKey) ?? {
+        iso3: row.recipient.iso3,
+        name: row.recipient.name,
+        totalUsdM: 0,
+      }
+      recipient.totalUsdM += amount
+      recipientTotals.set(recipientKey, recipient)
+    }
 
     return drilldownResponseSchema.parse({
       donor: null,
@@ -161,27 +213,22 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
       donorCountry: {
         name: query.selectionId,
         totalUsdM: round4(totalUsdM),
-        donorCount: countryDonors.length,
-        topDonors: countryDonors
-          .sort((a, b) => b.total_usd_m - a.total_usd_m)
-          .slice(0, 8)
-          .map((d) => ({
-            id: hyphenateId(d.donor_id),
-            name: d.donor_name,
-            country: d.donor_country,
-            totalUsdM: round4(d.total_usd_m),
+        donorCount: donorTotals.size,
+        topDonors: sortTotals(
+          [...donorTotals.values()].map((donor) => ({
+            ...donor,
+            totalUsdM: round4(donor.totalUsdM),
           })),
-        sectorBreakdown: [...sectorTotals.entries()]
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 6)
-          .map(([sector, usdM]) => ({ sector, totalUsdM: round4(usdM) })),
-        yearlyFunding: [...yearlyTotals.entries()]
-          .sort((a, b) => a[0] - b[0])
-          .map(([year, usdM]) => ({ year, totalUsdM: round4(usdM) })),
-        topRecipients: [...recipientTotals.values()]
-          .sort((a, b) => b.usdM - a.usdM)
-          .slice(0, 6)
-          .map((r) => ({ iso3: r.iso3, name: r.name, totalUsdM: round4(r.usdM) })),
+        ).slice(0, 8),
+        sectorBreakdown: buildSectorBreakdown(donorCountryRows, query.valueMode),
+        yearlyFunding: buildYearlyFunding(donorCountryRows, query.valueMode),
+        topRecipients: sortTotals(
+          [...recipientTotals.values()].map((recipient) => ({
+            ...recipient,
+            totalUsdM: round4(recipient.totalUsdM),
+          })),
+        ).slice(0, 6),
+        topImplementers: buildTopImplementers(donorCountryRows, query.valueMode),
       },
     })
   }

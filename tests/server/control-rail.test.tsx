@@ -70,6 +70,41 @@ describe('ControlRail', () => {
     expect(container.textContent).not.toContain('Loading dashboard filters...')
   })
 
+  it('defaults to disbursements and lets commitments be selected', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({
+      ok: true,
+      json: async () => ({
+        donors: ['Gates Foundation'],
+        donorCountries: ['United States'],
+        recipientCountries: ['Ukraine'],
+        sectors: ['Health'],
+        years: [2020, 2021, 2022, 2023],
+        markers: [],
+        donorIdMap: { 'Gates Foundation': 'gates-foundation' },
+        recipientCountryIsoMap: { Ukraine: 'UKR' },
+      }),
+    })))
+
+    await act(async () => {
+      root.render(<ControlRail />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(useDashboardState.getState().valueMode).toBe('disbursements')
+
+    const commitmentsButton = [...container.querySelectorAll('button')].find((button) => button.textContent === 'Commitments')
+    expect(commitmentsButton).toBeDefined()
+
+    await act(async () => {
+      commitmentsButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(useDashboardState.getState().valueMode).toBe('commitments')
+  })
+
   it('explains compare mode as delta analysis instead of generic year layering', async () => {
     useDashboardState.setState({
       ...parseDashboardQuery(),

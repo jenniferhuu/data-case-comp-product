@@ -7,6 +7,8 @@ import { CountryDrilldown } from '../../src/components/panels/CountryDrilldown'
 import { DonorDrilldown } from '../../src/components/panels/DonorDrilldown'
 import type { DrilldownResponse } from '../../src/contracts/drilldown'
 import type { OverviewResponse } from '../../src/contracts/overview'
+import { parseDashboardQuery } from '../../src/features/dashboard/queryState'
+import { useDashboardState } from '../../src/features/dashboard/useDashboardState'
 
 const overview: OverviewResponse = {
   totals: {
@@ -32,13 +34,17 @@ const overview: OverviewResponse = {
     { label: 'Kenya', totalUsdM: 780.4 },
   ],
   topDonors: [
-    { label: 'Gates Foundation', totalUsdM: 18890.4 },
-    { label: 'UNICEF', totalUsdM: 12040.2 },
+    { id: 'gates-foundation', label: 'Gates Foundation', totalUsdM: 18890.4, country: 'United States' },
+    { id: 'unicef', label: 'UNICEF', totalUsdM: 12040.2, country: 'Global' },
   ],
   yearlyFunding: [
     { year: 2021, totalUsdM: 18000.2 },
     { year: 2022, totalUsdM: 21200.7 },
     { year: 2023, totalUsdM: 29036.2 },
+  ],
+  modalityBreakdown: [
+    { label: 'Grants', totalUsdM: 64000.2 },
+    { label: 'Loans', totalUsdM: 4236.9 },
   ],
 }
 
@@ -63,8 +69,13 @@ const donorSelection: DrilldownResponse = {
       { iso3: 'UKR', name: 'Ukraine', totalUsdM: 6460.1 },
       { iso3: 'KEN', name: 'Kenya', totalUsdM: 3280.2 },
     ],
+    topImplementers: [
+      { name: 'UNICEF', totalUsdM: 5000.1 },
+      { name: 'PATH', totalUsdM: 2800.4 },
+    ],
   },
   country: null,
+  donorCountry: null,
 }
 
 const countrySelection: DrilldownResponse = {
@@ -88,7 +99,12 @@ const countrySelection: DrilldownResponse = {
       { id: 'gates-foundation', name: 'Gates Foundation', country: 'United States', totalUsdM: 274.4 },
       { id: 'fcdo', name: 'FCDO', country: 'United Kingdom', totalUsdM: 150.3 },
     ],
+    topImplementers: [
+      { name: 'UNICEF', totalUsdM: 210.8 },
+      { name: 'ICRC', totalUsdM: 150.2 },
+    ],
   },
+  donorCountry: null,
 }
 
 describe('expanded insight rail', () => {
@@ -102,13 +118,22 @@ describe('expanded insight rail', () => {
   })
 
   it('renders idle overview analytics in the rail', () => {
-    const html = renderToString(<InsightRail overview={overview} drilldown={{ donor: null, country: null }} />)
+    useDashboardState.setState(parseDashboardQuery())
+    useDashboardState.getState().setGlobeStats({
+      visibleFundingUsdM: 500,
+      arcCount: 4,
+      pointCount: 3,
+      crossBorderPct: 80,
+      domesticPct: 20,
+    })
+    const html = renderToString(<InsightRail overview={overview} drilldown={{ donor: null, country: null, donorCountry: null }} />)
 
     expect(html).toContain('Platform overview')
     expect(html).toContain('Top sectors')
     expect(html).toContain('Top recipients')
     expect(html).toContain('Top donors')
     expect(html).toContain('Yearly distribution')
+    expect(html).toContain('Grants vs loans')
     expect(html).toContain('163')
     expect(html).toContain('Health')
     expect(html).toContain('$24,000.2M')
@@ -124,6 +149,8 @@ describe('expanded insight rail', () => {
     expect(html).toContain('Recipient reach')
     expect(html).toContain('78')
     expect(html).toContain('34.2% held by top recipient')
+    expect(html).toContain('Top implementers')
+    expect(html).toContain('UNICEF')
     expect(html).toContain('Ukraine')
   })
 
@@ -136,11 +163,13 @@ describe('expanded insight rail', () => {
     expect(html).toContain('Donor base')
     expect(html).toContain('25')
     expect(html).toContain('41.4% held by top donor')
+    expect(html).toContain('Top implementers')
+    expect(html).toContain('ICRC')
     expect(html).toContain('FCDO')
   })
 
   it('renders the idle fallback copy when overview data is unavailable', () => {
-    const html = renderToString(<InsightRail overview={null} drilldown={{ donor: null, country: null }} />)
+    const html = renderToString(<InsightRail overview={null} drilldown={{ donor: null, country: null, donorCountry: null }} />)
 
     expect(html).toContain('Platform overview')
     expect(html).toContain('Overview')

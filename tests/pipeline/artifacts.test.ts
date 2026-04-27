@@ -54,6 +54,7 @@ interface DrilldownsArtifact {
   defaultSelection: {
     donor: null
     country: null
+    donorCountry: null
   }
 }
 
@@ -99,7 +100,7 @@ describe('pipeline artifacts', () => {
 
     expect(drilldowns.donors.length).toBeGreaterThan(0)
     expect(drilldowns.countries.length).toBeGreaterThan(0)
-    expect(drilldowns.defaultSelection).toEqual({ donor: null, country: null })
+    expect(drilldowns.defaultSelection).toEqual({ donor: null, country: null, donorCountry: null })
 
     const unresolvedCountryEntries = drilldowns.countries.filter((country) => country.iso3 === 'UNK')
     if (unresolvedCountryEntries.length > 0) {
@@ -111,8 +112,11 @@ describe('pipeline artifacts', () => {
     const rows: CanonicalFundingRow[] = [
       {
         year: 2022,
-        amountUsdM: 10,
+        disbursementsUsdM: 10,
+        commitmentsUsdM: 0,
         sector: 'Health',
+        channelName: 'Direct / unspecified',
+        financialInstrument: '',
         donor: {
           id: 'donor-a',
           name: 'Donor A',
@@ -125,8 +129,11 @@ describe('pipeline artifacts', () => {
       },
       {
         year: 2022,
-        amountUsdM: 5,
+        disbursementsUsdM: 5,
+        commitmentsUsdM: 0,
         sector: 'Health',
+        channelName: 'Direct / unspecified',
+        financialInstrument: '',
         donor: {
           id: 'donor-a',
           name: 'Donor A',

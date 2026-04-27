@@ -98,8 +98,13 @@ describe('GlobeScene client state', () => {
     })
 
     expect(container.textContent).toContain('Globe data is unavailable.')
-    expect(container.textContent).toContain('Visible funding')
-    expect(container.textContent).toContain('$0M')
+    expect(useDashboardState.getState().globeStats).toEqual({
+      visibleFundingUsdM: 0,
+      arcCount: 0,
+      pointCount: 0,
+      crossBorderPct: 0,
+      domesticPct: 0,
+    })
   })
 
   it('shows compare-mode legend guidance when year mode is compare', async () => {
@@ -142,6 +147,8 @@ describe('GlobeScene client state', () => {
             ],
             points: [],
             visibleFundingUsdM: 15,
+            crossBorderPct: 100,
+            domesticPct: 0,
           }),
         }
       }
@@ -182,6 +189,8 @@ describe('GlobeScene client state', () => {
               },
             ],
             visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
           }),
         }
       }

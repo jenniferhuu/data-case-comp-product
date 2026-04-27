@@ -51,8 +51,11 @@ describe('normalizeRows', () => {
 
     expect(rows[0]).toMatchObject({
       year: 2022,
-      amountUsdM: 0,
+      disbursementsUsdM: 0,
+      commitmentsUsdM: 0,
       sector: 'Health',
+      channelName: 'Direct / unspecified',
+      financialInstrument: '',
       donor: {
         id: 'unknown-donor',
         name: 'Unknown donor',
@@ -64,12 +67,15 @@ describe('normalizeRows', () => {
       },
     })
 
-    expect(Number.isNaN(rows[0].amountUsdM)).toBe(false)
+    expect(Number.isNaN(rows[0].disbursementsUsdM)).toBe(false)
 
     expect(rows[1]).toMatchObject({
       year: 2021,
-      amountUsdM: 0,
+      disbursementsUsdM: 0,
+      commitmentsUsdM: 0,
       sector: 'Biodiversity',
+      channelName: 'Direct / unspecified',
+      financialInstrument: '',
       donor: {
         id: 'example-org',
         name: 'Example Org',
@@ -81,7 +87,7 @@ describe('normalizeRows', () => {
       },
     })
 
-    expect(Number.isFinite(rows[1].amountUsdM)).toBe(true)
-    expect(rows[2].amountUsdM).toBe(12.5)
+    expect(Number.isFinite(rows[1].disbursementsUsdM)).toBe(true)
+    expect(rows[2].disbursementsUsdM).toBe(12.5)
   })
 })

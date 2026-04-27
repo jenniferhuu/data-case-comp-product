@@ -37,7 +37,7 @@ export function buildDrilldownArtifact(rows: CanonicalFundingRow[]): DrilldownsA
       country: row.donor.country,
       totalUsdM: 0,
     }
-    donor.totalUsdM += row.amountUsdM
+    donor.totalUsdM += row.disbursementsUsdM
     donorMap.set(row.donor.id, donor)
 
     const countryKey = getRecipientGroupKey(row)
@@ -46,7 +46,7 @@ export function buildDrilldownArtifact(rows: CanonicalFundingRow[]): DrilldownsA
       name: row.recipient.name,
       totalUsdM: 0,
     }
-    country.totalUsdM += row.amountUsdM
+    country.totalUsdM += row.disbursementsUsdM
     countryMap.set(countryKey, country)
   }
 

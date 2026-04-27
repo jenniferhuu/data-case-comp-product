@@ -39,6 +39,7 @@ export function mergeDashboardQuery(currentQuery: DashboardQuery, patch: Partial
     year: currentQuery.year?.toString(),
     compareFrom: currentQuery.compareFrom?.toString(),
     compareTo: currentQuery.compareTo?.toString(),
+    valueMode: currentQuery.valueMode,
     donor: currentQuery.donor,
     donorCountry: currentQuery.donorCountry,
     recipientCountry: currentQuery.recipientCountry,

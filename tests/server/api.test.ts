@@ -11,8 +11,13 @@ afterEach(() => {
 describe('GET /api/overview', () => {
   it('returns a 200 response with overview totals and enriched idle analytics', async () => {
     const { GET } = await import('../../src/app/api/overview/route')
-
-    const response = await GET()
+    const searchParams = new URLSearchParams({
+      donorCountry: 'United States',
+      valueMode: 'commitments',
+    })
+    const response = await GET({
+      nextUrl: { searchParams },
+    } as Parameters<typeof GET>[0])
     const body = await response.json()
 
     expect(response.status).toBe(200)
@@ -35,6 +40,11 @@ describe('GET /api/overview', () => {
         expect.objectContaining({ year: expect.any(Number), totalUsdM: expect.any(Number) }),
       ]),
     )
+    expect(body.modalityBreakdown).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: expect.any(String), totalUsdM: expect.any(Number) }),
+      ]),
+    )
   })
 
   it('returns a stable 500 payload when the service throws', async () => {
@@ -45,7 +55,9 @@ describe('GET /api/overview', () => {
     }))
     const { GET } = await import('../../src/app/api/overview/route')
 
-    const response = await GET()
+    const response = await GET({
+      nextUrl: { searchParams: new URLSearchParams() },
+    } as Parameters<typeof GET>[0])
 
     expect(response.status).toBe(500)
     await expect(response.json()).resolves.toEqual({
@@ -120,8 +132,10 @@ describe('GET /api/drilldown', () => {
           yearlyFunding: [{ year: 2023, totalUsdM: 10 }],
           sectorBreakdown: [{ sector: 'Health', totalUsdM: 6 }],
           topRecipients: [{ iso3: 'UKR', name: 'Ukraine', totalUsdM: 4 }],
+          topImplementers: [{ name: 'UNICEF', totalUsdM: 4 }],
         },
         country: null,
+        donorCountry: null,
       }
     })
 
@@ -146,8 +160,10 @@ describe('GET /api/drilldown', () => {
         yearlyFunding: [{ year: 2023, totalUsdM: 10 }],
         sectorBreakdown: [{ sector: 'Health', totalUsdM: 6 }],
         topRecipients: [{ iso3: 'UKR', name: 'Ukraine', totalUsdM: 4 }],
+        topImplementers: [{ name: 'UNICEF', totalUsdM: 4 }],
       },
       country: null,
+      donorCountry: null,
     })
     expect(getDrilldown).toHaveBeenCalledTimes(1)
   })

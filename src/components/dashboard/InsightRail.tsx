@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import type { DrilldownResponse } from '../../contracts/drilldown'
 import type { OverviewResponse } from '../../contracts/overview'
+import { createDashboardSearchParams } from '../../features/dashboard/queryState'
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
 import { CountryDrilldown } from '../panels/CountryDrilldown'
 import { DonorCountryDrilldown } from '../panels/DonorCountryDrilldown'
@@ -25,7 +26,43 @@ function formatUsdMillions(value: number) {
   }).format(value)}M`
 }
 
+function ModalityDonut({ items }: { items: OverviewResponse['modalityBreakdown'] }) {
+  const grantValue = items.find((item) => item.label === 'Grants')?.totalUsdM ?? 0
+  const loanValue = items.find((item) => item.label === 'Loans')?.totalUsdM ?? 0
+  const total = grantValue + loanValue
+  const grantPct = total > 0 ? (grantValue / total) * 100 : 0
+
+  return (
+    <section className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-4">
+      <div className="flex items-center justify-between gap-3">
+        <h4 className="text-sm font-semibold text-white">Grants vs loans</h4>
+        <p className="text-[11px] uppercase tracking-[0.24em] text-slate-400">Mode split</p>
+      </div>
+      <div className="mt-4 flex items-center gap-4">
+        <div
+          className="h-20 w-20 rounded-full border border-white/10"
+          style={{
+            background: `conic-gradient(#22d3ee 0 ${grantPct}%, rgba(255,255,255,0.12) ${grantPct}% 100%)`,
+          }}
+        />
+        <div className="space-y-2 text-sm">
+          <p className="text-cyan-300">Grants {formatUsdMillions(grantValue)}</p>
+          <p className="text-slate-300">Loans {formatUsdMillions(loanValue)}</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export function InsightRail({ overview, drilldown }: InsightRailProps) {
+  const yearMode = useDashboardState((state) => state.yearMode)
+  const year = useDashboardState((state) => state.year)
+  const compareFrom = useDashboardState((state) => state.compareFrom)
+  const compareTo = useDashboardState((state) => state.compareTo)
+  const valueMode = useDashboardState((state) => state.valueMode)
+  const donor = useDashboardState((state) => state.donor)
+  const recipientCountry = useDashboardState((state) => state.recipientCountry)
+  const sector = useDashboardState((state) => state.sector)
   const selectionType = useDashboardState((state) => state.selectionType)
   const selectionId = useDashboardState((state) => state.selectionId)
   const selectCountry = useDashboardState((state) => state.selectCountry)
@@ -33,6 +70,37 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
   const donorCountry = useDashboardState((state) => state.donorCountry)
   const globeStats = useDashboardState((state) => state.globeStats)
   const [liveDrilldown, setLiveDrilldown] = useState<DrilldownResponse | null>(drilldown ?? null)
+
+  const drilldownQueryString = useMemo(
+    () =>
+      createDashboardSearchParams({
+        yearMode,
+        year,
+        compareFrom,
+        compareTo,
+        valueMode,
+        donor,
+        donorCountry,
+        recipientCountry,
+        sector,
+        marker: undefined,
+        selectionType,
+        selectionId,
+      }).toString(),
+    [
+      compareFrom,
+      compareTo,
+      donor,
+      donorCountry,
+      recipientCountry,
+      sector,
+      selectionId,
+      selectionType,
+      valueMode,
+      year,
+      yearMode,
+    ],
+  )
 
   useEffect(() => {
     if (drilldown !== undefined) {
@@ -42,14 +110,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
 
     let cancelled = false
     setLiveDrilldown(null)
-    const searchParams = new URLSearchParams()
-
-    if (selectionType !== undefined && selectionId !== undefined) {
-      searchParams.set('selectionType', selectionType)
-      searchParams.set('selectionId', selectionId)
-    }
-
-    const href = searchParams.size === 0 ? '/api/drilldown' : `/api/drilldown?${searchParams.toString()}`
+    const href = drilldownQueryString.length === 0 ? '/api/drilldown' : `/api/drilldown?${drilldownQueryString}`
 
     void fetch(href)
       .then(async (response) => {
@@ -73,7 +134,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
     return () => {
       cancelled = true
     }
-  }, [drilldown, selectionId, selectionType])
+  }, [drilldown, drilldownQueryString])
 
   const activeDonor = liveDrilldown?.donor ?? null
   const activeCountry = liveDrilldown?.country ?? null
@@ -86,6 +147,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
     ? allTopDonors.filter((d) => d.country === donorCountry).slice(0, 6)
     : allTopDonors.slice(0, 6)
   const yearlyFunding = overview?.yearlyFunding ?? []
+  const modalityBreakdown = overview?.modalityBreakdown ?? []
   const fallbackContext = overview === null
     ? 'Overview metrics and selection drilldowns load from the dashboard API.'
     : `Use the globe to move from platform totals into donor and country drilldowns.`
@@ -170,6 +232,7 @@ export function InsightRail({ overview, drilldown }: InsightRailProps) {
 
         {activeDonor === null && activeCountry === null && activeDonorCountry === null && overview !== null ? (
           <>
+            <ModalityDonut items={modalityBreakdown} />
             <InsightBarChart title="Top sectors" items={topSectors} />
             <InsightRankList
               title="Top recipients"

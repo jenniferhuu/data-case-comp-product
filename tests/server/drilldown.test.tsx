@@ -46,14 +46,18 @@ const overview: OverviewResponse = {
     { label: 'Ukraine', totalUsdM: 663.0589 },
   ],
   topDonors: [
-    { label: 'Gates Foundation', totalUsdM: 18890.4033 },
-    { label: 'BBVAMF', totalUsdM: 5038.4418 },
+    { id: 'gates-foundation', label: 'Gates Foundation', totalUsdM: 18890.4033, country: 'United States' },
+    { id: 'bbvamf', label: 'BBVAMF', totalUsdM: 5038.4418, country: 'Spain' },
   ],
   yearlyFunding: [
     { year: 2020, totalUsdM: 17170.5555 },
     { year: 2021, totalUsdM: 17381.5559 },
     { year: 2022, totalUsdM: 16679.5496 },
     { year: 2023, totalUsdM: 16919.8854 },
+  ],
+  modalityBreakdown: [
+    { label: 'Grants', totalUsdM: 64000 },
+    { label: 'Loans', totalUsdM: 4237.1 },
   ],
 }
 
@@ -79,8 +83,13 @@ const donorSelection: DrilldownResponse = {
       { iso3: 'IND', name: 'India', totalUsdM: 1133.5824 },
       { iso3: 'NGA', name: 'Nigeria', totalUsdM: 797.4976 },
     ],
+    topImplementers: [
+      { name: 'UNICEF', totalUsdM: 1100.5 },
+      { name: 'PATH', totalUsdM: 998.1 },
+    ],
   },
   country: null,
+  donorCountry: null,
 }
 
 const countrySelection: DrilldownResponse = {
@@ -105,7 +114,12 @@ const countrySelection: DrilldownResponse = {
       { id: 'howard-g-buffett-foundation', name: 'Howard G. Buffett Foundation', country: 'United States', totalUsdM: 504.8489 },
       { id: 'ikea-foundation', name: 'IKEA Foundation', country: 'Netherlands', totalUsdM: 29.0193 },
     ],
+    topImplementers: [
+      { name: 'UNICEF', totalUsdM: 301.7 },
+      { name: 'ICRC', totalUsdM: 188.4 },
+    ],
   },
+  donorCountry: null,
 }
 
 function createDeferred<T>() {
@@ -167,9 +181,9 @@ describe('dashboard drilldown surfaces', () => {
   it('renders overview metrics in the hero surface on the server', () => {
     const html = renderToString(<HeroStats overview={overview} />)
 
-    expect(html).toContain('68,237.1M')
-    expect(html).toContain('506')
-    expect(html).toContain('3,138')
+    expect(html).toContain('Visible funding')
+    expect(html).toContain('Live corridors')
+    expect(html).toContain('Recipient countries')
     expect(html).toContain('Largest donor')
     expect(html).toContain('Gates Foundation')
   })
@@ -179,7 +193,7 @@ describe('dashboard drilldown surfaces', () => {
 
     const html = renderToString(<InsightRail overview={overview} drilldown={donorSelection} />)
 
-    expect(html).toContain('Donor focus')
+    expect(html).toContain('Donor')
     expect(html).toContain('Gates Foundation')
     expect(html).toContain('Selection-driven analysis')
     expect(html).toContain('Top recipients')
@@ -209,6 +223,13 @@ describe('dashboard drilldown surfaces', () => {
           })
         }
 
+        if (url === '/api/overview?yearMode=all&valueMode=disbursements') {
+          return Promise.resolve({
+            ok: true,
+            json: async () => overview,
+          })
+        }
+
         if (url === '/api/filters') {
           return Promise.resolve({
             ok: true,
@@ -224,7 +245,7 @@ describe('dashboard drilldown surfaces', () => {
         if (url.startsWith('/api/drilldown')) {
           return Promise.resolve({
             ok: true,
-            json: async () => ({ donor: null, country: null }),
+            json: async () => ({ donor: null, country: null, donorCountry: null }),
           })
         }
 
@@ -238,8 +259,12 @@ describe('dashboard drilldown surfaces', () => {
     })
     await flushEffects()
 
-    expect(fetchMock.mock.calls.filter(([input]) => String(input) === '/api/overview')).toHaveLength(1)
-    expect(container.textContent).toContain('Funding tracked')
+    expect(
+      fetchMock.mock.calls.filter(([input]) =>
+        String(input) === '/api/overview' || String(input) === '/api/overview?yearMode=all&valueMode=disbursements',
+      ),
+    ).toHaveLength(1)
+    expect(container.textContent).toContain('Visible funding')
     expect(container.textContent).toContain('Largest donor: Gates Foundation')
   })
 
@@ -252,18 +277,18 @@ describe('dashboard drilldown surfaces', () => {
       .mockImplementation((input) => {
         const url = String(input)
 
-        if (url === '/api/drilldown?selectionType=country&selectionId=UKR') {
+        if (url === '/api/drilldown?yearMode=all&valueMode=disbursements&selectionType=country&selectionId=UKR') {
           return Promise.resolve({
             ok: true,
             json: async () => countryRequest.promise,
           })
         }
 
-        if (url === '/api/drilldown') {
+        if (url === '/api/drilldown?yearMode=all&valueMode=disbursements') {
           defaultDrilldownRequests += 1
           return Promise.resolve({
             ok: true,
-            json: async () => (defaultDrilldownRequests === 1 ? resetRequest.promise : { donor: null, country: null }),
+            json: async () => (defaultDrilldownRequests === 1 ? resetRequest.promise : { donor: null, country: null, donorCountry: null }),
           })
         }
 
@@ -276,7 +301,7 @@ describe('dashboard drilldown surfaces', () => {
     await act(async () => {
       root.render(<InsightRail overview={overview} drilldown={donorSelection} />)
     })
-    expect(container.textContent).toContain('Donor focus')
+    expect(container.textContent).toContain('Gates Foundation')
 
     await act(async () => {
       useDashboardState.getState().selectCountry('UKR')
@@ -284,7 +309,7 @@ describe('dashboard drilldown surfaces', () => {
     })
     await flushEffects()
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/drilldown?selectionType=country&selectionId=UKR')
+    expect(fetchMock).toHaveBeenCalledWith('/api/drilldown?yearMode=all&valueMode=disbursements&selectionType=country&selectionId=UKR')
     expect(container.textContent).not.toContain('Donor focus')
     expect(container.textContent).not.toContain('Recipient base')
     expect(container.textContent).toContain('Platform overview')
@@ -304,7 +329,7 @@ describe('dashboard drilldown surfaces', () => {
     expect(container.textContent).not.toContain('41.4% held by top donor')
     expect(container.textContent).toContain('Platform overview')
 
-    resetRequest.resolve({ donor: null, country: null })
+    resetRequest.resolve({ donor: null, country: null, donorCountry: null })
     await flushEffects()
   })
 })

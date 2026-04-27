@@ -10,7 +10,7 @@ export function buildGlobeArtifact(rows: CanonicalFundingRow[]): GlobeArtifact {
       recipientIso3: row.recipient.iso3,
       recipientName: row.recipient.name,
       year: row.year,
-      amountUsdM: row.amountUsdM,
+      amountUsdM: row.disbursementsUsdM,
       sector: row.sector,
     })),
   }

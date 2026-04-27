@@ -32,6 +32,7 @@ const clearedQueryState: Partial<DashboardQuery> = {
   year: undefined,
   compareFrom: undefined,
   compareTo: undefined,
+  valueMode: undefined,
   donor: undefined,
   donorCountry: undefined,
   recipientCountry: undefined,

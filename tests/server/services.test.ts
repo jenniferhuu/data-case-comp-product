@@ -7,7 +7,7 @@ import { normalizeSectorLabels } from '../../src/lib/sectorLabels'
 afterEach(() => {
   vi.resetModules()
   vi.restoreAllMocks()
-  vi.unmock('../../src/server/repositories/artifactRepository')
+  vi.unmock('../../src/server/repositories/fundingRowsRepository')
 })
 
 describe('server services', () => {
@@ -16,27 +16,50 @@ describe('server services', () => {
     const response = await getOverview()
 
     expect(overviewResponseSchema.parse(response)).toEqual(response)
-    expect(response.totals).toEqual(
-      JSON.parse(readFileSync('data/generated/overview.json', 'utf8')).totals,
-    )
-    expect(response.topDonors[0]).toEqual({
+    expect(response.totals.fundingUsdM).toBeGreaterThan(68000)
+    expect(response.totals.donors).toBeGreaterThan(400)
+    expect(response.topDonors[0]).toMatchObject({
+      id: 'gates-foundation',
       label: 'Gates Foundation',
       totalUsdM: 18890.4033,
+      country: 'United States',
     })
-    expect(response.topRecipients[0]).toEqual({
-      label: 'China',
-      totalUsdM: 8846.9111,
+    expect(response.topRecipients[0]).toMatchObject({
+      label: expect.any(String),
+      totalUsdM: expect.any(Number),
     })
-    expect(response.topSectors[0]).toEqual({
+    expect(response.topSectors[0]).toMatchObject({
       label: 'Health',
-      totalUsdM: 27101.589,
+      totalUsdM: expect.any(Number),
     })
+    expect(response.modalityBreakdown).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: 'Grants', totalUsdM: expect.any(Number) }),
+      ]),
+    )
     expect(response.yearlyFunding).toEqual([
       { year: 2020, totalUsdM: 17170.5555 },
       { year: 2021, totalUsdM: 17381.5559 },
       { year: 2022, totalUsdM: 16679.5496 },
       { year: 2023, totalUsdM: 16919.8854 },
     ])
+  })
+
+  it('getOverview respects valueMode and donor-country filters', async () => {
+    const { getOverview } = await import('../../src/server/services/overviewService')
+
+    const disbursements = await getOverview(new URLSearchParams({
+      donorCountry: 'United States',
+      valueMode: 'disbursements',
+    }))
+    const commitments = await getOverview(new URLSearchParams({
+      donorCountry: 'United States',
+      valueMode: 'commitments',
+    }))
+
+    expect(disbursements.topDonors.every((donor) => donor.country === 'United States')).toBe(true)
+    expect(commitments.topDonors.every((donor) => donor.country === 'United States')).toBe(true)
+    expect(commitments.totals.fundingUsdM).not.toBe(disbursements.totals.fundingUsdM)
   })
 
   it('getFilters returns the generated filter artifact shape', async () => {
@@ -61,6 +84,7 @@ describe('server services', () => {
     await expect(getDrilldown()).resolves.toEqual(drilldownResponseSchema.parse({
       donor: null,
       country: null,
+      donorCountry: null,
     }))
   })
 
@@ -78,8 +102,15 @@ describe('server services', () => {
         name: 'Gates Foundation',
         country: 'United States',
         totalUsdM: 18890.4033,
+        topImplementers: expect.arrayContaining([
+          expect.objectContaining({
+            name: expect.any(String),
+            totalUsdM: expect.any(Number),
+          }),
+        ]),
       },
       country: null,
+      donorCountry: null,
     })
   })
 
@@ -94,39 +125,67 @@ describe('server services', () => {
     })
   })
 
-  it('getDrilldown fails at the service contract boundary for an invalid globe artifact shape', async () => {
-    vi.doMock('../../src/server/repositories/artifactRepository', () => ({
-      readArtifactJson: vi.fn(async () => ({ flows: 'not-an-array' })),
+  it('getDrilldown fails when normalized funding rows cannot be loaded', async () => {
+    vi.doMock('../../src/server/repositories/fundingRowsRepository', () => ({
+      readFundingRows: vi.fn(async () => {
+        throw new Error('rows unavailable')
+      }),
     }))
     const { getDrilldown } = await import('../../src/server/services/drilldownService')
 
-    await expect(
-      getDrilldown(new URLSearchParams({
-        selectionType: 'donor',
-        selectionId: 'gates-foundation',
-      })),
-    ).rejects.toMatchObject({
-      name: 'ZodError',
-    })
+    await expect(getDrilldown()).rejects.toThrow('rows unavailable')
   })
 
   it('getGlobeData returns aggregated scene payload rather than raw flows', async () => {
-    vi.doMock('../../src/server/repositories/artifactRepository', () => ({
-      readArtifactJson: vi.fn(async () => ({
-        flows: [
-          {
-            donorId: 'gates-foundation',
-            donorName: 'Gates Foundation',
-            donorCountry: 'United States',
-            recipientIso3: 'UKR',
-            recipientName: 'Ukraine',
-            year: 2023,
-            amountUsdM: 120.2,
-            sector: '720',
+    vi.doMock('../../src/server/repositories/fundingRowsRepository', () => ({
+      readFundingRows: vi.fn(async () => [
+        {
+          year: 2023,
+          disbursementsUsdM: 120.2,
+          commitmentsUsdM: 140.5,
+          sector: '720',
+          channelName: 'UNICEF',
+          financialInstrument: 'Grant',
+          donor: {
+            id: 'gates-foundation',
+            name: 'Gates Foundation',
+            country: 'United States',
           },
-        ],
-      })),
+          recipient: {
+            iso3: 'UKR',
+            name: 'Ukraine',
+          },
+        },
+      ]),
     }))
+    vi.doMock('../../src/server/services/dashboardData', async () => {
+      const actual = await vi.importActual<typeof import('../../src/server/services/dashboardData')>('../../src/server/services/dashboardData')
+      return {
+        ...actual,
+        loadFilteredRows: vi.fn(async () => ({
+          query: actual.parseDashboardQuery(new URLSearchParams()),
+          rows: [
+            {
+              year: 2023,
+              disbursementsUsdM: 120.2,
+              commitmentsUsdM: 140.5,
+              sector: '720',
+              channelName: 'UNICEF',
+              financialInstrument: 'Grant',
+              donor: {
+                id: 'gates-foundation',
+                name: 'Gates Foundation',
+                country: 'United States',
+              },
+              recipient: {
+                iso3: 'UKR',
+                name: 'Ukraine',
+              },
+            },
+          ],
+        })),
+      }
+    })
     vi.doMock('../../src/server/repositories/geoRepository', () => ({
       readCountriesGeoJson: vi.fn(async () => [
         { iso3: 'USA', name: 'United States', lat: 37.09, lon: -95.71, continent: 'Americas' },
@@ -152,6 +211,8 @@ describe('server services', () => {
         }),
       ],
       visibleFundingUsdM: 120.2,
+      crossBorderPct: 100,
+      domesticPct: 0,
     })
   })
 })

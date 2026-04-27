@@ -25,6 +25,7 @@ export function DonorDrilldown({ donor, onSelectCountry }: DonorDrilldownProps) 
   const topRecipientShare = donor.topRecipientShare ?? 0
   const sectorBreakdown = donor.sectorBreakdown ?? []
   const topRecipients = donor.topRecipients ?? []
+  const topImplementers = donor.topImplementers ?? []
   const yearlyFunding = donor.yearlyFunding ?? []
 
   return (
@@ -35,7 +36,7 @@ export function DonorDrilldown({ donor, onSelectCountry }: DonorDrilldownProps) 
       />
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <InsightMetricCard
-          label="Total disclosed funding"
+          label="Tracked funding"
           value={formatUsdMillions(donor.totalUsdM)}
           detail={donor.id}
         />
@@ -50,6 +51,13 @@ export function DonorDrilldown({ donor, onSelectCountry }: DonorDrilldownProps) 
         items={sectorBreakdown.map((item) => ({
           label: item.sector,
           totalUsdM: item.totalUsdM,
+        }))}
+      />
+      <InsightRankList
+        title="Top implementers"
+        items={topImplementers.map((implementer) => ({
+          label: implementer.name,
+          value: formatUsdMillions(implementer.totalUsdM),
         }))}
       />
       <InsightRankList

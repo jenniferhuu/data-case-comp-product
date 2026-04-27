@@ -103,6 +103,7 @@ export function GlobeScene() {
   const year = useDashboardState((state) => state.year)
   const compareFrom = useDashboardState((state) => state.compareFrom)
   const compareTo = useDashboardState((state) => state.compareTo)
+  const valueMode = useDashboardState((state) => state.valueMode)
   const donor = useDashboardState((state) => state.donor)
   const donorCountry = useDashboardState((state) => state.donorCountry)
   const recipientCountry = useDashboardState((state) => state.recipientCountry)
@@ -124,6 +125,7 @@ export function GlobeScene() {
         year,
         compareFrom,
         compareTo,
+        valueMode,
         donor,
         donorCountry,
         recipientCountry,
@@ -132,7 +134,7 @@ export function GlobeScene() {
         selectionType: undefined,
         selectionId: undefined,
       }).toString(),
-    [compareFrom, compareTo, donor, donorCountry, recipientCountry, sector, year, yearMode],
+    [compareFrom, compareTo, donor, donorCountry, recipientCountry, sector, valueMode, year, yearMode],
   )
 
   useEffect(() => {
@@ -191,6 +193,13 @@ export function GlobeScene() {
       .catch((error: unknown) => {
         if (!cancelled) {
           setGlobeResponse({ arcs: [], points: [], visibleFundingUsdM: 0, crossBorderPct: 0, domesticPct: 0 })
+          setGlobeStats({
+            visibleFundingUsdM: 0,
+            arcCount: 0,
+            pointCount: 0,
+            crossBorderPct: 0,
+            domesticPct: 0,
+          })
           setGlobeError(error instanceof Error ? error.message : 'Globe data is unavailable.')
         }
       })

@@ -23,6 +23,11 @@ export const topDonorSchema = z.object({
   totalUsdM: z.number(),
 })
 
+export const topImplementerSchema = z.object({
+  name: z.string(),
+  totalUsdM: z.number(),
+})
+
 export const donorDrilldownSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -33,6 +38,7 @@ export const donorDrilldownSchema = z.object({
   yearlyFunding: z.array(yearlyFundingSchema),
   sectorBreakdown: z.array(fundingBreakdownSchema),
   topRecipients: z.array(topRecipientSchema),
+  topImplementers: z.array(topImplementerSchema),
 })
 
 export const countryDrilldownSchema = z.object({
@@ -44,6 +50,7 @@ export const countryDrilldownSchema = z.object({
   yearlyFunding: z.array(yearlyFundingSchema),
   sectorBreakdown: z.array(fundingBreakdownSchema),
   topDonors: z.array(topDonorSchema),
+  topImplementers: z.array(topImplementerSchema),
 })
 
 export const donorCountryDrilldownSchema = z.object({
@@ -54,6 +61,7 @@ export const donorCountryDrilldownSchema = z.object({
   sectorBreakdown: z.array(fundingBreakdownSchema),
   yearlyFunding: z.array(yearlyFundingSchema),
   topRecipients: z.array(topRecipientSchema),
+  topImplementers: z.array(topImplementerSchema),
 })
 
 export const drilldownResponseSchema = z.object({

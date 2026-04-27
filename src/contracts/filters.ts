@@ -29,6 +29,7 @@ export const dashboardQuerySchema = z.object({
   year: strictQueryNumberSchema.optional(),
   compareFrom: strictQueryNumberSchema.optional(),
   compareTo: strictQueryNumberSchema.optional(),
+  valueMode: z.enum(['disbursements', 'commitments']).default('disbursements'),
   donor: z.string().optional(),
   donorCountry: z.string().optional(),
   recipientCountry: z.string().optional(),

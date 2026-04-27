@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { dashboardQuerySchema } from '../../src/contracts/filters'
+import { drilldownResponseSchema } from '../../src/contracts/drilldown'
 import { overviewResponseSchema } from '../../src/contracts/overview'
 
 describe('shared contracts', () => {
@@ -11,6 +12,7 @@ describe('shared contracts', () => {
       topRecipients: [],
       topDonors: [],
       yearlyFunding: [],
+      modalityBreakdown: [],
     })
 
     expect(parsed.totals.donors).toBe(2)
@@ -21,12 +23,14 @@ describe('shared contracts', () => {
       yearMode: 'single',
       year: '2023',
       marker: 'gender',
+      valueMode: 'commitments',
       selectionType: 'country',
       selectionId: 'UKR',
     })
 
     expect(parsed.year).toBe(2023)
     expect(parsed.marker).toBe('gender')
+    expect(parsed.valueMode).toBe('commitments')
     expect(parsed.selectionId).toBe('UKR')
   })
 
@@ -36,13 +40,21 @@ describe('shared contracts', () => {
       compareFrom: '2021',
       compareTo: '2023',
       marker: 'nutrition',
+      valueMode: 'disbursements',
       selectionType: 'donor',
       selectionId: 'ford-foundation',
     })
 
     expect(parsed.compareFrom).toBe(2021)
     expect(parsed.compareTo).toBe(2023)
+    expect(parsed.valueMode).toBe('disbursements')
     expect(parsed.selectionType).toBe('donor')
+  })
+
+  it('defaults valueMode to disbursements', () => {
+    const parsed = dashboardQuerySchema.parse({})
+
+    expect(parsed.valueMode).toBe('disbursements')
   })
 
   it('rejects single-year mode without year', () => {
@@ -112,5 +124,26 @@ describe('shared contracts', () => {
 
     expect(result.success).toBe(false)
     expect(result.error.issues.some((issue) => issue.path[0] === 'marker')).toBe(true)
+  })
+
+  it('parses drilldown payloads with implementer rankings', () => {
+    const parsed = drilldownResponseSchema.parse({
+      donor: {
+        id: 'gates-foundation',
+        name: 'Gates Foundation',
+        country: 'United States',
+        totalUsdM: 10,
+        recipientCount: 2,
+        topRecipientShare: 50,
+        yearlyFunding: [{ year: 2023, totalUsdM: 10 }],
+        sectorBreakdown: [{ sector: 'Health', totalUsdM: 10 }],
+        topRecipients: [{ iso3: 'UKR', name: 'Ukraine', totalUsdM: 10 }],
+        topImplementers: [{ name: 'UNICEF', totalUsdM: 8 }],
+      },
+      country: null,
+      donorCountry: null,
+    })
+
+    expect(parsed.donor?.topImplementers[0]?.name).toBe('UNICEF')
   })
 })

@@ -1,20 +1,24 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import type { OverviewResponse } from '../../contracts/overview'
+import { createDashboardSearchParams } from '../../features/dashboard/queryState'
+import { useDashboardState } from '../../features/dashboard/useDashboardState'
 import { ControlRail } from './ControlRail'
 import { HeroStats } from './HeroStats'
 import { InsightRail } from './InsightRail'
 import { GlobeIdleController } from '../Globe/GlobeIdleController'
 import { GlobeScene } from '../Globe/GlobeScene'
 
-function useOverviewData() {
+function useOverviewData(queryString: string) {
   const [overview, setOverview] = useState<OverviewResponse | null>(null)
 
   useEffect(() => {
     let cancelled = false
 
-    void fetch('/api/overview')
+    const href = queryString.length === 0 ? '/api/overview' : `/api/overview?${queryString}`
+
+    void fetch(href)
       .then(async (response) => {
         if (!response.ok) {
           throw new Error('Overview request failed')
@@ -36,13 +40,41 @@ function useOverviewData() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [queryString])
 
   return overview
 }
 
 export function DashboardShell() {
-  const overview = useOverviewData()
+  const yearMode = useDashboardState((state) => state.yearMode)
+  const year = useDashboardState((state) => state.year)
+  const compareFrom = useDashboardState((state) => state.compareFrom)
+  const compareTo = useDashboardState((state) => state.compareTo)
+  const valueMode = useDashboardState((state) => state.valueMode)
+  const donor = useDashboardState((state) => state.donor)
+  const donorCountry = useDashboardState((state) => state.donorCountry)
+  const recipientCountry = useDashboardState((state) => state.recipientCountry)
+  const sector = useDashboardState((state) => state.sector)
+
+  const overviewQueryString = useMemo(
+    () =>
+      createDashboardSearchParams({
+        yearMode,
+        year,
+        compareFrom,
+        compareTo,
+        valueMode,
+        donor,
+        donorCountry,
+        recipientCountry,
+        sector,
+        marker: undefined,
+        selectionType: undefined,
+        selectionId: undefined,
+      }).toString(),
+    [compareFrom, compareTo, donor, donorCountry, recipientCountry, sector, valueMode, year, yearMode],
+  )
+  const overview = useOverviewData(overviewQueryString)
 
   return (
     <main data-testid="dashboard-shell" className="dashboard-shell min-h-screen lg:h-screen lg:overflow-hidden">

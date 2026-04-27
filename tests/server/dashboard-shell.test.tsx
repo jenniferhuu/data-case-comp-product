@@ -2,8 +2,8 @@ import React from 'react'
 import { describe, expect, it } from 'vitest'
 import { renderToString } from 'react-dom/server'
 import { DashboardShell } from '../../src/components/dashboard/DashboardShell'
-import { useDashboardState } from '../../src/features/dashboard/useDashboardState'
 import { createDashboardSearchParams, parseDashboardQuery } from '../../src/features/dashboard/queryState'
+import { useDashboardState } from '../../src/features/dashboard/useDashboardState'
 
 describe('DashboardShell', () => {
   it('renders the dashboard frame with rails and globe stage', () => {
@@ -108,10 +108,11 @@ describe('DashboardShell', () => {
       parseDashboardQuery({
         yearMode: 'single',
         year: '2024',
+        valueMode: 'commitments',
       }),
     )
 
-    expect(searchParams.toString()).toBe('yearMode=single&year=2024')
+    expect(searchParams.toString()).toBe('yearMode=single&year=2024&valueMode=commitments')
     expect(renderToString(<DashboardShell />)).not.toContain('Current query')
   })
 
@@ -124,6 +125,7 @@ describe('DashboardShell', () => {
     expect(parsed).toMatchObject({
       yearMode: 'single',
       year: 2024,
+      valueMode: 'disbursements',
     })
     expect(parsed).not.toHaveProperty('selectionType')
     expect(parsed).not.toHaveProperty('selectionId')

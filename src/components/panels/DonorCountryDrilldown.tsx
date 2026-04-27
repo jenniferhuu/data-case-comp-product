@@ -26,8 +26,8 @@ export function DonorCountryDrilldown({ donorCountry, onSelectDonor, onSelectCou
     <div className="space-y-4">
       <InsightHeader eyebrow="Donor country" title={donorCountry.name} />
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <InsightMetricCard
-          label="Total disclosed funding"
+      <InsightMetricCard
+          label="Tracked funding"
           value={formatUsdMillions(donorCountry.totalUsdM)}
           detail={`${donorCountry.donorCount} active donors`}
         />
@@ -42,6 +42,13 @@ export function DonorCountryDrilldown({ donorCountry, onSelectDonor, onSelectCou
         items={donorCountry.sectorBreakdown.map((item) => ({
           label: item.sector,
           totalUsdM: item.totalUsdM,
+        }))}
+      />
+      <InsightRankList
+        title="Top implementers"
+        items={donorCountry.topImplementers.map((implementer) => ({
+          label: implementer.name,
+          value: formatUsdMillions(implementer.totalUsdM),
         }))}
       />
       <InsightRankList

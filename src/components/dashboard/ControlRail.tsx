@@ -102,6 +102,7 @@ export function ControlRail() {
   const year = useDashboardState((state) => state.year)
   const compareFrom = useDashboardState((state) => state.compareFrom)
   const compareTo = useDashboardState((state) => state.compareTo)
+  const valueMode = useDashboardState((state) => state.valueMode)
   const donor = useDashboardState((state) => state.donor)
   const donorCountry = useDashboardState((state) => state.donorCountry)
   const recipientCountry = useDashboardState((state) => state.recipientCountry)
@@ -185,6 +186,7 @@ export function ControlRail() {
       year: undefined,
       compareFrom: undefined,
       compareTo: undefined,
+      valueMode: 'disbursements',
       donor: undefined,
       donorCountry: undefined,
       recipientCountry: undefined,
@@ -201,6 +203,30 @@ export function ControlRail() {
         <section>
           <p className="text-xs uppercase tracking-[0.3em] text-cyan-200/70">Controls</p>
           <h2 className="mt-2 text-lg font-semibold text-white">Filter the global flow map</h2>
+        </section>
+
+        <section className="rounded-[1.5rem] border border-white/10 bg-white/5 p-3.5">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Funding mode</p>
+          <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-slate-950/70 p-1">
+            {([
+              ['disbursements', 'Disbursements'],
+              ['commitments', 'Commitments'],
+            ] as const).map(([mode, label]) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => {
+                  activateManualMode()
+                  patchQuery({ valueMode: mode })
+                }}
+                className={`rounded-xl px-2 py-2 text-xs font-medium transition ${
+                  valueMode === mode ? 'bg-cyan-300 text-slate-950' : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </section>
 
         <section className="rounded-[1.5rem] border border-white/10 bg-white/5 p-3.5">
@@ -250,6 +276,9 @@ export function ControlRail() {
 
               {yearMode === 'compare' ? (
                 <div className="grid gap-3">
+                  <p className="text-sm text-slate-300">
+                    Compare mode highlights funding deltas across two years while line weight continues to show visible funding volume.
+                  </p>
                   <SelectField
                     label="Compare from"
                     value={compareFrom?.toString() ?? ''}

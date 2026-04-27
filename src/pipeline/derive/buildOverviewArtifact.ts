@@ -8,7 +8,7 @@ function getRecipientGroupKey(row: CanonicalFundingRow): string {
 }
 
 export function buildOverviewArtifact(rows: CanonicalFundingRow[]): OverviewResponse {
-  const fundingUsdM = rows.reduce((sum, row) => sum + row.amountUsdM, 0)
+  const fundingUsdM = rows.reduce((sum, row) => sum + row.disbursementsUsdM, 0)
   const donors = new Set(rows.map((row) => row.donor.id)).size
   const countries = new Set(rows.map((row) => getRecipientGroupKey(row))).size
   const corridors = new Set(rows.map((row) => `${row.donor.id}:${getRecipientGroupKey(row)}`)).size
@@ -25,5 +25,6 @@ export function buildOverviewArtifact(rows: CanonicalFundingRow[]): OverviewResp
     topRecipients: [],
     topDonors: [],
     yearlyFunding: [],
+    modalityBreakdown: [],
   }
 }

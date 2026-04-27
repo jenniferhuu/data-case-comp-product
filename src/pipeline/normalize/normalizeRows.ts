@@ -3,8 +3,11 @@ import { resolveDonor, type CanonicalDonor } from './resolveDonor'
 
 export interface CanonicalFundingRow {
   year: number
-  amountUsdM: number
+  disbursementsUsdM: number
+  commitmentsUsdM: number
   sector: string
+  channelName: string
+  financialInstrument: string
   donor: CanonicalDonor
   recipient: CanonicalRecipient
 }
@@ -38,10 +41,13 @@ function firstNormalizedValue(...values: Array<string | undefined>): string | un
 export function normalizeRows(rows: Record<string, string>[]): CanonicalFundingRow[] {
   return rows.map((row) => ({
     year: parseFiniteNumber(row.year),
-    amountUsdM: parseFiniteNumber(
+    disbursementsUsdM: parseFiniteNumber(
       firstNormalizedValue(row.usd_disbursed, row.usd_disbursed_m, row.usd_disbursements_defl),
     ),
+    commitmentsUsdM: parseFiniteNumber(row.usd_commitment_defl),
     sector: normalizeText(row.sector) ?? normalizeText(row.Sector) ?? 'Other',
+    channelName: normalizeText(row.channel_name) ?? 'Direct / unspecified',
+    financialInstrument: normalizeText(row.financial_instrument) ?? '',
     donor: resolveDonor(row),
     recipient: resolveCountry(row),
   }))

@@ -32,6 +32,11 @@ export const overviewYearlyFundingSchema = z.object({
   totalUsdM: z.number(),
 })
 
+export const overviewModalitySchema = z.object({
+  label: z.string(),
+  totalUsdM: z.number(),
+})
+
 export const overviewResponseSchema = z.object({
   totals: heroTotalsSchema,
   highlights: z.array(overviewHighlightSchema),
@@ -39,6 +44,7 @@ export const overviewResponseSchema = z.object({
   topRecipients: z.array(overviewDistributionSchema),
   topDonors: z.array(overviewTopDonorSchema),
   yearlyFunding: z.array(overviewYearlyFundingSchema),
+  modalityBreakdown: z.array(overviewModalitySchema),
 })
 
 export type OverviewResponse = z.infer<typeof overviewResponseSchema>

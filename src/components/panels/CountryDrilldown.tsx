@@ -25,6 +25,7 @@ export function CountryDrilldown({ country, onSelectDonor }: CountryDrilldownPro
   const topDonorShare = country.topDonorShare ?? 0
   const sectorBreakdown = country.sectorBreakdown ?? []
   const topDonors = country.topDonors ?? []
+  const topImplementers = country.topImplementers ?? []
   const yearlyFunding = country.yearlyFunding ?? []
 
   return (
@@ -50,6 +51,13 @@ export function CountryDrilldown({ country, onSelectDonor }: CountryDrilldownPro
         items={sectorBreakdown.map((item) => ({
           label: item.sector,
           totalUsdM: item.totalUsdM,
+        }))}
+      />
+      <InsightRankList
+        title="Top implementers"
+        items={topImplementers.map((implementer) => ({
+          label: implementer.name,
+          value: formatUsdMillions(implementer.totalUsdM),
         }))}
       />
       <InsightRankList
