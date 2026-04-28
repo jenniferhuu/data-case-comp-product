@@ -122,6 +122,7 @@ export const useDashboardState = create<DashboardState>((set) => ({
   selectDonorCountry: (name) => {
     set({
       donorCountry: name ?? undefined,
+      recipientCountry: undefined,
       selectionType: name === null ? undefined : 'donorCountry',
       selectionId: name ?? undefined,
       selectedCountryIso3: null,

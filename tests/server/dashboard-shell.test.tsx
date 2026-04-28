@@ -130,4 +130,28 @@ describe('DashboardShell', () => {
     expect(parsed).not.toHaveProperty('selectionType')
     expect(parsed).not.toHaveProperty('selectionId')
   })
+
+  it('clears recipient-country state when switching to a donor-country selection', () => {
+    useDashboardState.setState({
+      ...parseDashboardQuery(),
+      donorCountry: 'United States',
+      recipientCountry: 'Ukraine',
+      selectionType: 'country',
+      selectionId: 'UKR',
+      selectedCountryIso3: 'UKR',
+      idleMode: false,
+    })
+
+    useDashboardState.getState().selectDonorCountry('France')
+
+    expect(useDashboardState.getState()).toMatchObject({
+      donorCountry: 'France',
+      recipientCountry: undefined,
+      selectionType: 'donorCountry',
+      selectionId: 'France',
+      selectedCountryIso3: null,
+      selectedDonorId: null,
+      idleMode: false,
+    })
+  })
 })
