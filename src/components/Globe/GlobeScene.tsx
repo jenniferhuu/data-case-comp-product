@@ -103,6 +103,10 @@ export function computeArcProperties(
   }))
 }
 
+const arcColorAccessor = (arc: object) => (arc as ComputedArcDatum)._color
+const arcAltitudeAccessor = (arc: object) => (arc as ComputedArcDatum)._altitude
+const arcStrokeAccessor = (arc: object) => (arc as ComputedArcDatum)._stroke
+
 function getPointColor(point: GlobePointDatum) {
   if (point.totalUsdM >= 500) {
     return '#a5f3fc'
@@ -419,9 +423,15 @@ export function GlobeScene() {
     )
   }, [donorCountryOptions])
 
-  const selectedArc = visibleArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
-  const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
   const compareMode = yearMode === 'compare'
+
+  const computedArcs = useMemo(
+    () => computeArcProperties(visibleArcs, compareMode, compareFrom, compareTo),
+    [visibleArcs, compareMode, compareFrom, compareTo],
+  )
+
+  const selectedArc = computedArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
+  const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
   const overlayArc = hoveredArc ?? selectedArc
   const overlayPoint = hoveredPoint ?? selectedPoint
   const overlayDelta = overlayArc === null ? 0 : getCompareDelta(overlayArc, compareFrom, compareTo)
@@ -571,14 +581,14 @@ export function GlobeScene() {
 
           selectCountry(iso3, country.properties?.name ?? country.properties?.admin ?? null)
         }}
-        arcsData={visibleArcs}
+        arcsData={computedArcs}
         arcStartLat={(arc: GlobeArcDatum) => arc.donorLat}
         arcStartLng={(arc: GlobeArcDatum) => arc.donorLon}
         arcEndLat={(arc: GlobeArcDatum) => arc.recipientLat}
         arcEndLng={(arc: GlobeArcDatum) => arc.recipientLon}
-        arcColor={(arc: GlobeArcDatum) => getArcColor(arc, compareMode, compareFrom, compareTo)}
-        arcAltitude={(arc: GlobeArcDatum) => getArcAltitude(arc)}
-        arcStroke={(arc: GlobeArcDatum) => Math.min(1.35, 0.28 + arc.amountUsdM / 900)}
+        arcColor={arcColorAccessor}
+        arcAltitude={arcAltitudeAccessor}
+        arcStroke={arcStrokeAccessor}
         arcDashLength={0.8}
         arcDashGap={0.35}
         arcDashAnimateTime={1600}
