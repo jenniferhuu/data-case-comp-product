@@ -1197,4 +1197,142 @@ describe('GlobeScene client state', () => {
     expect(state.selectedCountryIso3).toBeNull()
     expect(state.selectedDonorId).toBeNull()
   })
+
+  it('switches non-recipient donor-country clicks while a recipient is selected within donor-country context', async () => {
+    useDashboardState.setState({
+      ...parseDashboardQuery(),
+      donorCountry: 'United States',
+      selectionType: 'country',
+      selectionId: 'UKR',
+      recipientCountry: 'Ukraine',
+      selectedCountryIso3: 'UKR',
+      idleMode: false,
+    })
+
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.includes('/api/globe?') && url.includes('recipientCountry=Ukraine')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url.includes('/api/globe?') && url.includes('donorCountry=United+States') && !url.includes('recipientCountry=')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'UKR',
+                  name: 'Ukraine',
+                },
+              },
+              {
+                properties: {
+                  iso_a3: 'FRA',
+                  name: 'France',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States', 'France']),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const trigger = container.querySelector('[data-testid="globe-click-country-polygon-stub-2"]')
+
+    expect(trigger).not.toBeNull()
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const state = useDashboardState.getState()
+
+    expect(state.selectionType).toBe('donorCountry')
+    expect(state.selectionId).toBe('France')
+    expect(state.donorCountry).toBe('France')
+    expect(state.selectedCountryIso3).toBeNull()
+    expect(state.selectedDonorId).toBeNull()
+  })
 })

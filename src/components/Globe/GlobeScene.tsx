@@ -526,7 +526,7 @@ export function GlobeScene() {
 
           setIdleMode(false)
           if (
-            (selectionType === 'donorCountry' && !donorCountryRecipientIsoSet.has(iso3))
+            ((selectionType === 'donorCountry' || selectionType === 'country') && donorCountry !== undefined && !donorCountryRecipientIsoSet.has(iso3))
             || (selectionType === 'donor' && !selectedDonorRecipientIsoSet.has(iso3))
           ) {
             if (matchedKnownDonorCountry !== undefined) {
