@@ -121,6 +121,7 @@ export function GlobeScene() {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [size, setSize] = useState({ width: 1000, height: 820 })
   const [globeResponse, setGlobeResponse] = useState<GlobeResponse | null>(null)
+  const [donorCountryOutlineResponse, setDonorCountryOutlineResponse] = useState<GlobeResponse | null>(null)
   const [countryFeatures, setCountryFeatures] = useState<GlobeCountryFeature[]>([])
   const [donorCountryOptions, setDonorCountryOptions] = useState<string[]>([])
   const [globeError, setGlobeError] = useState<string | null>(null)
@@ -239,6 +240,63 @@ export function GlobeScene() {
     }
   }, [globeQueryString, setGlobeStats])
 
+  const donorCountryOutlineQueryString = useMemo(() => {
+    if (donorCountry === undefined) {
+      return ''
+    }
+
+    return createDashboardSearchParams({
+      yearMode,
+      year,
+      compareFrom,
+      compareTo,
+      valueMode,
+      donor,
+      donorCountry,
+      recipientCountry: undefined,
+      sector,
+      marker: undefined,
+      selectionType: undefined,
+      selectionId: undefined,
+    }).toString()
+  }, [compareFrom, compareTo, donor, donorCountry, sector, valueMode, year, yearMode])
+
+  useEffect(() => {
+    if (donorCountry === undefined) {
+      setDonorCountryOutlineResponse(null)
+      return
+    }
+
+    let cancelled = false
+    const href = donorCountryOutlineQueryString.length === 0
+      ? '/api/globe'
+      : `/api/globe?${donorCountryOutlineQueryString}`
+
+    void fetch(href)
+      .then(async (response) => {
+        if (!response.ok) {
+          const payload = await response.json().catch(() => null) as { message?: string } | null
+          throw new Error(payload?.message ?? 'Globe data is unavailable.')
+        }
+
+        return response.json() as Promise<GlobeResponse>
+      })
+      .then((data) => {
+        if (!cancelled) {
+          setDonorCountryOutlineResponse(data)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setDonorCountryOutlineResponse(null)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [donorCountry, donorCountryOutlineQueryString])
+
   useEffect(() => {
     let cancelled = false
 
@@ -324,8 +382,8 @@ export function GlobeScene() {
       return new Set<string>()
     }
 
-    return new Set((globeResponse?.arcs ?? []).map((arc) => arc.recipientIso3))
-  }, [donorCountry, globeResponse])
+    return new Set((donorCountryOutlineResponse?.arcs ?? globeResponse?.arcs ?? []).map((arc) => arc.recipientIso3))
+  }, [donorCountry, donorCountryOutlineResponse, globeResponse])
 
   const donorCountryNameMap = useMemo(() => {
     return new Map(

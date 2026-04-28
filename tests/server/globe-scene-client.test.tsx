@@ -886,7 +886,45 @@ describe('GlobeScene client state', () => {
     vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
       const url = String(input)
 
-      if (url.startsWith('/api/globe')) {
+      if (url.includes('/api/globe?') && url.includes('recipientCountry=Ukraine')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 791.5,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url.includes('/api/globe?') && url.includes('donorCountry=United+States') && !url.includes('recipientCountry=')) {
         return {
           ok: true,
           json: async () => ({
@@ -922,16 +960,7 @@ describe('GlobeScene client state', () => {
                 sector: 'Health',
               },
             ],
-            points: [
-              {
-                iso3: 'UKR',
-                name: 'Ukraine',
-                lat: 49,
-                lon: 32,
-                totalUsdM: 663.1,
-                donorCount: 35,
-              },
-            ],
+            points: [],
             visibleFundingUsdM: 791.5,
             crossBorderPct: 100,
             domesticPct: 0,
@@ -988,6 +1017,7 @@ describe('GlobeScene client state', () => {
     expect(container.querySelector('[data-testid="polygon-stroke-0"]')?.textContent).toBe('rgba(251,191,36,0.58)')
     expect(container.querySelector('[data-testid="polygon-stroke-1"]')?.textContent).toBe('rgba(251,191,36,0.58)')
     expect(container.querySelector('[data-testid="polygon-stroke-2"]')?.textContent).toBe('rgba(255,255,255,0.08)')
+    expect(container.querySelector('[data-testid="arc-count"]')?.textContent).toBe('1')
   })
 
   it('caps rendered arcs at 300 even for selected donor states', async () => {
