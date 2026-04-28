@@ -359,6 +359,84 @@ describe('GlobeScene client state', () => {
     expect(state.idleMode).toBe(false)
   })
 
+  it('routes donor-country polygon clicks into donor-country drilldowns', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.startsWith('/api/globe')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'USA',
+                  name: 'United States',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const trigger = container.querySelector('[data-testid="globe-click-country-polygon-stub"]')
+
+    expect(trigger).not.toBeNull()
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const state = useDashboardState.getState()
+
+    expect(state.selectionType).toBe('donorCountry')
+    expect(state.selectionId).toBe('United States')
+    expect(state.donorCountry).toBe('United States')
+    expect(state.selectedCountryIso3).toBeNull()
+    expect(state.selectedDonorId).toBeNull()
+    expect(state.idleMode).toBe(false)
+  })
+
   it('allows map clicks near donor origins to focus donor drilldowns', async () => {
     vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
       const url = String(input)

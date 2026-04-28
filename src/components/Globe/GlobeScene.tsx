@@ -33,6 +33,10 @@ const Globe = dynamic(() => import('react-globe.gl'), {
 const EARTH_TEXTURE = 'https://unpkg.com/three-globe/example/img/earth-night.jpg'
 const STARFIELD_TEXTURE = 'https://unpkg.com/three-globe/example/img/night-sky.png'
 
+function normalizeCountryName(value: string | undefined) {
+  return value?.trim().toLocaleLowerCase('en-US')
+}
+
 function formatUsdMillions(value: number) {
   return `$${new Intl.NumberFormat('en-US', {
     minimumFractionDigits: value >= 1000 ? 1 : 0,
@@ -130,6 +134,7 @@ export function GlobeScene() {
   const selectedDonorId = useDashboardState((state) => state.selectedDonorId)
   const selectCountry = useDashboardState((state) => state.selectCountry)
   const selectDonor = useDashboardState((state) => state.selectDonor)
+  const selectDonorCountry = useDashboardState((state) => state.selectDonorCountry)
   const setIdleMode = useDashboardState((state) => state.setIdleMode)
   const setGlobeStats = useDashboardState((state) => state.setGlobeStats)
 
@@ -380,11 +385,23 @@ export function GlobeScene() {
           setHoveredCountryIso3(getCountryIso3((feature as GlobeCountryFeature | null)?.properties) ?? null)
         }}
         onPolygonClick={(feature: object) => {
-          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          const country = feature as GlobeCountryFeature
+          const iso3 = getCountryIso3(country.properties)
           if (iso3 === undefined) {
             return
           }
+
+          const clickedName = normalizeCountryName(country.properties?.name ?? country.properties?.admin)
+          const matchedDonorCountry = globeResponse?.arcs.find((arc) => {
+            return normalizeCountryName(arc.donorCountry) === clickedName
+          })?.donorCountry
+
           setIdleMode(false)
+          if (matchedDonorCountry !== undefined) {
+            selectDonorCountry(matchedDonorCountry)
+            return
+          }
+
           selectCountry(iso3)
         }}
         arcsData={visibleArcs}
