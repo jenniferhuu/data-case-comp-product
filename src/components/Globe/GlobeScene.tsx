@@ -385,6 +385,14 @@ export function GlobeScene() {
     return new Set((donorCountryOutlineResponse?.arcs ?? globeResponse?.arcs ?? []).map((arc) => arc.recipientIso3))
   }, [donorCountry, donorCountryOutlineResponse, globeResponse])
 
+  const selectedDonorRecipientIsoSet = useMemo(() => {
+    if (selectionType !== 'donor') {
+      return new Set<string>()
+    }
+
+    return new Set(visibleArcs.map((arc) => arc.recipientIso3))
+  }, [selectionType, visibleArcs])
+
   const donorCountryNameMap = useMemo(() => {
     return new Map(
       donorCountryOptions.map((countryName) => [normalizeCountryName(countryName), countryName] as const),
@@ -517,6 +525,16 @@ export function GlobeScene() {
           const matchedKnownDonorCountry = clickedName === undefined ? undefined : donorCountryNameMap.get(clickedName)
 
           setIdleMode(false)
+          if (
+            (selectionType === 'donorCountry' && !donorCountryRecipientIsoSet.has(iso3))
+            || (selectionType === 'donor' && !selectedDonorRecipientIsoSet.has(iso3))
+          ) {
+            if (matchedKnownDonorCountry !== undefined) {
+              selectDonorCountry(matchedKnownDonorCountry)
+              return
+            }
+          }
+
           if (
             selectionType === 'donorCountry'
             && !donorCountryRecipientIsoSet.has(iso3)
