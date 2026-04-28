@@ -90,6 +90,12 @@ function getPointColor(point: GlobePointDatum) {
   return '#c4b5fd'
 }
 
+function getSquaredDistance(fromLat: number, fromLng: number, toLat: number, toLng: number) {
+  const dLat = toLat - fromLat
+  const dLng = toLng - fromLng
+  return dLat * dLat + dLng * dLng
+}
+
 export function GlobeScene() {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -339,21 +345,53 @@ export function GlobeScene() {
         }}
         onGlobeClick={({ lat, lng }: { lat: number; lng: number }) => {
           const points = globeResponse?.points ?? []
-          if (points.length === 0) return
-          let nearest = points[0]!
-          let minDist = Infinity
-          for (const point of points) {
-            const dlat = point.lat - lat
-            const dlng = point.lon - lng
-            const dist = dlat * dlat + dlng * dlng
-            if (dist < minDist) {
-              minDist = dist
-              nearest = point
+          const donors = new Map<string, { donorId: string; donorLat: number; donorLon: number }>()
+
+          for (const arc of globeResponse?.arcs ?? []) {
+            if (!donors.has(arc.donorId)) {
+              donors.set(arc.donorId, {
+                donorId: arc.donorId,
+                donorLat: arc.donorLat,
+                donorLon: arc.donorLon,
+              })
             }
           }
-          if (minDist < 100) {
+
+          let nearestPoint: GlobePointDatum | null = null
+          let nearestPointDist = Infinity
+          for (const point of points) {
+            const dist = getSquaredDistance(lat, lng, point.lat, point.lon)
+            if (dist < nearestPointDist) {
+              nearestPointDist = dist
+              nearestPoint = point
+            }
+          }
+
+          let nearestDonor: { donorId: string; donorLat: number; donorLon: number } | null = null
+          let nearestDonorDist = Infinity
+          for (const donorOrigin of donors.values()) {
+            const dist = getSquaredDistance(lat, lng, donorOrigin.donorLat, donorOrigin.donorLon)
+            if (dist < nearestDonorDist) {
+              nearestDonorDist = dist
+              nearestDonor = donorOrigin
+            }
+          }
+
+          const selectionThreshold = 100
+
+          if (
+            nearestDonor !== null
+            && nearestDonorDist < selectionThreshold
+            && nearestDonorDist <= nearestPointDist
+          ) {
             setIdleMode(false)
-            selectCountry(nearest.iso3)
+            selectDonor(nearestDonor.donorId)
+            return
+          }
+
+          if (nearestPoint !== null && nearestPointDist < selectionThreshold) {
+            setIdleMode(false)
+            selectCountry(nearestPoint.iso3)
           }
         }}
       />

@@ -10,7 +10,18 @@ import { useDashboardState } from '../../src/features/dashboard/useDashboardStat
 vi.mock('next/dynamic', () => ({
   default: (_loader: unknown, _options: unknown) => function GlobeStub(props: {
     onPointClick?: (point: object) => void
+    onGlobeClick?: (coords: { lat: number, lng: number }) => void
     arcsData?: Array<{
+      donorId?: string
+      donorName?: string
+      donorCountry?: string
+      donorLat?: number
+      donorLon?: number
+      recipientIso3?: string
+      recipientName?: string
+      recipientLat?: number
+      recipientLon?: number
+      amountUsdM?: number
       yearAmounts?: Array<{ year: number, totalUsdM: number }>
       years?: number[]
     }>
@@ -34,6 +45,13 @@ vi.mock('next/dynamic', () => ({
           })}
         >
           globe stub
+        </button>
+        <button
+          data-testid="globe-click-donor-stub"
+          type="button"
+          onClick={() => props.onGlobeClick?.({ lat: 37.1, lng: -95.7 })}
+        >
+          globe click donor stub
         </button>
         <div data-testid="compare-color">{compareColor}</div>
       </div>
@@ -220,6 +238,76 @@ describe('GlobeScene client state', () => {
     expect(state.selectionId).toBe('UKR')
     expect(state.selectedCountryIso3).toBe('UKR')
     expect(state.selectedDonorId).toBeNull()
+    expect(state.idleMode).toBe(false)
+  })
+
+  it('allows map clicks near donor origins to focus donor drilldowns', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.startsWith('/api/globe')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const trigger = container.querySelector('[data-testid="globe-click-donor-stub"]')
+
+    expect(trigger).not.toBeNull()
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const state = useDashboardState.getState()
+
+    expect(state.selectionType).toBe('donor')
+    expect(state.selectionId).toBe('gates-foundation')
+    expect(state.selectedDonorId).toBe('gates-foundation')
+    expect(state.selectedCountryIso3).toBeNull()
     expect(state.idleMode).toBe(false)
   })
 })
