@@ -106,6 +106,14 @@ export function computeArcProperties(
 const arcColorAccessor = (arc: object) => (arc as ComputedArcDatum)._color
 const arcAltitudeAccessor = (arc: object) => (arc as ComputedArcDatum)._altitude
 const arcStrokeAccessor = (arc: object) => (arc as ComputedArcDatum)._stroke
+const arcStartLatAccessor = (arc: object) => (arc as GlobeArcDatum).donorLat
+const arcStartLngAccessor = (arc: object) => (arc as GlobeArcDatum).donorLon
+const arcEndLatAccessor = (arc: object) => (arc as GlobeArcDatum).recipientLat
+const arcEndLngAccessor = (arc: object) => (arc as GlobeArcDatum).recipientLon
+const arcLabelAccessor = (arc: object) => {
+  const a = arc as GlobeArcDatum
+  return `${a.donorName} -> ${a.recipientName}: ${formatUsdMillions(a.amountUsdM)}`
+}
 
 function getPointColor(point: GlobePointDatum) {
   if (point.totalUsdM >= 500) {
@@ -149,7 +157,7 @@ export function GlobeScene() {
   const [countryFeatures, setCountryFeatures] = useState<GlobeCountryFeature[]>([])
   const [donorCountryOptions, setDonorCountryOptions] = useState<string[]>([])
   const [globeError, setGlobeError] = useState<string | null>(null)
-  const [hoveredArc, setHoveredArc] = useState<GlobeArcDatum | null>(null)
+  const [hoveredArc, setHoveredArc] = useState<ComputedArcDatum | null>(null)
   const [hoveredPoint, setHoveredPoint] = useState<GlobePointDatum | null>(null)
   const [hoveredCountryIso3, setHoveredCountryIso3] = useState<string | null>(null)
   const idleMode = useDashboardState((state) => state.idleMode)
@@ -582,18 +590,18 @@ export function GlobeScene() {
           selectCountry(iso3, country.properties?.name ?? country.properties?.admin ?? null)
         }}
         arcsData={computedArcs}
-        arcStartLat={(arc: GlobeArcDatum) => arc.donorLat}
-        arcStartLng={(arc: GlobeArcDatum) => arc.donorLon}
-        arcEndLat={(arc: GlobeArcDatum) => arc.recipientLat}
-        arcEndLng={(arc: GlobeArcDatum) => arc.recipientLon}
+        arcStartLat={arcStartLatAccessor}
+        arcStartLng={arcStartLngAccessor}
+        arcEndLat={arcEndLatAccessor}
+        arcEndLng={arcEndLngAccessor}
         arcColor={arcColorAccessor}
         arcAltitude={arcAltitudeAccessor}
         arcStroke={arcStrokeAccessor}
         arcDashLength={0.8}
         arcDashGap={0.35}
         arcDashAnimateTime={1600}
-        arcLabel={(arc: GlobeArcDatum) => `${arc.donorName} -> ${arc.recipientName}: ${formatUsdMillions(arc.amountUsdM)}`}
-        onArcHover={(arc: object | null) => setHoveredArc((arc as GlobeArcDatum | null) ?? null)}
+        arcLabel={arcLabelAccessor}
+        onArcHover={(arc: object | null) => setHoveredArc((arc as ComputedArcDatum | null) ?? null)}
         onArcClick={(arc: object) => {
           setIdleMode(false)
           selectDonor((arc as GlobeArcDatum).donorId)
