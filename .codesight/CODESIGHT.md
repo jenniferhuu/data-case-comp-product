@@ -2,9 +2,9 @@
 
 > **Stack:** next-app | none | react | typescript
 
-> 4 routes | 0 models | 31 components | 37 lib files | 1 env vars | 0 middleware
+> 4 routes | 0 models | 38 components | 39 lib files | 1 env vars | 0 middleware
 > **Token savings:** this file is ~0 tokens. Without it, AI exploration would cost ~0 tokens. **Saves ~0 tokens per conversation.**
-> **Last scanned:** 2026-04-27 12:08 — re-run after significant changes
+> **Last scanned:** 2026-04-27 23:07 — re-run after significant changes
 
 ---
 
@@ -32,12 +32,18 @@
 - **ControlRail** [client] — `src\components\dashboard\ControlRail.tsx`
 - **DashboardShell** [client] — `src\components\dashboard\DashboardShell.tsx`
 - **HeroStats** [client] — props: overview — `src\components\dashboard\HeroStats.tsx`
+- **InsightBarChart** — props: title, items — `src\components\dashboard\InsightBarChart.tsx`
+- **InsightHeader** — props: eyebrow, title, subtitle — `src\components\dashboard\InsightHeader.tsx`
+- **InsightMetricCard** — props: label, value, detail — `src\components\dashboard\InsightMetricCard.tsx`
 - **InsightRail** [client] — props: overview, drilldown — `src\components\dashboard\InsightRail.tsx`
+- **InsightRankList** — props: title, items, onSelect — `src\components\dashboard\InsightRankList.tsx`
+- **InsightTrendChart** — props: title, points — `src\components\dashboard\InsightTrendChart.tsx`
 - **TrendDrawer** — props: eyebrow, title, items — `src\components\dashboard\TrendDrawer.tsx`
 - **ArcLayer** — props: data — `src\components\Globe\ArcLayer.tsx`
 - **CesiumGlobe** — props: data — `src\components\Globe\CesiumGlobe.tsx`
 - **CrisisAnnotations** — props: events, geo — `src\components\Globe\CrisisAnnotations.tsx`
 - **GlobeIdleController** [client] — `src\components\Globe\GlobeIdleController.tsx`
+- **GlobeLegend** — props: compareMode — `src\components\Globe\GlobeLegend.tsx`
 - **GlobeScene** [client] — `src\components\Globe\GlobeScene.tsx`
 - **Header** — `src\components\Layout\Header.tsx`
 - **MethodologyFooter** — `src\components\Layout\MethodologyFooter.tsx`
@@ -46,8 +52,9 @@
 - **DonorPanel** — props: donor, markerData — `src\components\Panel\DonorPanel.tsx`
 - **MarkerCredibilityCard** — props: markerData — `src\components\Panel\MarkerCredibilityCard.tsx`
 - **Panel** — props: title, onClose — `src\components\Panel\Panel.tsx`
-- **CountryDrilldown** — props: country — `src\components\panels\CountryDrilldown.tsx`
-- **DonorDrilldown** — props: donor — `src\components\panels\DonorDrilldown.tsx`
+- **CountryDrilldown** — props: country, onSelectDonor — `src\components\panels\CountryDrilldown.tsx`
+- **DonorCountryDrilldown** — props: donorCountry, onSelectDonor, onSelectCountry — `src\components\panels\DonorCountryDrilldown.tsx`
+- **DonorDrilldown** — props: donor, onSelectCountry — `src\components\panels\DonorDrilldown.tsx`
 - **Leaderboard** — props: data — `src\components\Sidebar\Leaderboard.tsx`
 - **LeftSidebar** — props: data — `src\components\Sidebar\LeftSidebar.tsx`
 
@@ -116,11 +123,13 @@
 - `src\lib\animatedDashMaterial.ts` — class AnimatedDashMaterialProperty
 - `src\lib\arcGeometry.ts` — function generateArcPoints: (fromLat, fromLon, toLat, toLon, numPoints) => Cartesian3[]
 - `src\lib\colorScales.ts`
+  - function getSectorColorHex: (sector) => string
+  - function getSectorArcColors: (sector) => [string, string]
   - function sectorColor: (sector) => Color
   - function growthRateColor: (rate) => Color
   - function credibilityColor: (score) => Color
   - function arcWidth: (usd_m) => number
-  - const SECTOR_COLORS: Record<string, string>
+  - _...2 more_
 - `src\lib\dataLoader.ts` — function loadAppData: () => Promise<AppData>
 - `src\lib\filters.ts`
   - function applyFilters: (flows, params) => Flow[]
@@ -136,8 +145,9 @@
   - function getPickedCountryEntity: (hits, containsEntity) => void
   - function resolveGlobeSelection: (clickedIso3, donorSummaries, 'donor_id' | 'donor_country' | 'donor_iso3'>[]) => GlobeSelectionState
   - _...6 more_
+- `src\lib\sectorLabels.ts` — function normalizeSectorLabel: (value) => string, function normalizeSectorLabels: (values) => string[]
 - `src\pipeline\derive\buildDrilldownArtifact.ts` — function buildDrilldownArtifact: (rows) => DrilldownsArtifact, interface DrilldownsArtifact
-- `src\pipeline\derive\buildFiltersArtifact.ts` — function buildFiltersArtifact: (rows) => FiltersArtifact, interface FiltersArtifact
+- `src\pipeline\derive\buildFiltersArtifact.ts` — function buildFiltersArtifact: (rows, geo) => FiltersArtifact, interface FiltersArtifact
 - `src\pipeline\derive\buildGlobeArtifact.ts` — function buildGlobeArtifact: (rows) => GlobeArtifact
 - `src\pipeline\derive\buildOverviewArtifact.ts` — function buildOverviewArtifact: (rows) => OverviewResponse
 - `src\pipeline\index.ts` — function ensureRequiredColumns: (rows, string>[], required) => void, function runPipeline: () => void
@@ -149,6 +159,7 @@
 - `src\pipeline\writeArtifacts.ts` — function writeArtifact: (name, data) => Promise<void>
 - `src\server\api\handleApiRequest.ts` — function handleApiRequest: (load) => void
 - `src\server\repositories\artifactRepository.ts` — function readArtifactJson: (name) => Promise<unknown>, type ArtifactName
+- `src\server\repositories\dashboardRepository.ts` — function readDonorSummary: () => Promise<DonorSummaryEntry[]>, function readCountrySummary: () => Promise<CountrySummaryEntry[]>
 - `src\server\repositories\geoRepository.ts` — function readCountriesGeoJson: () => Promise<GeoCountry[]>
 - `src\server\services\drilldownService.ts` — function getDrilldown: (searchParams?) => Promise<DrilldownResponse>
 - `src\server\services\filterService.ts` — function getFilters: () => Promise<FiltersArtifact>
@@ -183,38 +194,38 @@
 ## Most Imported Files (change these carefully)
 
 - `src\state\store.ts` — imported by **15** files
-- `src\contracts\overview.ts` — imported by **9** files
-- `src\features\dashboard\useDashboardState.ts` — imported by **7** files
-- `src\contracts\drilldown.ts` — imported by **7** files
+- `src\contracts\overview.ts` — imported by **10** files
+- `src\contracts\drilldown.ts` — imported by **10** files
+- `src\features\dashboard\useDashboardState.ts` — imported by **9** files
 - `src\pipeline\normalize\normalizeRows.ts` — imported by **7** files
+- `src\lib\colorScales.ts` — imported by **6** files
 - `src\contracts\globe.ts` — imported by **6** files
+- `src\features\dashboard\queryState.ts` — imported by **6** files
+- `src\components\Globe\globePresentation.ts` — imported by **6** files
 - `src\contracts\filters.ts` — imported by **6** files
+- `src\pipeline\config.ts` — imported by **6** files
+- `src\server\services\drilldownService.ts` — imported by **5** files
+- `src\components\dashboard\InsightHeader.tsx` — imported by **5** files
 - `src\features\filters\derivedData.ts` — imported by **5** files
-- `src\features\dashboard\queryState.ts` — imported by **5** files
-- `src\pipeline\config.ts` — imported by **5** files
-- `src\server\services\drilldownService.ts` — imported by **4** files
+- `src\lib\sectorLabels.ts` — imported by **5** files
 - `src\server\api\handleApiRequest.ts` — imported by **4** files
+- `src\server\services\filterService.ts` — imported by **4** files
 - `src\components\dashboard\DashboardShell.tsx` — imported by **4** files
-- `src\lib\colorScales.ts` — imported by **4** files
-- `src\features\filters\storeFilters.ts` — imported by **4** files
-- `src\components\Globe\globePresentation.ts` — imported by **4** files
-- `src\server\repositories\artifactRepository.ts` — imported by **4** files
-- `src\app\api\overview\route.ts` — imported by **4** files
-- `src\server\services\filterService.ts` — imported by **3** files
-- `src\pipeline\index.ts` — imported by **3** files
+- `src\components\dashboard\InsightBarChart.tsx` — imported by **4** files
+- `src\components\dashboard\InsightMetricCard.tsx` — imported by **4** files
 
 ## Import Map (who imports what)
 
 - `src\state\store.ts` ← `src\App.tsx`, `src\components\Controls\ArcLegend.tsx`, `src\components\Controls\DonorCountryFilter.tsx`, `src\components\Controls\FlowSizeSlider.tsx`, `src\components\Controls\MarkerSelector.tsx` +10 more
-- `src\contracts\overview.ts` ← `src\components\dashboard\DashboardShell.tsx`, `src\components\dashboard\HeroStats.tsx`, `src\components\dashboard\InsightRail.tsx`, `src\contracts\index.ts`, `src\pipeline\derive\buildOverviewArtifact.ts` +4 more
-- `src\features\dashboard\useDashboardState.ts` ← `src\components\dashboard\ControlRail.tsx`, `src\components\dashboard\InsightRail.tsx`, `src\components\Globe\GlobeIdleController.tsx`, `src\components\Globe\GlobeScene.tsx`, `tests\server\control-rail.test.tsx` +2 more
-- `src\contracts\drilldown.ts` ← `src\components\dashboard\InsightRail.tsx`, `src\components\panels\CountryDrilldown.tsx`, `src\components\panels\DonorDrilldown.tsx`, `src\contracts\index.ts`, `src\pipeline\derive\buildDrilldownArtifact.ts` +2 more
+- `src\contracts\overview.ts` ← `src\components\dashboard\DashboardShell.tsx`, `src\components\dashboard\HeroStats.tsx`, `src\components\dashboard\InsightRail.tsx`, `src\contracts\index.ts`, `src\pipeline\derive\buildOverviewArtifact.ts` +5 more
+- `src\contracts\drilldown.ts` ← `src\components\dashboard\InsightRail.tsx`, `src\components\panels\CountryDrilldown.tsx`, `src\components\panels\DonorCountryDrilldown.tsx`, `src\components\panels\DonorDrilldown.tsx`, `src\contracts\index.ts` +5 more
+- `src\features\dashboard\useDashboardState.ts` ← `src\components\dashboard\ControlRail.tsx`, `src\components\dashboard\HeroStats.tsx`, `src\components\dashboard\InsightRail.tsx`, `src\components\Globe\GlobeIdleController.tsx`, `src\components\Globe\GlobeScene.tsx` +4 more
 - `src\pipeline\normalize\normalizeRows.ts` ← `src\pipeline\derive\buildDrilldownArtifact.ts`, `src\pipeline\derive\buildFiltersArtifact.ts`, `src\pipeline\derive\buildGlobeArtifact.ts`, `src\pipeline\derive\buildOverviewArtifact.ts`, `src\pipeline\index.ts` +2 more
+- `src\lib\colorScales.ts` ← `src\components\Controls\ArcLegend.tsx`, `src\components\Globe\ArcLayer.tsx`, `src\components\Globe\GlobeLegend.tsx`, `src\components\Globe\GlobeScene.tsx`, `src\components\Panel\CountryPanel.tsx` +1 more
 - `src\contracts\globe.ts` ← `src\components\Globe\globePresentation.ts`, `src\components\Globe\GlobeScene.tsx`, `src\contracts\index.ts`, `src\pipeline\derive\buildGlobeArtifact.ts`, `src\server\services\globeService.ts` +1 more
+- `src\features\dashboard\queryState.ts` ← `src\components\Globe\GlobeScene.tsx`, `src\features\dashboard\useDashboardState.ts`, `tests\server\control-rail.test.tsx`, `tests\server\dashboard-shell.test.tsx`, `tests\server\drilldown.test.tsx` +1 more
+- `src\components\Globe\globePresentation.ts` ← `src\components\Globe\GlobeScene.tsx`, `src\pipeline\derive\buildFiltersArtifact.ts`, `src\pipeline\index.ts`, `src\server\repositories\geoRepository.ts`, `src\server\services\globeService.ts` +1 more
 - `src\contracts\filters.ts` ← `src\contracts\index.ts`, `src\features\dashboard\queryState.ts`, `src\features\dashboard\useDashboardState.ts`, `src\server\services\drilldownService.ts`, `src\server\services\globeService.ts` +1 more
-- `src\features\filters\derivedData.ts` ← `src\components\Globe\ArcLayer.tsx`, `src\components\Layout\StatsStrip.tsx`, `src\components\Sidebar\Leaderboard.tsx`, `src\features\filters\derivedData.test.ts`, `src\features\filters\storeFilters.ts`
-- `src\features\dashboard\queryState.ts` ← `src\components\Globe\GlobeScene.tsx`, `src\features\dashboard\useDashboardState.ts`, `tests\server\control-rail.test.tsx`, `tests\server\dashboard-shell.test.tsx`, `tests\server\drilldown.test.tsx`
-- `src\pipeline\config.ts` ← `src\pipeline\index.ts`, `src\pipeline\loaders\loadEnrichment.ts`, `src\pipeline\loaders\loadPrimaryCsv.ts`, `src\pipeline\writeArtifacts.ts`, `src\server\repositories\artifactRepository.ts`
 
 ---
 

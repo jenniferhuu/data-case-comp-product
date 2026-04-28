@@ -13,12 +13,18 @@
 - **ControlRail** [client] — `src\components\dashboard\ControlRail.tsx`
 - **DashboardShell** [client] — `src\components\dashboard\DashboardShell.tsx`
 - **HeroStats** [client] — props: overview — `src\components\dashboard\HeroStats.tsx`
+- **InsightBarChart** — props: title, items — `src\components\dashboard\InsightBarChart.tsx`
+- **InsightHeader** — props: eyebrow, title, subtitle — `src\components\dashboard\InsightHeader.tsx`
+- **InsightMetricCard** — props: label, value, detail — `src\components\dashboard\InsightMetricCard.tsx`
 - **InsightRail** [client] — props: overview, drilldown — `src\components\dashboard\InsightRail.tsx`
+- **InsightRankList** — props: title, items, onSelect — `src\components\dashboard\InsightRankList.tsx`
+- **InsightTrendChart** — props: title, points — `src\components\dashboard\InsightTrendChart.tsx`
 - **TrendDrawer** — props: eyebrow, title, items — `src\components\dashboard\TrendDrawer.tsx`
 - **ArcLayer** — props: data — `src\components\Globe\ArcLayer.tsx`
 - **CesiumGlobe** — props: data — `src\components\Globe\CesiumGlobe.tsx`
 - **CrisisAnnotations** — props: events, geo — `src\components\Globe\CrisisAnnotations.tsx`
 - **GlobeIdleController** [client] — `src\components\Globe\GlobeIdleController.tsx`
+- **GlobeLegend** — props: compareMode — `src\components\Globe\GlobeLegend.tsx`
 - **GlobeScene** [client] — `src\components\Globe\GlobeScene.tsx`
 - **Header** — `src\components\Layout\Header.tsx`
 - **MethodologyFooter** — `src\components\Layout\MethodologyFooter.tsx`
@@ -27,7 +33,8 @@
 - **DonorPanel** — props: donor, markerData — `src\components\Panel\DonorPanel.tsx`
 - **MarkerCredibilityCard** — props: markerData — `src\components\Panel\MarkerCredibilityCard.tsx`
 - **Panel** — props: title, onClose — `src\components\Panel\Panel.tsx`
-- **CountryDrilldown** — props: country — `src\components\panels\CountryDrilldown.tsx`
-- **DonorDrilldown** — props: donor — `src\components\panels\DonorDrilldown.tsx`
+- **CountryDrilldown** — props: country, onSelectDonor — `src\components\panels\CountryDrilldown.tsx`
+- **DonorCountryDrilldown** — props: donorCountry, onSelectDonor, onSelectCountry — `src\components\panels\DonorCountryDrilldown.tsx`
+- **DonorDrilldown** — props: donor, onSelectCountry — `src\components\panels\DonorDrilldown.tsx`
 - **Leaderboard** — props: data — `src\components\Sidebar\Leaderboard.tsx`
 - **LeftSidebar** — props: data — `src\components\Sidebar\LeftSidebar.tsx`

@@ -34,7 +34,7 @@ export function DonorCountryDrilldown({ donorCountry, onSelectDonor, onSelectCou
         />
         <InsightMetricCard
           label="Recipient reach"
-          value={donorCountry.topRecipients.length.toLocaleString('en-US')}
+          value={donorCountry.recipientCount.toLocaleString('en-US')}
           detail="recipient countries"
         />
       </div>

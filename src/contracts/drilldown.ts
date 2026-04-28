@@ -69,6 +69,7 @@ export const donorCountryDrilldownSchema = z.object({
   name: z.string(),
   totalUsdM: z.number(),
   donorCount: z.number(),
+  recipientCount: z.number(),
   topDonors: z.array(topDonorSchema),
   sectorBreakdown: z.array(fundingBreakdownSchema),
   yearlyFunding: z.array(yearlyFundingSchema),

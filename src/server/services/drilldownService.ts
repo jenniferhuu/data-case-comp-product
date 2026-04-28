@@ -268,6 +268,7 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
         name: query.selectionId,
         totalUsdM: round4(totalUsdM),
         donorCount: donorTotals.size,
+        recipientCount: recipientTotals.size,
         topDonors: sortTotals(
           [...donorTotals.values()].map((donor) => ({
             ...donor,

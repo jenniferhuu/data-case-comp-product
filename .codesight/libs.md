@@ -61,11 +61,13 @@
 - `src\lib\animatedDashMaterial.ts` — class AnimatedDashMaterialProperty
 - `src\lib\arcGeometry.ts` — function generateArcPoints: (fromLat, fromLon, toLat, toLon, numPoints) => Cartesian3[]
 - `src\lib\colorScales.ts`
+  - function getSectorColorHex: (sector) => string
+  - function getSectorArcColors: (sector) => [string, string]
   - function sectorColor: (sector) => Color
   - function growthRateColor: (rate) => Color
   - function credibilityColor: (score) => Color
   - function arcWidth: (usd_m) => number
-  - const SECTOR_COLORS: Record<string, string>
+  - _...2 more_
 - `src\lib\dataLoader.ts` — function loadAppData: () => Promise<AppData>
 - `src\lib\filters.ts`
   - function applyFilters: (flows, params) => Flow[]
@@ -81,8 +83,9 @@
   - function getPickedCountryEntity: (hits, containsEntity) => void
   - function resolveGlobeSelection: (clickedIso3, donorSummaries, 'donor_id' | 'donor_country' | 'donor_iso3'>[]) => GlobeSelectionState
   - _...6 more_
+- `src\lib\sectorLabels.ts` — function normalizeSectorLabel: (value) => string, function normalizeSectorLabels: (values) => string[]
 - `src\pipeline\derive\buildDrilldownArtifact.ts` — function buildDrilldownArtifact: (rows) => DrilldownsArtifact, interface DrilldownsArtifact
-- `src\pipeline\derive\buildFiltersArtifact.ts` — function buildFiltersArtifact: (rows) => FiltersArtifact, interface FiltersArtifact
+- `src\pipeline\derive\buildFiltersArtifact.ts` — function buildFiltersArtifact: (rows, geo) => FiltersArtifact, interface FiltersArtifact
 - `src\pipeline\derive\buildGlobeArtifact.ts` — function buildGlobeArtifact: (rows) => GlobeArtifact
 - `src\pipeline\derive\buildOverviewArtifact.ts` — function buildOverviewArtifact: (rows) => OverviewResponse
 - `src\pipeline\index.ts` — function ensureRequiredColumns: (rows, string>[], required) => void, function runPipeline: () => void
@@ -94,6 +97,7 @@
 - `src\pipeline\writeArtifacts.ts` — function writeArtifact: (name, data) => Promise<void>
 - `src\server\api\handleApiRequest.ts` — function handleApiRequest: (load) => void
 - `src\server\repositories\artifactRepository.ts` — function readArtifactJson: (name) => Promise<unknown>, type ArtifactName
+- `src\server\repositories\dashboardRepository.ts` — function readDonorSummary: () => Promise<DonorSummaryEntry[]>, function readCountrySummary: () => Promise<CountrySummaryEntry[]>
 - `src\server\repositories\geoRepository.ts` — function readCountriesGeoJson: () => Promise<GeoCountry[]>
 - `src\server\services\drilldownService.ts` — function getDrilldown: (searchParams?) => Promise<DrilldownResponse>
 - `src\server\services\filterService.ts` — function getFilters: () => Promise<FiltersArtifact>
