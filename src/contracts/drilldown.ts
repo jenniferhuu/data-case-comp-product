@@ -28,6 +28,16 @@ export const topImplementerSchema = z.object({
   totalUsdM: z.number(),
 })
 
+export const modalityBreakdownItemSchema = z.object({
+  label: z.string(),
+  totalUsdM: z.number(),
+})
+
+export const flowGeographySchema = z.object({
+  crossBorderPct: z.number(),
+  domesticPct: z.number(),
+})
+
 export const donorDrilldownSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -39,6 +49,8 @@ export const donorDrilldownSchema = z.object({
   sectorBreakdown: z.array(fundingBreakdownSchema),
   topRecipients: z.array(topRecipientSchema),
   topImplementers: z.array(topImplementerSchema),
+  modalityBreakdown: z.array(modalityBreakdownItemSchema),
+  flowGeography: flowGeographySchema,
 })
 
 export const countryDrilldownSchema = z.object({
@@ -62,6 +74,8 @@ export const donorCountryDrilldownSchema = z.object({
   yearlyFunding: z.array(yearlyFundingSchema),
   topRecipients: z.array(topRecipientSchema),
   topImplementers: z.array(topImplementerSchema),
+  modalityBreakdown: z.array(modalityBreakdownItemSchema),
+  flowGeography: flowGeographySchema,
 })
 
 export const drilldownResponseSchema = z.object({

@@ -4,6 +4,7 @@ import { InsightBarChart } from '../dashboard/InsightBarChart'
 import { InsightHeader } from '../dashboard/InsightHeader'
 import { InsightMetricCard } from '../dashboard/InsightMetricCard'
 import { InsightRankList } from '../dashboard/InsightRankList'
+import { FlowGeographyCard, ModalityDonut } from '../dashboard/InsightSupplementalCards'
 import { InsightTrendChart } from '../dashboard/InsightTrendChart'
 
 type DonorDrilldownData = NonNullable<DrilldownResponse['donor']>
@@ -27,6 +28,8 @@ export function DonorDrilldown({ donor, onSelectCountry }: DonorDrilldownProps) 
   const topRecipients = donor.topRecipients ?? []
   const topImplementers = donor.topImplementers ?? []
   const yearlyFunding = donor.yearlyFunding ?? []
+  const modalityBreakdown = donor.modalityBreakdown ?? []
+  const flowGeography = donor.flowGeography
 
   return (
     <div className="space-y-4">
@@ -46,6 +49,11 @@ export function DonorDrilldown({ donor, onSelectCountry }: DonorDrilldownProps) 
           detail={`${topRecipientShare.toFixed(1)}% held by top recipient`}
         />
       </div>
+      <FlowGeographyCard
+        crossBorderPct={flowGeography.crossBorderPct}
+        domesticPct={flowGeography.domesticPct}
+      />
+      <ModalityDonut items={modalityBreakdown} />
       <InsightBarChart
         title="Sector mix"
         items={sectorBreakdown.map((item) => ({

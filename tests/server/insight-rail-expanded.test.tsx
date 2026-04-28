@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server'
 import { InsightHeader } from '../../src/components/dashboard/InsightHeader'
 import { InsightRail } from '../../src/components/dashboard/InsightRail'
 import { CountryDrilldown } from '../../src/components/panels/CountryDrilldown'
+import { DonorCountryDrilldown } from '../../src/components/panels/DonorCountryDrilldown'
 import { DonorDrilldown } from '../../src/components/panels/DonorDrilldown'
 import type { DrilldownResponse } from '../../src/contracts/drilldown'
 import type { OverviewResponse } from '../../src/contracts/overview'
@@ -73,6 +74,14 @@ const donorSelection: DrilldownResponse = {
       { name: 'UNICEF', totalUsdM: 5000.1 },
       { name: 'PATH', totalUsdM: 2800.4 },
     ],
+    modalityBreakdown: [
+      { label: 'Grants', totalUsdM: 17000.1 },
+      { label: 'Loans', totalUsdM: 1890.3 },
+    ],
+    flowGeography: {
+      crossBorderPct: 92.4,
+      domesticPct: 7.6,
+    },
   },
   country: null,
   donorCountry: null,
@@ -107,6 +116,45 @@ const countrySelection: DrilldownResponse = {
   donorCountry: null,
 }
 
+const donorCountrySelection: DrilldownResponse = {
+  donor: null,
+  country: null,
+  donorCountry: {
+    name: 'United States',
+    totalUsdM: 22100.8,
+    donorCount: 124,
+    topDonors: [
+      { id: 'gates-foundation', name: 'Gates Foundation', country: 'United States', totalUsdM: 9000.4 },
+      { id: 'howard-g-buffett-foundation', name: 'Howard G. Buffett Foundation', country: 'United States', totalUsdM: 2800.1 },
+    ],
+    sectorBreakdown: [
+      { sector: 'Health', totalUsdM: 11000.2 },
+      { sector: 'Agriculture', totalUsdM: 4600.5 },
+    ],
+    yearlyFunding: [
+      { year: 2021, totalUsdM: 6100.2 },
+      { year: 2022, totalUsdM: 7200.3 },
+      { year: 2023, totalUsdM: 8800.3 },
+    ],
+    topRecipients: [
+      { iso3: 'UKR', name: 'Ukraine', totalUsdM: 5000.2 },
+      { iso3: 'KEN', name: 'Kenya', totalUsdM: 3200.1 },
+    ],
+    topImplementers: [
+      { name: 'UNICEF', totalUsdM: 4200.4 },
+      { name: 'CARE', totalUsdM: 1800.2 },
+    ],
+    modalityBreakdown: [
+      { label: 'Grants', totalUsdM: 21000.6 },
+      { label: 'Loans', totalUsdM: 1100.2 },
+    ],
+    flowGeography: {
+      crossBorderPct: 96.1,
+      domesticPct: 3.9,
+    },
+  },
+}
+
 describe('expanded insight rail', () => {
   it('renders the compact identity header', () => {
     const html = renderToString(
@@ -118,7 +166,7 @@ describe('expanded insight rail', () => {
   })
 
   it('renders idle overview analytics in the rail', () => {
-    useDashboardState.setState(parseDashboardQuery())
+    useDashboardState.getState().hydrateFromQuery(parseDashboardQuery())
     useDashboardState.getState().setGlobeStats({
       visibleFundingUsdM: 500,
       arcCount: 4,
@@ -143,6 +191,8 @@ describe('expanded insight rail', () => {
   it('renders donor stacked analysis sections', () => {
     const html = renderToString(<DonorDrilldown donor={donorSelection.donor!} />)
 
+    expect(html).toContain('Flow geography')
+    expect(html).toContain('Grants vs loans')
     expect(html).toContain('Sector mix')
     expect(html).toContain('Top recipients')
     expect(html).toContain('Yearly distribution')
@@ -152,6 +202,19 @@ describe('expanded insight rail', () => {
     expect(html).toContain('Top implementers')
     expect(html).toContain('UNICEF')
     expect(html).toContain('Ukraine')
+  })
+
+  it('renders donor-country stacked analysis sections', () => {
+    const html = renderToString(<DonorCountryDrilldown donorCountry={donorCountrySelection.donorCountry!} />)
+
+    expect(html).toContain('Flow geography')
+    expect(html).toContain('Grants vs loans')
+    expect(html).toContain('Sector mix')
+    expect(html).toContain('Top donors')
+    expect(html).toContain('Top recipients')
+    expect(html).toContain('Yearly distribution')
+    expect(html).toContain('United States')
+    expect(html).toContain('UNICEF')
   })
 
   it('renders country stacked analysis sections', () => {

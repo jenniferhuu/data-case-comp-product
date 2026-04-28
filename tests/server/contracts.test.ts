@@ -139,6 +139,8 @@ describe('shared contracts', () => {
         sectorBreakdown: [{ sector: 'Health', totalUsdM: 10 }],
         topRecipients: [{ iso3: 'UKR', name: 'Ukraine', totalUsdM: 10 }],
         topImplementers: [{ name: 'UNICEF', totalUsdM: 8 }],
+        modalityBreakdown: [{ label: 'Grants', totalUsdM: 8 }, { label: 'Loans', totalUsdM: 2 }],
+        flowGeography: { crossBorderPct: 80, domesticPct: 20 },
       },
       country: null,
       donorCountry: null,

@@ -87,6 +87,14 @@ const donorSelection: DrilldownResponse = {
       { name: 'UNICEF', totalUsdM: 1100.5 },
       { name: 'PATH', totalUsdM: 998.1 },
     ],
+    modalityBreakdown: [
+      { label: 'Grants', totalUsdM: 17000.1 },
+      { label: 'Loans', totalUsdM: 1890.3 },
+    ],
+    flowGeography: {
+      crossBorderPct: 92.4,
+      domesticPct: 7.6,
+    },
   },
   country: null,
   donorCountry: null,
@@ -122,6 +130,45 @@ const countrySelection: DrilldownResponse = {
   donorCountry: null,
 }
 
+const donorCountrySelection: DrilldownResponse = {
+  donor: null,
+  country: null,
+  donorCountry: {
+    name: 'United States',
+    totalUsdM: 22100.8,
+    donorCount: 124,
+    topDonors: [
+      { id: 'gates-foundation', name: 'Gates Foundation', country: 'United States', totalUsdM: 9000.4 },
+      { id: 'howard-g-buffett-foundation', name: 'Howard G. Buffett Foundation', country: 'United States', totalUsdM: 2800.1 },
+    ],
+    sectorBreakdown: [
+      { sector: 'Health', totalUsdM: 11000.2 },
+      { sector: 'Agriculture', totalUsdM: 4600.5 },
+    ],
+    yearlyFunding: [
+      { year: 2021, totalUsdM: 6100.2 },
+      { year: 2022, totalUsdM: 7200.3 },
+      { year: 2023, totalUsdM: 8800.3 },
+    ],
+    topRecipients: [
+      { iso3: 'UKR', name: 'Ukraine', totalUsdM: 5000.2 },
+      { iso3: 'KEN', name: 'Kenya', totalUsdM: 3200.1 },
+    ],
+    topImplementers: [
+      { name: 'UNICEF', totalUsdM: 4200.4 },
+      { name: 'CARE', totalUsdM: 1800.2 },
+    ],
+    modalityBreakdown: [
+      { label: 'Grants', totalUsdM: 21000.6 },
+      { label: 'Loans', totalUsdM: 1100.2 },
+    ],
+    flowGeography: {
+      crossBorderPct: 96.1,
+      domesticPct: 3.9,
+    },
+  },
+}
+
 function createDeferred<T>() {
   let resolve!: (value: T) => void
   const promise = new Promise<T>((nextResolve) => {
@@ -143,7 +190,8 @@ describe('dashboard drilldown surfaces', () => {
 
   beforeEach(() => {
     ;(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
-    useDashboardState.setState(parseDashboardQuery())
+    useDashboardState.getState().hydrateFromQuery(parseDashboardQuery())
+    useDashboardState.setState({ globeStats: null })
     container = document.createElement('div')
     document.body.appendChild(container)
     root = createRoot(container)
@@ -163,6 +211,8 @@ describe('dashboard drilldown surfaces', () => {
     expect(html).toContain('Gates Foundation')
     expect(html).toContain('$18,890.4M')
     expect(html).toContain('99')
+    expect(html).toContain('Flow geography')
+    expect(html).toContain('Grants vs loans')
     expect(html).toContain('Health')
     expect(html).toContain('India')
   })
@@ -196,7 +246,21 @@ describe('dashboard drilldown surfaces', () => {
     expect(html).toContain('Donor')
     expect(html).toContain('Gates Foundation')
     expect(html).toContain('Selection-driven analysis')
+    expect(html).toContain('Flow geography')
+    expect(html).toContain('Grants vs loans')
     expect(html).toContain('Top recipients')
+  })
+
+  it('renders donor-country drilldown content in the insight rail on the server', () => {
+    useDashboardState.getState().selectDonorCountry('United States')
+
+    const html = renderToString(<InsightRail overview={overview} drilldown={donorCountrySelection} />)
+
+    expect(html).toContain('Donor country')
+    expect(html).toContain('United States')
+    expect(html).toContain('Flow geography')
+    expect(html).toContain('Grants vs loans')
+    expect(html).toContain('Top donors')
   })
 
   it('renders country drilldown content in the insight rail on the server', () => {

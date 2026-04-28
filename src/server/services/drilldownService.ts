@@ -1,8 +1,9 @@
 import { drilldownResponseSchema, type DrilldownResponse } from '../../contracts/drilldown'
+import { buildGlobePresentation, type GeoCountry } from '../../components/Globe/globePresentation'
 import { normalizeSectorLabel } from '../../lib/sectorLabels'
 import type { CanonicalFundingRow } from '../../pipeline/normalize/normalizeRows'
 import { readCountriesGeoJson } from '../repositories/geoRepository'
-import { getRowAmount, loadFilteredRows } from './dashboardData'
+import { classifyFinancialInstrument, getRowAmount, loadFilteredRows } from './dashboardData'
 
 function round1(value: number) {
   return Number(value.toFixed(1))
@@ -57,6 +58,57 @@ function buildTopImplementers(rows: CanonicalFundingRow[], valueMode: 'disbursem
   ).slice(0, 6)
 }
 
+function buildModalityBreakdown(rows: CanonicalFundingRow[], valueMode: 'disbursements' | 'commitments') {
+  let grantsUsdM = 0
+  let loansUsdM = 0
+
+  for (const row of rows) {
+    const amount = getRowAmount(row, valueMode)
+    if (amount <= 0) continue
+
+    if (classifyFinancialInstrument(row.financialInstrument) === 'loan') {
+      loansUsdM += amount
+    } else {
+      grantsUsdM += amount
+    }
+  }
+
+  return [
+    { label: 'Grants', totalUsdM: round4(grantsUsdM) },
+    { label: 'Loans', totalUsdM: round4(loansUsdM) },
+  ]
+}
+
+function buildFlowGeography(rows: CanonicalFundingRow[], valueMode: 'disbursements' | 'commitments', geo: GeoCountry[]) {
+  const presentation = buildGlobePresentation(
+    rows
+      .map((row) => {
+        const amountUsdM = getRowAmount(row, valueMode)
+        if (amountUsdM <= 0) {
+          return null
+        }
+
+        return {
+          donorId: row.donor.id,
+          donorName: row.donor.name,
+          donorCountry: row.donor.country,
+          recipientIso3: row.recipient.iso3,
+          recipientName: row.recipient.name,
+          amountUsdM,
+          year: row.year,
+          sector: row.sector,
+        }
+      })
+      .filter((flow): flow is NonNullable<typeof flow> => flow !== null),
+    geo,
+  )
+
+  return {
+    crossBorderPct: presentation.crossBorderPct,
+    domesticPct: presentation.domesticPct,
+  }
+}
+
 function buildYearlyFunding(rows: CanonicalFundingRow[], valueMode: 'disbursements' | 'commitments') {
   const totals = new Map<number, number>()
 
@@ -73,6 +125,7 @@ function buildYearlyFunding(rows: CanonicalFundingRow[], valueMode: 'disbursemen
 
 export async function getDrilldown(searchParams?: URLSearchParams): Promise<DrilldownResponse> {
   const { query, rows } = await loadFilteredRows(searchParams)
+  const geo = await readCountriesGeoJson()
 
   if (query.selectionType === 'donor' && query.selectionId !== undefined) {
     const donorRows = rows.filter((row) => row.donor.id === query.selectionId)
@@ -115,6 +168,8 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
         sectorBreakdown: buildSectorBreakdown(donorRows, query.valueMode),
         topRecipients: topRecipientEntries,
         topImplementers: buildTopImplementers(donorRows, query.valueMode),
+        modalityBreakdown: buildModalityBreakdown(donorRows, query.valueMode),
+        flowGeography: buildFlowGeography(donorRows, query.valueMode, geo),
       },
       country: null,
       donorCountry: null,
@@ -122,7 +177,6 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
   }
 
   if (query.selectionType === 'country' && query.selectionId !== undefined) {
-    const geo = await readCountriesGeoJson()
     const selectedGeoName = geo.find((entry) => entry.iso3 === query.selectionId)?.name
     const countryRows = rows.filter((row) =>
       row.recipient.iso3 === query.selectionId
@@ -229,6 +283,8 @@ export async function getDrilldown(searchParams?: URLSearchParams): Promise<Dril
           })),
         ).slice(0, 6),
         topImplementers: buildTopImplementers(donorCountryRows, query.valueMode),
+        modalityBreakdown: buildModalityBreakdown(donorCountryRows, query.valueMode),
+        flowGeography: buildFlowGeography(donorCountryRows, query.valueMode, geo),
       },
     })
   }

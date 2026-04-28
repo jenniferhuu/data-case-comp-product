@@ -35,6 +35,14 @@ describe('drilldown service enriched analytics', () => {
       name: expect.any(String),
       totalUsdM: expect.any(Number),
     })
+    expect(response.donor?.modalityBreakdown).toEqual([
+      { label: 'Grants', totalUsdM: expect.any(Number) },
+      { label: 'Loans', totalUsdM: expect.any(Number) },
+    ])
+    expect(response.donor?.flowGeography).toEqual({
+      crossBorderPct: expect.any(Number),
+      domesticPct: expect.any(Number),
+    })
   })
 
   it('returns country yearly funding, sector breakdown, counterparties, and concentration metrics', async () => {
@@ -95,6 +103,37 @@ describe('drilldown service enriched analytics', () => {
       donor: null,
       country: null,
       donorCountry: null,
+    })
+  })
+
+  it('returns donor-country analytics including modality and flow geography', async () => {
+    const response = await getDrilldown(new URLSearchParams({
+      selectionType: 'donorCountry',
+      selectionId: 'United States',
+    }))
+
+    expect(response.donor).toBeNull()
+    expect(response.country).toBeNull()
+    expect(response.donorCountry).toMatchObject({
+      name: 'United States',
+    })
+    expect(response.donorCountry?.topDonors[0]).toMatchObject({
+      id: expect.any(String),
+      name: expect.any(String),
+      country: 'United States',
+      totalUsdM: expect.any(Number),
+    })
+    expect(response.donorCountry?.topImplementers[0]).toEqual({
+      name: expect.any(String),
+      totalUsdM: expect.any(Number),
+    })
+    expect(response.donorCountry?.modalityBreakdown).toEqual([
+      { label: 'Grants', totalUsdM: expect.any(Number) },
+      { label: 'Loans', totalUsdM: expect.any(Number) },
+    ])
+    expect(response.donorCountry?.flowGeography).toEqual({
+      crossBorderPct: expect.any(Number),
+      domesticPct: expect.any(Number),
     })
   })
 })
