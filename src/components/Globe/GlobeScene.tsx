@@ -83,6 +83,26 @@ function getArcAltitude(arc: GlobeArcDatum) {
   return Math.min(0.55, Math.max(0.1, minAlt + 0.05))
 }
 
+export interface ComputedArcDatum extends GlobeArcDatum {
+  _color: [string, string]
+  _altitude: number
+  _stroke: number
+}
+
+export function computeArcProperties(
+  arcs: GlobeArcDatum[],
+  compareMode: boolean,
+  compareFrom: number | undefined,
+  compareTo: number | undefined,
+): ComputedArcDatum[] {
+  return arcs.map((arc) => ({
+    ...arc,
+    _color: getArcColor(arc, compareMode, compareFrom, compareTo),
+    _altitude: getArcAltitude(arc),
+    _stroke: Math.min(1.35, 0.28 + arc.amountUsdM / 900),
+  }))
+}
+
 function getPointColor(point: GlobePointDatum) {
   if (point.totalUsdM >= 500) {
     return '#a5f3fc'
