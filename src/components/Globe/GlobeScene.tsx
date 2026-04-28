@@ -60,10 +60,10 @@ function getArcColor(arc: GlobeArcDatum, compareMode: boolean, compareFrom?: num
     const delta = getCompareDelta(arc, compareFrom, compareTo)
 
     if (Math.abs(delta) < 0.05) {
-      return [...DELTA_COLOR_RAMPS.neutral]
+      return [...DELTA_COLOR_RAMPS.neutral] as [string, string]
     }
 
-    return delta > 0 ? [...DELTA_COLOR_RAMPS.positive] : [...DELTA_COLOR_RAMPS.negative]
+    return (delta > 0 ? [...DELTA_COLOR_RAMPS.positive] : [...DELTA_COLOR_RAMPS.negative]) as [string, string]
   }
 
   return getSectorArcColors(arc.sector)

@@ -72,4 +72,16 @@ describe('computeArcProperties', () => {
     expect(result.amountUsdM).toBe(baseArc.amountUsdM)
     expect(result.sector).toBe(baseArc.sector)
   })
+
+  test('compare mode with near-zero delta returns neutral ramp', () => {
+    const arc: GlobeArcDatum = {
+      ...baseArc,
+      yearAmounts: [
+        { year: 2022, totalUsdM: 100 },
+        { year: 2023, totalUsdM: 100 },
+      ],
+    }
+    const [result] = computeArcProperties([arc], true, 2022, 2023)
+    expect(result._color).toEqual([...DELTA_COLOR_RAMPS.neutral])
+  })
 })
