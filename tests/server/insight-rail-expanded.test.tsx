@@ -123,6 +123,7 @@ const donorCountrySelection: DrilldownResponse = {
     name: 'United States',
     totalUsdM: 22100.8,
     donorCount: 124,
+    recipientCount: 2,
     topDonors: [
       { id: 'gates-foundation', name: 'Gates Foundation', country: 'United States', totalUsdM: 9000.4 },
       { id: 'howard-g-buffett-foundation', name: 'Howard G. Buffett Foundation', country: 'United States', totalUsdM: 2800.1 },
