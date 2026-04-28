@@ -11,6 +11,13 @@ vi.mock('next/dynamic', () => ({
   default: (_loader: unknown, _options: unknown) => function GlobeStub(props: {
     onPointClick?: (point: object) => void
     onGlobeClick?: (coords: { lat: number, lng: number }) => void
+    onPolygonClick?: (feature: object) => void
+    polygonsData?: Array<{
+      properties?: {
+        iso_a3?: string
+        name?: string
+      }
+    }>
     arcsData?: Array<{
       donorId?: string
       donorName?: string
@@ -52,6 +59,13 @@ vi.mock('next/dynamic', () => ({
           onClick={() => props.onGlobeClick?.({ lat: 37.1, lng: -95.7 })}
         >
           globe click donor stub
+        </button>
+        <button
+          data-testid="globe-click-country-polygon-stub"
+          type="button"
+          onClick={() => props.onPolygonClick?.(props.polygonsData?.[0] ?? { properties: { iso_a3: 'UKR', name: 'Ukraine' } })}
+        >
+          globe click country polygon stub
         </button>
         <div data-testid="compare-color">{compareColor}</div>
       </div>
@@ -100,6 +114,15 @@ describe('GlobeScene client state', () => {
           ok: false,
           json: async () => ({
             message: 'Globe data is unavailable.',
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [],
           }),
         }
       }
@@ -171,6 +194,15 @@ describe('GlobeScene client state', () => {
         }
       }
 
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [],
+          }),
+        }
+      }
+
       throw new Error(`Unexpected fetch: ${url}`)
     }))
 
@@ -213,6 +245,22 @@ describe('GlobeScene client state', () => {
         }
       }
 
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'UKR',
+                  name: 'Ukraine',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
       throw new Error(`Unexpected fetch: ${url}`)
     }))
 
@@ -225,6 +273,76 @@ describe('GlobeScene client state', () => {
     })
 
     const trigger = container.querySelector('[data-testid="globe-stub"]')
+
+    expect(trigger).not.toBeNull()
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const state = useDashboardState.getState()
+
+    expect(state.selectionType).toBe('country')
+    expect(state.selectionId).toBe('UKR')
+    expect(state.selectedCountryIso3).toBe('UKR')
+    expect(state.selectedDonorId).toBeNull()
+    expect(state.idleMode).toBe(false)
+  })
+
+  it('allows clicking within country polygons to focus that country', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.startsWith('/api/globe')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'UKR',
+                  name: 'Ukraine',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const trigger = container.querySelector('[data-testid="globe-click-country-polygon-stub"]')
 
     expect(trigger).not.toBeNull()
 
@@ -279,6 +397,15 @@ describe('GlobeScene client state', () => {
             visibleFundingUsdM: 663.1,
             crossBorderPct: 100,
             domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [],
           }),
         }
       }

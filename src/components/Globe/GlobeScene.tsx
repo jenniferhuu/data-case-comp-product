@@ -6,6 +6,7 @@ import { createDashboardSearchParams } from '../../features/dashboard/queryState
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
 import type { GlobeResponse } from '../../contracts/globe'
 import { DELTA_COLOR_RAMPS, getSectorArcColors } from '../../lib/colorScales'
+import { COUNTRY_GEOJSON_URL, getCountryIso3, type CountryProperties } from '../../lib/globeSelection'
 import type { GlobeArcDatum, GlobePointDatum } from './globePresentation'
 import { GlobeLegend } from './GlobeLegend'
 
@@ -96,14 +97,25 @@ function getSquaredDistance(fromLat: number, fromLng: number, toLat: number, toL
   return dLat * dLat + dLng * dLng
 }
 
+interface GlobeCountryFeature {
+  type: 'Feature'
+  properties?: CountryProperties & {
+    name?: string
+    admin?: string
+  }
+  geometry?: unknown
+}
+
 export function GlobeScene() {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [size, setSize] = useState({ width: 1000, height: 820 })
   const [globeResponse, setGlobeResponse] = useState<GlobeResponse | null>(null)
+  const [countryFeatures, setCountryFeatures] = useState<GlobeCountryFeature[]>([])
   const [globeError, setGlobeError] = useState<string | null>(null)
   const [hoveredArc, setHoveredArc] = useState<GlobeArcDatum | null>(null)
   const [hoveredPoint, setHoveredPoint] = useState<GlobePointDatum | null>(null)
+  const [hoveredCountryIso3, setHoveredCountryIso3] = useState<string | null>(null)
   const idleMode = useDashboardState((state) => state.idleMode)
   const yearMode = useDashboardState((state) => state.yearMode)
   const year = useDashboardState((state) => state.year)
@@ -216,6 +228,33 @@ export function GlobeScene() {
   }, [globeQueryString, setGlobeStats])
 
   useEffect(() => {
+    let cancelled = false
+
+    void fetch(COUNTRY_GEOJSON_URL)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Country boundaries are unavailable.')
+        }
+
+        return response.json() as Promise<{ features?: GlobeCountryFeature[] }>
+      })
+      .then((data) => {
+        if (!cancelled) {
+          setCountryFeatures(data.features ?? [])
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setCountryFeatures([])
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
     const controls = globeRef.current?.controls?.()
 
     if (controls === undefined) {
@@ -313,6 +352,41 @@ export function GlobeScene() {
         atmosphereColor="#7dd3fc"
         atmosphereAltitude={0.16}
         animateIn
+        polygonsData={countryFeatures}
+        polygonAltitude={(feature: object) => {
+          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.004 : 0.001
+        }}
+        polygonCapColor={(feature: object) => {
+          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+            ? 'rgba(34,211,238,0.08)'
+            : 'rgba(255,255,255,0.01)'
+        }}
+        polygonSideColor={() => 'rgba(255,255,255,0.02)'}
+        polygonStrokeColor={(feature: object) => {
+          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+            ? 'rgba(125,211,252,0.55)'
+            : 'rgba(255,255,255,0.08)'
+        }}
+        polygonLabel={(feature: object) => {
+          const country = feature as GlobeCountryFeature
+          const iso3 = getCountryIso3(country.properties)
+          const name = country.properties?.name ?? country.properties?.admin ?? iso3 ?? 'Country'
+          return iso3 === undefined ? name : `${name} (${iso3})`
+        }}
+        onPolygonHover={(feature: object | null) => {
+          setHoveredCountryIso3(getCountryIso3((feature as GlobeCountryFeature | null)?.properties) ?? null)
+        }}
+        onPolygonClick={(feature: object) => {
+          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          if (iso3 === undefined) {
+            return
+          }
+          setIdleMode(false)
+          selectCountry(iso3)
+        }}
         arcsData={visibleArcs}
         arcStartLat={(arc: GlobeArcDatum) => arc.donorLat}
         arcStartLng={(arc: GlobeArcDatum) => arc.donorLon}
