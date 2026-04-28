@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { createDashboardSearchParams } from '../../features/dashboard/queryState'
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
@@ -151,6 +151,7 @@ interface GlobeFiltersResponse {
 export function GlobeScene() {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const polygonHoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [size, setSize] = useState({ width: 1000, height: 820 })
   const [globeResponse, setGlobeResponse] = useState<GlobeResponse | null>(null)
   const [donorCountryOutlineResponse, setDonorCountryOutlineResponse] = useState<GlobeResponse | null>(null)
@@ -438,6 +439,49 @@ export function GlobeScene() {
     [visibleArcs, compareMode, compareFrom, compareTo],
   )
 
+  const handlePolygonHover = useCallback((feature: object | null) => {
+    if (polygonHoverTimerRef.current !== null) {
+      clearTimeout(polygonHoverTimerRef.current)
+    }
+    polygonHoverTimerRef.current = setTimeout(() => {
+      setHoveredCountryIso3(getCountryIso3((feature as GlobeCountryFeature | null)?.properties) ?? null)
+    }, 50)
+  }, [])
+
+  const polygonAltitudeCb = useCallback((feature: object) => {
+    const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+    if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+      return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.005 : 0.0024
+    }
+    return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.004 : 0.001
+  }, [donorCountryRecipientIsoSet, hoveredCountryIso3])
+
+  const polygonCapColorCb = useCallback((feature: object) => {
+    const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+    if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+      return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+        ? 'rgba(251,191,36,0.12)'
+        : 'rgba(251,191,36,0.05)'
+    }
+    return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+      ? 'rgba(34,211,238,0.08)'
+      : 'rgba(255,255,255,0.01)'
+  }, [donorCountryRecipientIsoSet, hoveredCountryIso3])
+
+  const polygonSideColorCb = useCallback(() => 'rgba(255,255,255,0.02)', [])
+
+  const polygonStrokeColorCb = useCallback((feature: object) => {
+    const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+    if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+      return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+        ? 'rgba(251,191,36,0.74)'
+        : 'rgba(251,191,36,0.58)'
+    }
+    return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+      ? 'rgba(125,211,252,0.55)'
+      : 'rgba(255,255,255,0.08)'
+  }, [donorCountryRecipientIsoSet, hoveredCountryIso3])
+
   const selectedArc = computedArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
   const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
   const overlayArc = hoveredArc ?? selectedArc
@@ -510,45 +554,17 @@ export function GlobeScene() {
         atmosphereAltitude={0.16}
         animateIn
         polygonsData={countryFeatures}
-        polygonAltitude={(feature: object) => {
-          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
-          if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
-            return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.005 : 0.0024
-          }
-          return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.004 : 0.001
-        }}
-        polygonCapColor={(feature: object) => {
-          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
-          if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
-            return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
-              ? 'rgba(251,191,36,0.12)'
-              : 'rgba(251,191,36,0.05)'
-          }
-          return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
-            ? 'rgba(34,211,238,0.08)'
-            : 'rgba(255,255,255,0.01)'
-        }}
-        polygonSideColor={() => 'rgba(255,255,255,0.02)'}
-        polygonStrokeColor={(feature: object) => {
-          const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
-          if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
-            return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
-              ? 'rgba(251,191,36,0.74)'
-              : 'rgba(251,191,36,0.58)'
-          }
-          return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
-            ? 'rgba(125,211,252,0.55)'
-            : 'rgba(255,255,255,0.08)'
-        }}
+        polygonAltitude={polygonAltitudeCb}
+        polygonCapColor={polygonCapColorCb}
+        polygonSideColor={polygonSideColorCb}
+        polygonStrokeColor={polygonStrokeColorCb}
         polygonLabel={(feature: object) => {
           const country = feature as GlobeCountryFeature
           const iso3 = getCountryIso3(country.properties)
           const name = country.properties?.name ?? country.properties?.admin ?? iso3 ?? 'Country'
           return iso3 === undefined ? name : `${name} (${iso3})`
         }}
-        onPolygonHover={(feature: object | null) => {
-          setHoveredCountryIso3(getCountryIso3((feature as GlobeCountryFeature | null)?.properties) ?? null)
-        }}
+        onPolygonHover={handlePolygonHover}
         onPolygonClick={(feature: object) => {
           const country = feature as GlobeCountryFeature
           const iso3 = getCountryIso3(country.properties)
