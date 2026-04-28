@@ -378,7 +378,7 @@ export function ControlRail() {
                   if (value !== undefined) {
                     const iso3 = filters.recipientCountryIsoMap[value]
                     if (iso3 !== undefined) {
-                      selectCountry(iso3)
+                      selectCountry(iso3, value)
                     }
                   } else {
                     resetSelection()

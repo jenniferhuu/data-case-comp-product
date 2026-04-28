@@ -20,7 +20,7 @@ export interface DashboardState extends DashboardQuery {
   hydrateFromQuery: (query: DashboardQuery) => void
   patchQuery: (query: Partial<DashboardQuery>) => void
   resetSelection: () => void
-  selectCountry: (iso3: string | null) => void
+  selectCountry: (iso3: string | null, name?: string | null) => void
   selectDonor: (id: string | null) => void
   selectDonorCountry: (name: string | null) => void
   setIdleMode: (value: boolean) => void
@@ -100,8 +100,9 @@ export const useDashboardState = create<DashboardState>((set) => ({
       idleMode: true,
     })
   },
-  selectCountry: (selectedCountryIso3) => {
+  selectCountry: (selectedCountryIso3, name) => {
     set({
+      recipientCountry: selectedCountryIso3 === null ? undefined : name ?? undefined,
       selectionType: selectedCountryIso3 === null ? undefined : 'country',
       selectionId: selectedCountryIso3 ?? undefined,
       selectedCountryIso3,

@@ -402,7 +402,7 @@ export function GlobeScene() {
             return
           }
 
-          selectCountry(iso3)
+          selectCountry(iso3, country.properties?.name ?? country.properties?.admin ?? null)
         }}
         arcsData={visibleArcs}
         arcStartLat={(arc: GlobeArcDatum) => arc.donorLat}
@@ -432,7 +432,7 @@ export function GlobeScene() {
         onPointHover={(point: object | null) => setHoveredPoint((point as GlobePointDatum | null) ?? null)}
         onPointClick={(point: object) => {
           setIdleMode(false)
-          selectCountry((point as GlobePointDatum).iso3)
+          selectCountry((point as GlobePointDatum).iso3, (point as GlobePointDatum).name)
         }}
         onGlobeClick={({ lat, lng }: { lat: number; lng: number }) => {
           const points = globeResponse?.points ?? []
@@ -482,7 +482,7 @@ export function GlobeScene() {
 
           if (nearestPoint !== null && nearestPointDist < selectionThreshold) {
             setIdleMode(false)
-            selectCountry(nearestPoint.iso3)
+            selectCountry(nearestPoint.iso3, nearestPoint.name)
           }
         }}
       />

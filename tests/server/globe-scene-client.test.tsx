@@ -44,7 +44,7 @@ vi.mock('next/dynamic', () => ({
         <button
           data-testid="globe-stub"
           type="button"
-          onClick={() => props.onPointClick?.({
+          onClick={() => props.onPointClick?.(props.pointsData?.[0] ?? {
             iso3: 'UKR',
             name: 'Ukraine',
             totalUsdM: 663.1,
@@ -285,6 +285,86 @@ describe('GlobeScene client state', () => {
     expect(state.selectionType).toBe('country')
     expect(state.selectionId).toBe('UKR')
     expect(state.selectedCountryIso3).toBe('UKR')
+    expect(state.selectedDonorId).toBeNull()
+    expect(state.idleMode).toBe(false)
+  })
+
+  it('updates the recipient-country filter when a different country is clicked after an existing selection', async () => {
+    useDashboardState.setState({
+      ...parseDashboardQuery(),
+      recipientCountry: 'Ukraine',
+      selectionType: 'country',
+      selectionId: 'UKR',
+      selectedCountryIso3: 'UKR',
+      idleMode: false,
+    })
+
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.startsWith('/api/globe')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [],
+            points: [
+              {
+                iso3: 'KEN',
+                name: 'Kenya',
+                lat: -0.02,
+                lon: 37.91,
+                totalUsdM: 128.4,
+                donorCount: 14,
+              },
+            ],
+            visibleFundingUsdM: 128.4,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'KEN',
+                  name: 'Kenya',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const trigger = container.querySelector('[data-testid="globe-stub"]')
+
+    expect(trigger).not.toBeNull()
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const state = useDashboardState.getState()
+
+    expect(state.selectionType).toBe('country')
+    expect(state.selectionId).toBe('KEN')
+    expect(state.selectedCountryIso3).toBe('KEN')
+    expect(state.recipientCountry).toBe('Kenya')
     expect(state.selectedDonorId).toBeNull()
     expect(state.idleMode).toBe(false)
   })
