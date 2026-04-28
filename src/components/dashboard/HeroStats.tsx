@@ -17,6 +17,7 @@ function formatUsdMillions(value: number) {
 
 export function HeroStats({ overview }: HeroStatsProps) {
   const globeStats = useDashboardState((state) => state.globeStats)
+  const valueMode = useDashboardState((state) => state.valueMode)
   const leadHighlight = overview?.highlights[0] ?? null
   const fallbackContext = overview === null
     ? 'Loading cross-border funding totals and portfolio context.'
@@ -36,6 +37,13 @@ export function HeroStats({ overview }: HeroStatsProps) {
       value: globeStats === null ? '—' : globeStats.pointCount.toLocaleString('en-US'),
     },
   ]
+
+  if (valueMode === 'commitments') {
+    stats.push({
+      label: 'Commitments disbursed',
+      value: overview === null ? '—' : `${overview.commitmentProgress.disbursedPct.toFixed(1)}%`,
+    })
+  }
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-10 px-4 pt-4">

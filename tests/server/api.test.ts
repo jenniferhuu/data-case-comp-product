@@ -45,6 +45,9 @@ describe('GET /api/overview', () => {
         expect.objectContaining({ label: expect.any(String), totalUsdM: expect.any(Number) }),
       ]),
     )
+    expect(body.commitmentProgress).toEqual(
+      expect.objectContaining({ disbursedPct: expect.any(Number) }),
+    )
   })
 
   it('returns a stable 500 payload when the service throws', async () => {

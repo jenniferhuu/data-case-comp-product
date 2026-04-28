@@ -24,9 +24,13 @@ export async function getOverview(searchParams?: URLSearchParams): Promise<Overv
     ['Loans', 0],
   ])
   let fundingUsdM = 0
+  let filteredDisbursementsUsdM = 0
+  let filteredCommitmentsUsdM = 0
 
   for (const row of rows) {
     const amount = getRowAmount(row, query.valueMode)
+    filteredDisbursementsUsdM += Math.max(0, row.disbursementsUsdM)
+    filteredCommitmentsUsdM += Math.max(0, row.commitmentsUsdM)
     if (amount <= 0) {
       continue
     }
@@ -80,6 +84,10 @@ export async function getOverview(searchParams?: URLSearchParams): Promise<Overv
       country: donor.country,
     }))
 
+  const disbursedPct = filteredCommitmentsUsdM > 0
+    ? Number(((filteredDisbursementsUsdM / filteredCommitmentsUsdM) * 100).toFixed(1))
+    : 0
+
   return overviewResponseSchema.parse({
     totals,
     highlights: sortedTopDonors[0] === undefined
@@ -120,5 +128,8 @@ export async function getOverview(searchParams?: URLSearchParams): Promise<Overv
       label: entry.label,
       totalUsdM: round4(entry.totalUsdM),
     })),
+    commitmentProgress: {
+      disbursedPct,
+    },
   })
 }

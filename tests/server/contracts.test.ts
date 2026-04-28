@@ -13,6 +13,7 @@ describe('shared contracts', () => {
       topDonors: [],
       yearlyFunding: [],
       modalityBreakdown: [],
+      commitmentProgress: { disbursedPct: 62.1 },
     })
 
     expect(parsed.totals.donors).toBe(2)

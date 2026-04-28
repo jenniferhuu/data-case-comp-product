@@ -59,6 +59,9 @@ const overview: OverviewResponse = {
     { label: 'Grants', totalUsdM: 64000 },
     { label: 'Loans', totalUsdM: 4237.1 },
   ],
+  commitmentProgress: {
+    disbursedPct: 62.1,
+  },
 }
 
 const donorSelection: DrilldownResponse = {
@@ -236,6 +239,18 @@ describe('dashboard drilldown surfaces', () => {
     expect(html).toContain('Recipient countries')
     expect(html).toContain('Largest donor')
     expect(html).toContain('Gates Foundation')
+  })
+
+  it('shows commitment disbursement progress when commitments mode is active', async () => {
+    useDashboardState.getState().hydrateFromQuery(parseDashboardQuery())
+    useDashboardState.getState().patchQuery({ valueMode: 'commitments' })
+
+    await act(async () => {
+      root.render(<HeroStats overview={overview} />)
+    })
+
+    expect(container.textContent).toContain('Commitments disbursed')
+    expect(container.textContent).toContain('62.1%')
   })
 
   it('renders donor drilldown content in the insight rail on the server', () => {

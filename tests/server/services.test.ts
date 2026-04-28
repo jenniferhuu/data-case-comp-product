@@ -37,6 +37,9 @@ describe('server services', () => {
         expect.objectContaining({ label: 'Grants', totalUsdM: expect.any(Number) }),
       ]),
     )
+    expect(response.commitmentProgress).toEqual(
+      expect.objectContaining({ disbursedPct: expect.any(Number) }),
+    )
     expect(response.yearlyFunding).toEqual([
       { year: 2020, totalUsdM: 17170.5555 },
       { year: 2021, totalUsdM: 17381.5559 },
@@ -60,6 +63,7 @@ describe('server services', () => {
     expect(disbursements.topDonors.every((donor) => donor.country === 'United States')).toBe(true)
     expect(commitments.topDonors.every((donor) => donor.country === 'United States')).toBe(true)
     expect(commitments.totals.fundingUsdM).not.toBe(disbursements.totals.fundingUsdM)
+    expect(commitments.commitmentProgress.disbursedPct).toBeGreaterThan(0)
   })
 
   it('getFilters returns the generated filter artifact shape', async () => {

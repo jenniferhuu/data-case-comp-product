@@ -10,5 +10,8 @@
   "topRecipients": [],
   "topDonors": [],
   "yearlyFunding": [],
-  "modalityBreakdown": []
+  "modalityBreakdown": [],
+  "commitmentProgress": {
+    "disbursedPct": 131.8
+  }
 }
