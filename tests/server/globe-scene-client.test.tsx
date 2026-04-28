@@ -1110,6 +1110,155 @@ describe('GlobeScene client state', () => {
     expect(container.querySelector('[data-testid="arc-count"]')?.textContent).toBe('1')
   })
 
+  it('keeps donor recipient outlines visible after selecting one recipient country', async () => {
+    useDashboardState.setState({
+      ...parseDashboardQuery(),
+      donor: 'gates-foundation',
+      selectionType: 'country',
+      selectionId: 'UKR',
+      recipientCountry: 'Ukraine',
+      selectedCountryIso3: 'UKR',
+      selectedDonorId: 'gates-foundation',
+      idleMode: false,
+    })
+
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.includes('/api/globe?') && url.includes('recipientCountry=Ukraine')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 791.5,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url.includes('/api/globe?') && url.includes('donor=gates-foundation') && !url.includes('recipientCountry=')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'KEN',
+                recipientName: 'Kenya',
+                recipientLat: -0.02,
+                recipientLon: 37.91,
+                amountUsdM: 128.4,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 128.4 }],
+                sector: 'Health',
+              },
+            ],
+            points: [],
+            visibleFundingUsdM: 791.5,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'UKR',
+                  name: 'Ukraine',
+                },
+              },
+              {
+                properties: {
+                  iso_a3: 'KEN',
+                  name: 'Kenya',
+                },
+              },
+              {
+                properties: {
+                  iso_a3: 'FRA',
+                  name: 'France',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States', 'France']),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(container.querySelector('[data-testid="polygon-stroke-0"]')?.textContent).toBe('rgba(251,191,36,0.58)')
+    expect(container.querySelector('[data-testid="polygon-stroke-1"]')?.textContent).toBe('rgba(251,191,36,0.58)')
+    expect(container.querySelector('[data-testid="polygon-stroke-2"]')?.textContent).toBe('rgba(255,255,255,0.08)')
+    expect(container.querySelector('[data-testid="arc-count"]')?.textContent).toBe('1')
+  })
+
   it('caps rendered arcs at 300 even for selected donor states', async () => {
     useDashboardState.setState({
       ...parseDashboardQuery(),

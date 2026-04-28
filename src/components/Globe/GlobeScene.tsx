@@ -154,6 +154,7 @@ export function GlobeScene() {
   const polygonHoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [size, setSize] = useState({ width: 1000, height: 820 })
   const [globeResponse, setGlobeResponse] = useState<GlobeResponse | null>(null)
+  const [donorOutlineResponse, setDonorOutlineResponse] = useState<GlobeResponse | null>(null)
   const [donorCountryOutlineResponse, setDonorCountryOutlineResponse] = useState<GlobeResponse | null>(null)
   const [countryFeatures, setCountryFeatures] = useState<GlobeCountryFeature[]>([])
   const [donorCountryOptions, setDonorCountryOptions] = useState<string[]>([])
@@ -272,6 +273,63 @@ export function GlobeScene() {
       cancelled = true
     }
   }, [globeQueryString, setGlobeStats])
+
+  const donorOutlineQueryString = useMemo(() => {
+    if (selectedDonorId === null) {
+      return ''
+    }
+
+    return createDashboardSearchParams({
+      yearMode,
+      year,
+      compareFrom,
+      compareTo,
+      valueMode,
+      donor: undefined,
+      donorCountry: undefined,
+      recipientCountry: undefined,
+      sector,
+      marker: undefined,
+      selectionType: 'donor',
+      selectionId: selectedDonorId,
+    }).toString()
+  }, [compareFrom, compareTo, sector, selectedDonorId, valueMode, year, yearMode])
+
+  useEffect(() => {
+    if (selectedDonorId === null) {
+      setDonorOutlineResponse(null)
+      return
+    }
+
+    let cancelled = false
+    const href = donorOutlineQueryString.length === 0
+      ? '/api/globe'
+      : `/api/globe?${donorOutlineQueryString}`
+
+    void fetch(href)
+      .then(async (response) => {
+        if (!response.ok) {
+          const payload = await response.json().catch(() => null) as { message?: string } | null
+          throw new Error(payload?.message ?? 'Globe data is unavailable.')
+        }
+
+        return response.json() as Promise<GlobeResponse>
+      })
+      .then((data) => {
+        if (!cancelled) {
+          setDonorOutlineResponse(data)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setDonorOutlineResponse(null)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [donorOutlineQueryString, selectedDonorId])
 
   const donorCountryOutlineQueryString = useMemo(() => {
     if (donorCountry === undefined) {
@@ -419,24 +477,24 @@ export function GlobeScene() {
   }, [donorCountry, donorCountryOutlineResponse, globeResponse])
 
   const selectedDonorRecipientIsoSet = useMemo(() => {
-    if (selectionType !== 'donor') {
+    if (selectedDonorId === null) {
       return new Set<string>()
     }
 
-    return new Set(visibleArcs.map((arc) => arc.recipientIso3))
-  }, [selectionType, visibleArcs])
+    return new Set((donorOutlineResponse?.arcs ?? visibleArcs).map((arc) => arc.recipientIso3))
+  }, [donorOutlineResponse, selectedDonorId, visibleArcs])
 
   const highlightedRecipientIsoSet = useMemo(() => {
     if (donorCountry !== undefined) {
       return donorCountryRecipientIsoSet
     }
 
-    if (selectionType === 'donor') {
+    if (selectedDonorId !== null) {
       return selectedDonorRecipientIsoSet
     }
 
     return new Set<string>()
-  }, [donorCountry, donorCountryRecipientIsoSet, selectedDonorRecipientIsoSet, selectionType])
+  }, [donorCountry, donorCountryRecipientIsoSet, selectedDonorId, selectedDonorRecipientIsoSet])
 
   const donorCountryNameMap = useMemo(() => {
     return new Map(
@@ -494,7 +552,9 @@ export function GlobeScene() {
       : 'rgba(255,255,255,0.08)'
   }, [highlightedRecipientIsoSet, hoveredCountryIso3])
 
-  const selectedArc = computedArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
+  const selectedArc = selectionType === 'donor'
+    ? computedArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
+    : null
   const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
   const overlayArc = hoveredArc ?? selectedArc
   const overlayPoint = hoveredPoint ?? selectedPoint

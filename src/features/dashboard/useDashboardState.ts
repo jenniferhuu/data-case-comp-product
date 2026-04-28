@@ -101,14 +101,14 @@ export const useDashboardState = create<DashboardState>((set) => ({
     })
   },
   selectCountry: (selectedCountryIso3, name) => {
-    set({
+    set((state) => ({
       recipientCountry: selectedCountryIso3 === null ? undefined : name ?? undefined,
       selectionType: selectedCountryIso3 === null ? undefined : 'country',
       selectionId: selectedCountryIso3 ?? undefined,
       selectedCountryIso3,
-      selectedDonorId: null,
+      selectedDonorId: selectedCountryIso3 === null ? null : state.selectedDonorId,
       idleMode: selectedCountryIso3 === null,
-    })
+    }))
   },
   selectDonor: (selectedDonorId) => {
     set({
