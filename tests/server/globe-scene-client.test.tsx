@@ -766,6 +766,96 @@ describe('GlobeScene client state', () => {
     expect(container.querySelector('[data-testid="polygon-stroke-1"]')?.textContent).toBe('rgba(255,255,255,0.08)')
   })
 
+  it('highlights recipient countries when a donor selection is active', async () => {
+    useDashboardState.getState().hydrateFromQuery(parseDashboardQuery())
+    useDashboardState.getState().selectDonor('gates-foundation')
+    useDashboardState.getState().setIdleMode(false)
+
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.startsWith('/api/globe')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'UKR',
+                  name: 'Ukraine',
+                },
+              },
+              {
+                properties: {
+                  iso_a3: 'FRA',
+                  name: 'France',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States', 'France']),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(container.querySelector('[data-testid="polygon-stroke-0"]')?.textContent).toBe('rgba(251,191,36,0.58)')
+    expect(container.querySelector('[data-testid="polygon-stroke-1"]')?.textContent).toBe('rgba(255,255,255,0.08)')
+  })
+
   it('switches non-recipient donor-country clicks to donor-country selection while donor-country mode is active', async () => {
     useDashboardState.setState({
       ...parseDashboardQuery(),

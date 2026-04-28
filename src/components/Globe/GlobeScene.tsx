@@ -426,6 +426,18 @@ export function GlobeScene() {
     return new Set(visibleArcs.map((arc) => arc.recipientIso3))
   }, [selectionType, visibleArcs])
 
+  const highlightedRecipientIsoSet = useMemo(() => {
+    if (donorCountry !== undefined) {
+      return donorCountryRecipientIsoSet
+    }
+
+    if (selectionType === 'donor') {
+      return selectedDonorRecipientIsoSet
+    }
+
+    return new Set<string>()
+  }, [donorCountry, donorCountryRecipientIsoSet, selectedDonorRecipientIsoSet, selectionType])
+
   const donorCountryNameMap = useMemo(() => {
     return new Map(
       donorCountryOptions.map((countryName) => [normalizeCountryName(countryName), countryName] as const),
@@ -450,15 +462,15 @@ export function GlobeScene() {
 
   const polygonAltitudeCb = useCallback((feature: object) => {
     const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
-    if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+    if (iso3 !== undefined && highlightedRecipientIsoSet.has(iso3)) {
       return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.005 : 0.0024
     }
     return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.004 : 0.001
-  }, [donorCountryRecipientIsoSet, hoveredCountryIso3])
+  }, [highlightedRecipientIsoSet, hoveredCountryIso3])
 
   const polygonCapColorCb = useCallback((feature: object) => {
     const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
-    if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+    if (iso3 !== undefined && highlightedRecipientIsoSet.has(iso3)) {
       return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
         ? 'rgba(251,191,36,0.12)'
         : 'rgba(251,191,36,0.05)'
@@ -466,13 +478,13 @@ export function GlobeScene() {
     return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
       ? 'rgba(34,211,238,0.08)'
       : 'rgba(255,255,255,0.01)'
-  }, [donorCountryRecipientIsoSet, hoveredCountryIso3])
+  }, [highlightedRecipientIsoSet, hoveredCountryIso3])
 
   const polygonSideColorCb = useCallback(() => 'rgba(255,255,255,0.02)', [])
 
   const polygonStrokeColorCb = useCallback((feature: object) => {
     const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
-    if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+    if (iso3 !== undefined && highlightedRecipientIsoSet.has(iso3)) {
       return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
         ? 'rgba(251,191,36,0.74)'
         : 'rgba(251,191,36,0.58)'
@@ -480,7 +492,7 @@ export function GlobeScene() {
     return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
       ? 'rgba(125,211,252,0.55)'
       : 'rgba(255,255,255,0.08)'
-  }, [donorCountryRecipientIsoSet, hoveredCountryIso3])
+  }, [highlightedRecipientIsoSet, hoveredCountryIso3])
 
   const selectedArc = computedArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
   const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
