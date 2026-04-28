@@ -101,6 +101,8 @@ function getSquaredDistance(fromLat: number, fromLng: number, toLat: number, toL
   return dLat * dLat + dLng * dLng
 }
 
+const MAX_VISIBLE_ARCS = 300
+
 interface GlobeCountryFeature {
   type: 'Feature'
   properties?: CountryProperties & {
@@ -309,21 +311,21 @@ export function GlobeScene() {
     const arcs = globeResponse?.arcs ?? []
     if (selectionType === 'donor' && selectionId !== undefined) {
       const normalizedId = selectionId.replace(/_/g, '-')
-      return arcs.filter((arc) => arc.donorId === normalizedId)
+      return arcs.filter((arc) => arc.donorId === normalizedId).slice(0, MAX_VISIBLE_ARCS)
     }
     if (selectionType === 'country' && selectionId !== undefined) {
-      return arcs.filter((arc) => arc.recipientIso3 === selectionId)
+      return arcs.filter((arc) => arc.recipientIso3 === selectionId).slice(0, MAX_VISIBLE_ARCS)
     }
-    return arcs.slice(0, 300)
+    return arcs.slice(0, MAX_VISIBLE_ARCS)
   }, [globeResponse, selectionId, selectionType])
 
   const donorCountryRecipientIsoSet = useMemo(() => {
-    if (selectionType !== 'donorCountry') {
+    if (donorCountry === undefined) {
       return new Set<string>()
     }
 
     return new Set((globeResponse?.arcs ?? []).map((arc) => arc.recipientIso3))
-  }, [globeResponse, selectionType])
+  }, [donorCountry, globeResponse])
 
   const donorCountryNameMap = useMemo(() => {
     return new Map(
