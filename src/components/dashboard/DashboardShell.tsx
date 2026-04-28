@@ -9,6 +9,7 @@ import { HeroStats } from './HeroStats'
 import { InsightRail } from './InsightRail'
 import { GlobeIdleController } from '../Globe/GlobeIdleController'
 import { GlobeScene } from '../Globe/GlobeScene'
+import { WelcomeOverlay } from './WelcomeOverlay'
 
 function useOverviewData(queryString: string) {
   const [overview, setOverview] = useState<OverviewResponse | null>(null)
@@ -78,6 +79,7 @@ export function DashboardShell() {
 
   return (
     <main data-testid="dashboard-shell" className="dashboard-shell min-h-screen lg:h-screen lg:overflow-hidden">
+      <WelcomeOverlay />
       <HeroStats overview={overview} />
       <div className="grid min-h-screen grid-cols-1 bg-[radial-gradient(circle_at_top,#153153_0%,#09111f_58%,#050913_100%)] lg:h-screen lg:grid-cols-[280px_minmax(0,1fr)_360px]">
         <ControlRail />
