@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDashboardState } from '../../features/dashboard/useDashboardState'
 
 interface FiltersResponse {
@@ -20,14 +20,17 @@ function SelectField({
   placeholder,
   options,
   onChange,
+  searchable = false,
 }: {
   label: string
   value: string
   placeholder: string
   options: string[]
   onChange: (value: string | undefined) => void
+  searchable?: boolean
 }) {
   const [open, setOpen] = useState(false)
+  const [search, setSearch] = useState('')
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -41,7 +44,22 @@ function SelectField({
     return () => document.removeEventListener('mousedown', handleClick)
   }, [open])
 
+  useEffect(() => {
+    if (!open) {
+      setSearch('')
+    }
+  }, [open])
+
   const displayValue = value === '' ? placeholder : value
+  const filteredOptions = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase()
+
+    if (!searchable || normalizedSearch === '') {
+      return options
+    }
+
+    return options.filter((option) => option.toLowerCase().includes(normalizedSearch))
+  }, [options, search, searchable])
 
   return (
     <div ref={containerRef} className="grid min-w-0 gap-2 text-sm text-slate-200">
@@ -63,6 +81,17 @@ function SelectField({
         </button>
         {open && (
           <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-52 overflow-y-auto rounded-2xl border border-white/20 bg-slate-900 shadow-xl">
+            {searchable ? (
+              <div className="border-b border-white/10 px-3 py-2">
+                <input
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder={`Search ${label.toLowerCase()}`}
+                  aria-label={`Search ${label.toLowerCase()}`}
+                  className="w-full rounded-xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500 focus:border-cyan-300/60"
+                />
+              </div>
+            ) : null}
             <button
               type="button"
               onClick={() => { onChange(undefined); setOpen(false) }}
@@ -70,7 +99,7 @@ function SelectField({
             >
               {placeholder}
             </button>
-            {options.map((option) => (
+            {filteredOptions.map((option) => (
               <button
                 key={option}
                 type="button"
@@ -82,6 +111,9 @@ function SelectField({
                 {option}
               </button>
             ))}
+            {filteredOptions.length === 0 ? (
+              <p className="px-3 py-2.5 text-sm text-slate-500">No matching options</p>
+            ) : null}
           </div>
         )}
       </div>
@@ -307,6 +339,7 @@ export function ControlRail() {
                 value={donor ?? ''}
                 placeholder="All donors"
                 options={filters.donors ?? []}
+                searchable
                 onChange={(value) => {
                   activateManualMode()
                   patchQuery({ donor: value })
@@ -326,6 +359,7 @@ export function ControlRail() {
                 value={donorCountry ?? ''}
                 placeholder="All donor countries"
                 options={filters.donorCountries}
+                searchable
                 onChange={(value) => {
                   activateManualMode()
                   selectDonorCountry(value ?? null)
@@ -337,6 +371,7 @@ export function ControlRail() {
                 value={recipientCountry ?? ''}
                 placeholder="All recipient countries"
                 options={filters.recipientCountries ?? []}
+                searchable
                 onChange={(value) => {
                   activateManualMode()
                   patchQuery({ recipientCountry: value })
@@ -356,6 +391,7 @@ export function ControlRail() {
                 value={sector ?? ''}
                 placeholder="All sectors"
                 options={filters.sectors}
+                searchable
                 onChange={(value) => {
                   activateManualMode()
                   patchQuery({ sector: value })

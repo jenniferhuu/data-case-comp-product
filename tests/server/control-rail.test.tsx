@@ -11,6 +11,12 @@ describe('ControlRail', () => {
   let container: HTMLDivElement
   let root: Root
 
+  function typeIntoInput(input: HTMLInputElement, nextValue: string) {
+    const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')
+    descriptor?.set?.call(input, nextValue)
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+
   beforeEach(() => {
     ;(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
     useDashboardState.setState(parseDashboardQuery())
@@ -133,5 +139,103 @@ describe('ControlRail', () => {
 
     expect(container.textContent).toContain('Compare mode highlights funding deltas')
     expect(container.textContent).toContain('line weight continues to show visible funding volume')
+  })
+
+  it('filters donor, donor-country, recipient-country, and sector options with inline search', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({
+      ok: true,
+      json: async () => ({
+        donors: ['Gates Foundation', 'Ford Foundation'],
+        donorCountries: ['United States', 'United Kingdom'],
+        recipientCountries: ['Ukraine', 'Uganda'],
+        sectors: ['Health', 'Agriculture'],
+        years: [2020, 2021, 2022, 2023],
+        markers: [],
+        donorIdMap: {
+          'Gates Foundation': 'gates-foundation',
+          'Ford Foundation': 'ford-foundation',
+        },
+        recipientCountryIsoMap: {
+          Ukraine: 'UKR',
+          Uganda: 'UGA',
+        },
+      }),
+    })))
+
+    await act(async () => {
+      root.render(<ControlRail />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const trigger = [...container.querySelectorAll('button')].find((button) => button.textContent?.includes('All donors'))
+    expect(trigger).toBeDefined()
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const donorSearch = container.querySelector('input[aria-label="Search donor"]') as HTMLInputElement | null
+    expect(donorSearch).not.toBeNull()
+
+    await act(async () => {
+      typeIntoInput(donorSearch!, 'ford')
+    })
+
+    expect(container.textContent).toContain('Ford Foundation')
+    expect(container.textContent).not.toContain('Gates Foundation')
+
+    const donorCountryTrigger = [...container.querySelectorAll('button')].find((button) => button.textContent?.includes('All donor countries'))
+    expect(donorCountryTrigger).toBeDefined()
+
+    await act(async () => {
+      donorCountryTrigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const donorCountrySearch = container.querySelector('input[aria-label="Search donor country"]') as HTMLInputElement | null
+    expect(donorCountrySearch).not.toBeNull()
+
+    await act(async () => {
+      typeIntoInput(donorCountrySearch!, 'king')
+    })
+
+    expect(container.textContent).toContain('United Kingdom')
+    expect(container.textContent).not.toContain('United States')
+
+    const recipientTrigger = [...container.querySelectorAll('button')].find((button) => button.textContent?.includes('All recipient countries'))
+    expect(recipientTrigger).toBeDefined()
+
+    await act(async () => {
+      recipientTrigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const recipientSearch = container.querySelector('input[aria-label="Search recipient country"]') as HTMLInputElement | null
+    expect(recipientSearch).not.toBeNull()
+
+    await act(async () => {
+      typeIntoInput(recipientSearch!, 'ugan')
+    })
+
+    expect(container.textContent).toContain('Uganda')
+    expect(container.textContent).not.toContain('Ukraine')
+
+    const sectorTrigger = [...container.querySelectorAll('button')].find((button) => button.textContent?.includes('All sectors'))
+    expect(sectorTrigger).toBeDefined()
+
+    await act(async () => {
+      sectorTrigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const sectorSearch = container.querySelector('input[aria-label="Search sector"]') as HTMLInputElement | null
+    expect(sectorSearch).not.toBeNull()
+
+    await act(async () => {
+      typeIntoInput(sectorSearch!, 'agri')
+    })
+
+    expect(container.textContent).toContain('Agriculture')
+    expect(container.textContent).not.toContain('Health')
   })
 })

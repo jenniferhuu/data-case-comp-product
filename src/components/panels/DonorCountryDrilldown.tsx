@@ -51,7 +51,7 @@ export function DonorCountryDrilldown({ donorCountry, onSelectDonor, onSelectCou
         }))}
       />
       <InsightRankList
-        title="Top implementers"
+        title="Top delivery channels"
         items={donorCountry.topImplementers.map((implementer) => ({
           label: implementer.name,
           value: formatUsdMillions(implementer.totalUsdM),
