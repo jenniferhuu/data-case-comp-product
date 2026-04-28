@@ -110,12 +110,17 @@ interface GlobeCountryFeature {
   geometry?: unknown
 }
 
+interface GlobeFiltersResponse {
+  donorCountries?: string[]
+}
+
 export function GlobeScene() {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [size, setSize] = useState({ width: 1000, height: 820 })
   const [globeResponse, setGlobeResponse] = useState<GlobeResponse | null>(null)
   const [countryFeatures, setCountryFeatures] = useState<GlobeCountryFeature[]>([])
+  const [donorCountryOptions, setDonorCountryOptions] = useState<string[]>([])
   const [globeError, setGlobeError] = useState<string | null>(null)
   const [hoveredArc, setHoveredArc] = useState<GlobeArcDatum | null>(null)
   const [hoveredPoint, setHoveredPoint] = useState<GlobePointDatum | null>(null)
@@ -260,6 +265,33 @@ export function GlobeScene() {
   }, [])
 
   useEffect(() => {
+    let cancelled = false
+
+    void fetch('/api/filters')
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Filter data is unavailable.')
+        }
+
+        return response.json() as Promise<GlobeFiltersResponse>
+      })
+      .then((data) => {
+        if (!cancelled) {
+          setDonorCountryOptions(data.donorCountries ?? [])
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setDonorCountryOptions([])
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
     const controls = globeRef.current?.controls?.()
 
     if (controls === undefined) {
@@ -284,6 +316,20 @@ export function GlobeScene() {
     }
     return arcs.slice(0, 300)
   }, [globeResponse, selectionId, selectionType])
+
+  const donorCountryRecipientIsoSet = useMemo(() => {
+    if (selectionType !== 'donorCountry') {
+      return new Set<string>()
+    }
+
+    return new Set((globeResponse?.arcs ?? []).map((arc) => arc.recipientIso3))
+  }, [globeResponse, selectionType])
+
+  const donorCountryNameMap = useMemo(() => {
+    return new Map(
+      donorCountryOptions.map((countryName) => [normalizeCountryName(countryName), countryName] as const),
+    )
+  }, [donorCountryOptions])
 
   const selectedArc = visibleArcs.find((arc) => arc.donorId === selectedDonorId) ?? null
   const selectedPoint = globeResponse?.points.find((point) => point.iso3 === selectedCountryIso3) ?? null
@@ -360,10 +406,18 @@ export function GlobeScene() {
         polygonsData={countryFeatures}
         polygonAltitude={(feature: object) => {
           const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+            return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.005 : 0.0024
+          }
           return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3 ? 0.004 : 0.001
         }}
         polygonCapColor={(feature: object) => {
           const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+            return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+              ? 'rgba(251,191,36,0.12)'
+              : 'rgba(251,191,36,0.05)'
+          }
           return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
             ? 'rgba(34,211,238,0.08)'
             : 'rgba(255,255,255,0.01)'
@@ -371,6 +425,11 @@ export function GlobeScene() {
         polygonSideColor={() => 'rgba(255,255,255,0.02)'}
         polygonStrokeColor={(feature: object) => {
           const iso3 = getCountryIso3((feature as GlobeCountryFeature).properties)
+          if (iso3 !== undefined && donorCountryRecipientIsoSet.has(iso3)) {
+            return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
+              ? 'rgba(251,191,36,0.74)'
+              : 'rgba(251,191,36,0.58)'
+          }
           return hoveredCountryIso3 !== null && iso3 === hoveredCountryIso3
             ? 'rgba(125,211,252,0.55)'
             : 'rgba(255,255,255,0.08)'
@@ -395,8 +454,18 @@ export function GlobeScene() {
           const matchedDonorCountry = globeResponse?.arcs.find((arc) => {
             return normalizeCountryName(arc.donorCountry) === clickedName
           })?.donorCountry
+          const matchedKnownDonorCountry = clickedName === undefined ? undefined : donorCountryNameMap.get(clickedName)
 
           setIdleMode(false)
+          if (
+            selectionType === 'donorCountry'
+            && !donorCountryRecipientIsoSet.has(iso3)
+            && matchedKnownDonorCountry !== undefined
+          ) {
+            selectDonorCountry(matchedKnownDonorCountry)
+            return
+          }
+
           if (matchedDonorCountry !== undefined) {
             selectDonorCountry(matchedDonorCountry)
             return

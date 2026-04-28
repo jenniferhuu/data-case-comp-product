@@ -12,6 +12,7 @@ vi.mock('next/dynamic', () => ({
     onPointClick?: (point: object) => void
     onGlobeClick?: (coords: { lat: number, lng: number }) => void
     onPolygonClick?: (feature: object) => void
+    polygonStrokeColor?: (feature: object) => string
     polygonsData?: Array<{
       properties?: {
         iso_a3?: string
@@ -67,11 +68,36 @@ vi.mock('next/dynamic', () => ({
         >
           globe click country polygon stub
         </button>
+        <button
+          data-testid="globe-click-country-polygon-stub-2"
+          type="button"
+          onClick={() => props.onPolygonClick?.(props.polygonsData?.[1] ?? { properties: { iso_a3: 'USA', name: 'United States' } })}
+        >
+          globe click country polygon stub 2
+        </button>
         <div data-testid="compare-color">{compareColor}</div>
+        {(props.polygonsData ?? []).map((feature, index) => (
+          <div key={feature.properties?.iso_a3 ?? index} data-testid={`polygon-stroke-${index}`}>
+            {props.polygonStrokeColor?.(feature) ?? ''}
+          </div>
+        ))}
       </div>
     )
   },
 }))
+
+function createFiltersResponse(donorCountries: string[] = []) {
+  return {
+    donors: [],
+    donorCountries,
+    recipientCountries: [],
+    sectors: [],
+    years: [],
+    markers: [],
+    donorIdMap: {},
+    recipientCountryIsoMap: {},
+  }
+}
 
 describe('GlobeScene client state', () => {
   let container: HTMLDivElement
@@ -124,6 +150,13 @@ describe('GlobeScene client state', () => {
           json: async () => ({
             features: [],
           }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(),
         }
       }
 
@@ -203,6 +236,13 @@ describe('GlobeScene client state', () => {
         }
       }
 
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States']),
+        }
+      }
+
       throw new Error(`Unexpected fetch: ${url}`)
     }))
 
@@ -258,6 +298,13 @@ describe('GlobeScene client state', () => {
               },
             ],
           }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(),
         }
       }
 
@@ -340,6 +387,13 @@ describe('GlobeScene client state', () => {
         }
       }
 
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(),
+        }
+      }
+
       throw new Error(`Unexpected fetch: ${url}`)
     }))
 
@@ -408,6 +462,13 @@ describe('GlobeScene client state', () => {
               },
             ],
           }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(),
         }
       }
 
@@ -485,6 +546,13 @@ describe('GlobeScene client state', () => {
               },
             ],
           }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States']),
         }
       }
 
@@ -568,6 +636,13 @@ describe('GlobeScene client state', () => {
         }
       }
 
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States']),
+        }
+      }
+
       throw new Error(`Unexpected fetch: ${url}`)
     }))
 
@@ -594,5 +669,205 @@ describe('GlobeScene client state', () => {
     expect(state.selectedDonorId).toBe('gates-foundation')
     expect(state.selectedCountryIso3).toBeNull()
     expect(state.idleMode).toBe(false)
+  })
+
+  it('highlights recipient countries when a donor-country selection is active', async () => {
+    useDashboardState.setState({
+      ...parseDashboardQuery(),
+      donorCountry: 'United States',
+      selectionType: 'donorCountry',
+      selectionId: 'United States',
+      idleMode: false,
+    })
+
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.startsWith('/api/globe')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'UKR',
+                  name: 'Ukraine',
+                },
+              },
+              {
+                properties: {
+                  iso_a3: 'FRA',
+                  name: 'France',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States', 'France']),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(container.querySelector('[data-testid="polygon-stroke-0"]')?.textContent).toBe('rgba(251,191,36,0.58)')
+    expect(container.querySelector('[data-testid="polygon-stroke-1"]')?.textContent).toBe('rgba(255,255,255,0.08)')
+  })
+
+  it('switches non-recipient donor-country clicks to donor-country selection while donor-country mode is active', async () => {
+    useDashboardState.setState({
+      ...parseDashboardQuery(),
+      donorCountry: 'United States',
+      selectionType: 'donorCountry',
+      selectionId: 'United States',
+      idleMode: false,
+    })
+
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input)
+
+      if (url.startsWith('/api/globe')) {
+        return {
+          ok: true,
+          json: async () => ({
+            arcs: [
+              {
+                donorId: 'gates-foundation',
+                donorName: 'Gates Foundation',
+                donorCountry: 'United States',
+                donorLat: 37.09,
+                donorLon: -95.71,
+                recipientIso3: 'UKR',
+                recipientName: 'Ukraine',
+                recipientLat: 49,
+                recipientLon: 32,
+                amountUsdM: 663.1,
+                years: [2023],
+                yearAmounts: [{ year: 2023, totalUsdM: 663.1 }],
+                sector: 'Health',
+              },
+            ],
+            points: [
+              {
+                iso3: 'UKR',
+                name: 'Ukraine',
+                lat: 49,
+                lon: 32,
+                totalUsdM: 663.1,
+                donorCount: 35,
+              },
+            ],
+            visibleFundingUsdM: 663.1,
+            crossBorderPct: 100,
+            domesticPct: 0,
+          }),
+        }
+      }
+
+      if (url === '/data/countries.geojson') {
+        return {
+          ok: true,
+          json: async () => ({
+            features: [
+              {
+                properties: {
+                  iso_a3: 'UKR',
+                  name: 'Ukraine',
+                },
+              },
+              {
+                properties: {
+                  iso_a3: 'FRA',
+                  name: 'France',
+                },
+              },
+            ],
+          }),
+        }
+      }
+
+      if (url === '/api/filters') {
+        return {
+          ok: true,
+          json: async () => createFiltersResponse(['United States', 'France']),
+        }
+      }
+
+      throw new Error(`Unexpected fetch: ${url}`)
+    }))
+
+    await act(async () => {
+      root.render(<GlobeScene />)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const trigger = container.querySelector('[data-testid="globe-click-country-polygon-stub-2"]')
+
+    expect(trigger).not.toBeNull()
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const state = useDashboardState.getState()
+
+    expect(state.selectionType).toBe('donorCountry')
+    expect(state.selectionId).toBe('France')
+    expect(state.donorCountry).toBe('France')
+    expect(state.selectedCountryIso3).toBeNull()
   })
 })
