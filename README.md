@@ -1,8 +1,9 @@
-Overview
-PhilanthroGlobe maps the full architecture of global aid and philanthropic disbursements onto a live, interactive 3D globe. Users can filter by donor, sector, and recipient country to trace funding corridors in real time — from the Gates Foundation's health grants to cross-border climate commitments across 134 countries.
+### Overview
+
+PhilanthroGlobe maps the full architecture of global aid and philanthropic disbursements onto a live, interactive 3D globe. Users can filter by donor, sector, and recipient country to trace funding corridors in real time, from the Gates Foundation's health grants to cross-border climate commitments across 134 countries.
 The platform surfaces patterns that spreadsheets can't: which corridors carry the most volume, how disbursements differ from commitments, and where the operational gaps in global philanthropy actually live.
 
-Features
+### Features
 
 Live flow map — animated 3D arcs representing funding corridors, colored by sector and weighted by volume. Hover for corridor context, click for donor drilldowns.
 Funding mode toggle — switch between Disbursements and Commitments to compare intent vs. execution.
